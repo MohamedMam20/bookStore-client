@@ -19,6 +19,10 @@
   cursor: pointer;
 }
 
+.left-icons a {
+  color: black;
+}
+
 .logo {
   cursor: pointer;
   letter-spacing: 0.1rem;
