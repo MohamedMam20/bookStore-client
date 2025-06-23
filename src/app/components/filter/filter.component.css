@@ -1,0 +1,98 @@
+button {
+  font-family: serif;
+  border: none;
+  font-size: 1.5rem;
+}
+
+.filter-title-button {
+  font-size: 1.5rem;
+  font-weight: 600;
+  transition: color 0.5s ease;
+  background-color: transparent;
+  border: none;
+}
+.filter-title-button:hover {
+  color: #d14031;
+}
+h5 {
+  font-size: 1.3rem;
+  font-family: serif;
+}
+
+.form-check-input {
+  margin-right: 5px;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid black;
+  border-radius: 0;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.3s ease;
+}
+
+.form-check-input:hover {
+  border-color: #d14031;
+}
+
+.form-check-input:checked {
+  background-color: transparent;
+}
+
+.form-check-input:checked::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  width: 4px;
+  height: 9px;
+  border: solid black;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  display: block;
+  transition: border-color 0.3s ease;
+}
+
+.form-check-input:checked:hover::before {
+  border-color: #d14031;
+}
+
+.form-check-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.form-check-label {
+  font-family: sans-serif;
+  margin-left: 8px;
+}
+.active-filter-badge {
+  background-color: transparent;
+  border: 1px solid rgb(139, 139, 139);
+  color: #4e4e4e;
+  font-size: 0.9rem;
+  font-family: sans-serif;
+  padding: 0.6em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color 0.4s ease, border-color 0.4s ease;
+}
+
+.active-filter-badge:hover {
+  color: #d14031;
+  border-color: #d14031;
+}
+
+.remove-btn {
+  font-size: 1rem;
+  font-family: sans-serif;
+  color: black;
+
+  transition: color 0.3s ease;
+}
+
+.remove-btn:hover {
+  color: #d14031 !important;
+}
