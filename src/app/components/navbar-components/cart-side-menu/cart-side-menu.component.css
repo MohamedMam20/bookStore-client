@@ -1,0 +1,34 @@
+.cart-overlay {
+  font-family: "Josefin Sans", sans-serif;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 999;
+}
+
+.cart-panel {
+  background: #fff;
+  width: 20%;
+  height: 100%;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn {
+  position: absolute;
+  top: 0.7rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 2.5rem;
+  font-weight: 100;
+}
