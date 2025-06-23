@@ -1,19 +1,23 @@
-<div class="cart-overlay" *ngIf="isVisible">
-  <div class="cart-panel">
-    <button class="close-btn" (click)="close()">x</button>
+<div class="cart-overlay" [class.show]="isVisible" (click)="close()">
+  <div class="cart-panel" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="close()">×</button>
 
     <div class="cart-content" *ngIf="cartItems.length === 0">
-      <h2>Your cart is empty</h2>
+      <p class="title-cart">Your cart is empty</p>
       <button class="continue-btn" (click)="continueShopping()">
         Continue Shopping
       </button>
+
       <div class="login-section">
-        <p>Have an account?</p>
-        <p><a href="#" (click)="login()">Log in</a> to check out faster.</p>
+        <p class="account-question">Have an account?</p>
+        <p class="login-text">
+          <a href="#" (click)="login()">Log in</a> to check out faster.
+        </p>
       </div>
     </div>
 
-    <!--<div class="cart-items" *ngIf="cartItems.length > 0">
+    <!--
+    <div class="cart-items" *ngIf="cartItems.length > 0">
       <h2>Your Cart</h2>
       <ul>
         <li *ngFor="let item of cartItems">
@@ -21,6 +25,7 @@
         </li>
       </ul>
       <button class="continue-btn" (click)="checkout()">Checkout</button>
-    </div> -->
+    </div>
+    -->
   </div>
 </div>
