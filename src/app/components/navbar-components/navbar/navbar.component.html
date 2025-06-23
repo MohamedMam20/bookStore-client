@@ -1,0 +1,28 @@
+<nav class="navbar">
+  <div class="top-bar">
+    <div class="left-icons">
+      <i class="fas fa-shopping-cart" (click)="toggleCartMenu()"></i>
+      <i class="fas fa-heart"></i>
+    </div>
+
+    <a class="logo">BOOK <span class="highlight">SHOP</span></a>
+
+    <div class="right-controls">
+      <i class="fas fa-user-friends"></i>
+      <i class="fas fa-search"></i>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <a href="#">Home</a>
+    <a href="#">Categories <i class="fas fa-caret-down"></i></a>
+    <a href="#">Brands</a>
+    <a href="#">Best Sellers</a>
+    <a href="#">Pages <i class="fas fa-caret-down"></i></a>
+  </div>
+</nav>
+
+<app-cart-side-menu
+  [isVisible]="isCartMenuOpen"
+  (closed)="isCartMenuOpen = false"
+></app-cart-side-menu>

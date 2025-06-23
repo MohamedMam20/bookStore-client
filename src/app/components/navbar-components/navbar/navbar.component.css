@@ -1,0 +1,90 @@
+.navbar {
+  width: 100%;
+  font-family: "Times New Roman", Times, serif;
+  /*font-family: "Cormorant Garamond", serif;*/
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2rem 0 2rem 0;
+  background: white;
+}
+
+.left-icons i,
+.right-controls i {
+  font-size: 18px;
+  margin: 0 8px;
+  cursor: pointer;
+}
+
+.logo {
+  cursor: pointer;
+  letter-spacing: 0.1rem;
+  font-size: 2rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.logo .highlight {
+  color: #e22302;
+}
+
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lang-btn {
+  background-color: #e22302;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.lang-btn i {
+  margin-left: 4px;
+}
+
+.bottom-bar {
+  background-color: #e22302;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem 0 1.5rem 0;
+}
+
+.bottom-bar a {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  color: white;
+  text-decoration: none;
+}
+
+.bottom-bar a i {
+  margin-left: 4px;
+}
+
+/* Responsive */
+@media (max-width: 970px) {
+  .top-bar,
+  .bottom-bar {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .right-controls {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .left-icons {
+    margin-bottom: 10px;
+  }
+}
