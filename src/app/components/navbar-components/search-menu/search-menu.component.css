@@ -1,6 +1,6 @@
 .search-overlay {
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   top: 0;
   width: 100%;
   height: 10rem;
@@ -17,13 +17,13 @@
   font-family: var(--font-main);
 }
 .dark-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
-  z-index: 0; /* ensures it's behind the search panel */
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
 }
 
 .search-overlay.show {

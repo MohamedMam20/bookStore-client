@@ -1,26 +1,28 @@
-<nav class="navbar">
-  <div class="top-bar">
-    <div class="left-icons">
+<nav class="custom-navbar">
+  <div class="navbar-top-bar">
+    <div class="navbar-left-icons">
       <i class="fas fa-shopping-cart" (click)="toggleCartMenu()"></i>
       <a routerLink="/wishlist"><i class="fas fa-heart"></i></a>
     </div>
 
-    <a class="logo" routerLink="/">BOOK <span class="highlight">SHOP</span></a>
+    <a class="navbar-logo" routerLink="/"
+      >BOOK <span class="navbar-logo-highlight">SHOP</span></a
+    >
 
-    <div class="right-controls">
+    <div class="navbar-right-controls">
       <i class="fas fa-user-friends"></i>
       <i class="fas fa-search" (click)="toggleSearchMenu()"></i>
-      <i class="fas fa-bars menu-toggle" (click)="toggleMenu()"></i>
+      <i class="fas fa-bars navbar-menu-toggle" (click)="toggleMenu()"></i>
     </div>
   </div>
 
-  <div class="bottom-bar">
-    <a routerLink="/">Home</a>
-    <div class="recommended-dropdown">
+  <div class="navbar-bottom-bar">
+    <a routerLink="/checkout">Home</a>
+    <div class="navbar-recommended-dropdown">
       <a routerLink="/">Recommended <i class="fas fa-caret-down"></i></a>
-      <div class="dropdown-content">
-        <div class="navbar-image-links">
-          <div class="image-box" *ngFor="let category of categories">
+      <div class="navbar-dropdown-content">
+        <div class="navbar-dropdown-image-links">
+          <div class="navbar-image-box" *ngFor="let category of categories">
             <img [src]="category.image" [alt]="category.title" />
             <button>{{ category.title }}</button>
           </div>
@@ -29,9 +31,9 @@
     </div>
     <a routerLink="/">Brands</a>
     <a routerLink="/">Best Sellers</a>
-    <div class="pages-dropdown">
-      <a class="pages-link">Pages <i class="fas fa-caret-down"></i></a>
-      <div class="dropdown-content">
+    <div class="navbar-pages-dropdown">
+      <a class="navbar-pages-link">Pages <i class="fas fa-caret-down"></i></a>
+      <div class="navbar-dropdown-content">
         <a routerLink="/about">About us</a>
         <a routerLink="/blog">Blog</a>
         <a routerLink="/faq">FAQ's</a>
@@ -44,15 +46,11 @@
 <app-cart-side-menu
   [isCartVisible]="isCartMenuOpen"
   (closed)="isCartMenuOpen = false"
->
-</app-cart-side-menu>
-
+></app-cart-side-menu>
 <app-search-menu
   [isSearchVisible]="isSearchMenuOpen"
   (searchClosed)="isSearchMenuOpen = false"
->
-</app-search-menu>
-
+></app-search-menu>
 <app-toggle-menu
   [isToggleVisible]="isToggleMenuOpen"
   (toggleClosed)="isToggleMenuOpen = false"
