@@ -1,0 +1,35 @@
+<div class="login-container">
+  <div class="particles-container" id="particles-container"></div>
+  <div class="login-wrapper">
+    <div class="form-section">
+      <div class="logo">
+        <!-- <span class="logo-text">BookStore</span> -->
+         <img src="assets/logo2-transparent.png" alt="BookStore Logo" class="logo-image" />
+      </div>
+
+      <div class="form-container">
+        <div class="verification-image">
+          <img src="assets/otp-icon.png" alt="Verification Complete" />
+        </div>
+
+        <h1 class="title">Verification Complete</h1>
+        <p class="subtitle">Your account has been successfully verified. You can now proceed to login.</p>
+
+        <div class="login-form">
+          <div class="success-message">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+              <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" />
+              <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+            </svg>
+            <p>OTP verification successful</p>
+          </div>
+
+          <button type="button" class="submit-btn" (click)="navigateToLogin()">
+            Proceed to Login
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p>otp-complete works!</p>
