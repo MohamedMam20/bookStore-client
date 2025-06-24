@@ -34,7 +34,7 @@
   background-color: rgba(255, 247, 235, 0.5); /* Sheer beige */
   opacity: 0;
   transition: opacity 0.3s ease;
-  z-index: 1;
+  z-index: 0;
 }
 
 /* Show overlay on hover */
@@ -52,7 +52,7 @@
   flex-direction: column;
   gap: 12px;
   pointer-events: none;
-  z-index: 2;
+  z-index: 1;
 }
 
 /* Slide in buttons on hover */
