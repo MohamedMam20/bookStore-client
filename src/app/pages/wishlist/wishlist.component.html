@@ -1,1 +1,14 @@
-<p>wishlist works!</p>
+<div class="wishlist-header">
+  <div class="wishlist-header-content">
+    <h2>Wishlist</h2>
+    <p><a routerLink="/">Home</a> / Wishlist</p>
+  </div>
+</div>
+
+<div class="wishlist-empty">
+  <p class="empty-message">Nothing found in wishlist!</p>
+  <i class="fas fa-shopping-cart empty-icon"></i>
+  <button class="continue-btn" (click)="continueShopping()">
+    Continue Shopping
+  </button>
+</div>

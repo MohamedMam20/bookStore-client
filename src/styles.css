@@ -3,6 +3,25 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-size: 16px;
 }
 
-/* Optional: set a default body style */
+a {
+  text-decoration: none;
+  color: black;
+}
+
+:root {
+  --primary-color: #cc3a2e;
+  --text-color: #000000;
+  --overlay-bg: rgba(0, 0, 0, 0.4);
+  --overlay-white: rgba(255, 255, 255, 0.85);
+  --font-main: Georgia, serif;
+  --border-color: #cccccc;
+  --box-shadow-color: rgba(0, 0, 0, 0.1);
+  --icon-color: #333333;
+  --icon-hover-color: #000000;
+  --search-bg: #ffffff;
+  --search-border: #000000;
+  --hover-shadow: rgba(0, 0, 0, 0.1);
+}
