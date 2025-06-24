@@ -1,0 +1,60 @@
+.wishlist-header {
+  background: url("../../../assets/images/header-img.jpg") no-repeat center
+    center;
+  background-size: cover;
+  height: 12.5rem;
+  position: relative;
+  text-align: center;
+  font-family: var(--font-main);
+  color: var(--text-color);
+}
+
+.wishlist-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--overlay-white);
+  z-index: 1;
+}
+
+.wishlist-header-content {
+  position: relative;
+  z-index: 2;
+  padding-top: 3rem;
+}
+
+.wishlist-header h2 {
+  font-size: 1.625rem;
+  margin-bottom: 0.5rem;
+}
+
+.wishlist-header p {
+  font-size: 1rem;
+}
+
+.wishlist-empty {
+  text-align: center;
+  margin-top: 3.75rem;
+  font-family: var(--font-main);
+}
+
+.empty-message {
+  font-size: 2rem;
+  margin-bottom: 1.875rem;
+}
+
+.empty-icon {
+  font-size: 4.375rem;
+  margin-bottom: 1.875rem;
+  display: block;
+}
+
+.continue-btn {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.625rem 1.25rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+}

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart-side-menu',
@@ -10,15 +11,18 @@ import { Input, Output, EventEmitter } from '@angular/core';
   styleUrl: './cart-side-menu.component.css',
 })
 export class CartSideMenuComponent {
-  @Input() isVisible = false;
+  constructor(private router: Router) {}
+  @Input() isCartVisible = false;
   @Output() closed = new EventEmitter<boolean>();
 
   cartItems = [];
 
-  close() {
+  closeCart() {
     this.closed.emit();
   }
-  continueShopping() {}
+  continueShopping() {
+    this.router.navigateByUrl('/');
+  }
   login() {}
   checkout() {}
 }

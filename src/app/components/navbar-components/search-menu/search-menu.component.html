@@ -1,1 +1,10 @@
-<p>search-menu works!</p>
+<div class="search-overlay" [class.show]="isSearchVisible">
+  <div class="search-panel">
+    <button class="close-btn" (click)="closeSearch()">X</button>
+    <div class="search-box">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" placeholder="Search" />
+    </div>
+  </div>
+</div>
+<div [class.dark-overlay]="isSearchVisible" (click)="closeSearch()"></div>

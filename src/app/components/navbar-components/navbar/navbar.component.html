@@ -2,28 +2,58 @@
   <div class="top-bar">
     <div class="left-icons">
       <i class="fas fa-shopping-cart" (click)="toggleCartMenu()"></i>
-
-      <a href=""><i class="fas fa-heart"></i></a>
+      <a routerLink="/wishlist"><i class="fas fa-heart"></i></a>
     </div>
 
-    <a class="logo">BOOK <span class="highlight">SHOP</span></a>
+    <a class="logo" routerLink="/">BOOK <span class="highlight">SHOP</span></a>
 
     <div class="right-controls">
       <i class="fas fa-user-friends"></i>
-      <i class="fas fa-search"></i>
+      <i class="fas fa-search" (click)="toggleSearchMenu()"></i>
+      <i class="fas fa-bars menu-toggle" (click)="toggleMenu()"></i>
     </div>
   </div>
 
   <div class="bottom-bar">
-    <a href="#">Home</a>
-    <a href="#">Categories <i class="fas fa-caret-down"></i></a>
-    <a href="#">Brands</a>
-    <a href="#">Best Sellers</a>
-    <a href="#">Pages <i class="fas fa-caret-down"></i></a>
+    <a routerLink="/">Home</a>
+    <div class="recommended-dropdown">
+      <a routerLink="/">Recommended <i class="fas fa-caret-down"></i></a>
+      <div class="dropdown-content">
+        <div class="navbar-image-links">
+          <div class="image-box" *ngFor="let category of categories">
+            <img [src]="category.image" [alt]="category.title" />
+            <button>{{ category.title }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a routerLink="/">Brands</a>
+    <a routerLink="/">Best Sellers</a>
+    <div class="pages-dropdown">
+      <a class="pages-link">Pages <i class="fas fa-caret-down"></i></a>
+      <div class="dropdown-content">
+        <a routerLink="/about">About us</a>
+        <a routerLink="/blog">Blog</a>
+        <a routerLink="/faq">FAQ's</a>
+        <a routerLink="/contactus">Contact us</a>
+      </div>
+    </div>
   </div>
 </nav>
 
 <app-cart-side-menu
-  [isVisible]="isCartMenuOpen"
+  [isCartVisible]="isCartMenuOpen"
   (closed)="isCartMenuOpen = false"
-></app-cart-side-menu>
+>
+</app-cart-side-menu>
+
+<app-search-menu
+  [isSearchVisible]="isSearchMenuOpen"
+  (searchClosed)="isSearchMenuOpen = false"
+>
+</app-search-menu>
+
+<app-toggle-menu
+  [isToggleVisible]="isToggleMenuOpen"
+  (toggleClosed)="isToggleMenuOpen = false"
+></app-toggle-menu>
