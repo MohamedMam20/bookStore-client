@@ -1,0 +1,111 @@
+
+
+
+<div class="product-details-wrapper">
+
+  <div class="product-container">
+
+    <div class="left-section">
+      <img [src]="product.image" alt="product" class="main-image" />
+      <div class="thumbnail-row">
+        <img *ngFor="let img of product.thumbnails" [src]="img" class="thumbnail" />
+      </div>
+    </div>
+
+
+    <div class="right-section">
+      <h1 class="title">{{ product.title }}</h1>
+      <p class="description">{{ product.description }}</p>
+
+      <div class="price-box">
+        <span class="price">LE {{ product.price }}</span>
+        <span class="original-price">LE {{ product.originalPrice }}</span>
+        <span class="sale-badge">sale</span>
+      </div>
+
+      <div class="info-pair"><strong>Vendor:</strong> {{ product.vendor }}</div>
+      <div class="info-pair"><strong>Type:</strong> {{ product.type }}</div>
+
+
+
+      <div class="options">
+        <p class="option-label">Language:</p>
+        <div class="option-group">
+          <span *ngFor="let lang of product.languages" (click)="selectLanguage(lang)" [class.selected]="lang.selected">{{ lang.name }}</span>
+        </div>
+      </div>
+
+      <div class="info-pair"><strong>Publication Date:</strong> {{ product.publicationDate | date }}</div>
+
+      <div class="info-pair stars-box">
+        <strong>Rating:</strong>
+        <span *ngFor="let star of [1,2,3,4,5]">
+          <i class="star" [class.filled]="star <= averageRating" [class.unfilled]="star > averageRating">★</i>
+        </span>
+        <span class="rating-count">({{ submittedReviews.length }} reviews)</span>
+      </div>
+
+      <div class="quantity-box">
+        <strong>Quantity:</strong>
+        <button (click)="decrement()">-</button>
+        <span>{{ quantity }}</span>
+        <button (click)="increment()">+</button>
+      </div>
+      <p *ngIf="quantity >= product.stock" class="warning-message">⚠️ Maximum quantity reached!</p>
+
+      <div class="info-pair">Availability: <strong>{{ product.stock }} in stock</strong></div>
+      <div class="info-pair">Sub total: <strong>LE {{ product.price * quantity | number:'1.2-2' }}</strong></div>
+
+      <div class="actions">
+        <button class="btn add">Add To Cart</button>
+        <button class="btn wishlist">View Wishlist</button>
+        <button class="btn buy">Buy It Now</button>
+      </div>
+
+      <p class="meta-info">🚚 Estimated delivery 5-7 days</p>
+      <p class="meta-info">👀 {{ viewsCount }} people are viewing this right now</p>
+
+      <div class="review-toggle-wrapper">
+        <button class="toggle-reviews" (click)="showReviews = !showReviews">{{ showReviews ? 'Cancel Review' : 'Add Review' }}</button>
+      </div>
+
+      <div class="reviews-slide" *ngIf="showReviews">
+        <p *ngIf="warningMessage" class="warning-message">{{ warningMessage }}</p>
+        <input type="text" placeholder="Your name" [(ngModel)]="reviewForm.name" class="review-input" />
+        <input type="email" placeholder="Your email" [(ngModel)]="reviewForm.email" class="review-input" />
+        <div class="stars-input">
+          <label>Rating:</label>
+          <span *ngFor="let star of [1,2,3,4,5]"
+                (click)="setReviewRating(star)"
+                (mouseover)="hoverRating = star"
+                (mouseleave)="hoverRating = 0">
+            <i class="star"
+               [class.filled]="star <= reviewForm.rating || star <= hoverRating"
+               [class.unfilled]="star > reviewForm.rating && star > hoverRating">★</i>
+          </span>
+        </div>
+        <textarea [(ngModel)]="reviewText" rows="3" placeholder="Write your review..."></textarea>
+        <div class="review-actions">
+          <button (click)="submitReview()" class="btn submit">Submit Review</button>
+          <button (click)="cancelReview()" class="btn cancel">Cancel</button>
+        </div>
+        <p *ngIf="showWarning" class="warning-message">⭐ Please give a rating before submitting!</p>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="submitted-reviews full-width-reviews">
+    <h3>Customer Reviews</h3>
+    <div *ngFor="let review of submittedReviews" class="single-review">
+      <p class="review-header">
+        <strong>{{ review.name }}</strong> -
+        <span class="review-stars">
+          <i *ngFor="let star of [1,2,3,4,5]" class="star" [class.filled]="star <= review.rating">★</i>
+        </span>
+      </p>
+      <p class="review-content">{{ review.text }}</p>
+    </div>
+  </div>
+
+</div>
