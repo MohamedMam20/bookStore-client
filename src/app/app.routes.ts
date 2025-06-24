@@ -9,6 +9,7 @@ import { OtpVerificationComponent } from './pages/auth/otp-verfication/otp-verfi
 import { PasswordResetRequestComponent } from './pages/auth/password-reset-request/password-reset-request.component';
 import { PasswordResetConfirmComponent } from './pages/auth/password-reset-confirm/password-reset-confirm.component';
 import { OtpCompleteComponent } from './pages/auth/otp-complete/otp-complete.component';
+import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -21,5 +22,6 @@ export const routes: Routes = [
   { path: 'password-reset', component: PasswordResetRequestComponent },
   { path: 'password-reset-confirm', component: PasswordResetConfirmComponent },
   { path: '**', component: NotFoundComponent },
+  { path: 'product-details', component: ProductDetailsComponent } ,
 
 ];
