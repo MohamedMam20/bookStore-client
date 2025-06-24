@@ -1,0 +1,54 @@
+<div class="container-fluid" style="font-family: 'Segoe UI', sans-serif">
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <div
+      class="p-3 d-none d-lg-block flex-shrink-0"
+      style="width: 300px; height: 100vh"
+    >
+      <app-filter></app-filter>
+    </div>
+
+    <!-- Product Cards Section -->
+    <div class="flex-grow-1 p-3">
+      <div class="container-fluid">
+        <div class="row g-4">
+          <div
+            class="col-12 col-md-6 col-lg-6 col-xl-4"
+            *ngFor="let product of products | keyvalue"
+          >
+            <div class="card h-100 border-0">
+              <div class="card-img-container position-relative">
+                <img
+                  [src]="product.value.image"
+                  class="card-img-top"
+                  alt="{{ product.value.name }}"
+                />
+                <div class="card-action-buttons">
+                  <button class="btn btn-sm shadow">
+                    <i class="fa-solid fa-bolt"></i>
+                  </button>
+                  <button class="btn btn-sm shadow">
+                    <i class="fa-solid fa-cart-plus"></i>
+                  </button>
+                  <button class="btn btn-sm shadow">
+                    <i class="fa-solid fa-heart"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="card-body text-center p-3">
+                <p class="card-text text-secondary mb-1">
+                  {{ product.value.author }}
+                </p>
+                <h5 class="card-title mb-1">{{ product.value.name }}</h5>
+                <span class="card-text text-secondary">
+                  {{ product.value.price | currency }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
