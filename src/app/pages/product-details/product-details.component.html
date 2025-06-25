@@ -63,65 +63,73 @@
   </div>
 
   <div class="review-section">
-    <button class="toggle-reviews" (click)="showReviews = !showReviews">
-      {{ showReviews ? 'Cancel Review' : 'Add Review' }}
-    </button>
+    <div class="review-toggle-wrapper">
+      <button class="toggle-reviews" (click)="showDescription = false; showReviewsSection = !showReviewsSection">
+        {{ showReviewsSection ? 'Hide Reviews' : 'View Reviews' }}
+      </button>
+      <button class="toggle-reviews" (click)="showReviewsSection = false; showDescription = !showDescription">
+        {{ showDescription ? 'Hide Description' : 'View Full Description' }}
+      </button>
+    </div>
 
-    <div class="submitted-reviews full-width-reviews">
-      <div class="reviews-header">
-        <h3>Customer Reviews</h3>
-        <button class="btn write-review" (click)="showReviews = !showReviews">
-          {{ showReviews ? 'Cancel' : 'Write a Review' }}
+    <div *ngIf="showDescription" class="full-description-box">
+      <h3>Full Description</h3>
+      <p>{{ product.description }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="showReviewsSection" #reviewSection class="submitted-reviews full-width-reviews">
+    <div class="full-description-box">
+      <h3>Customer Reviews</h3>
+      <button class="btn write-review" (click)="showReviews = !showReviews">
+        {{ showReviews ? 'Cancel' : 'Write a Review' }}
+      </button>
+    </div>
+
+    <div class="reviews-slide" *ngIf="showReviews">
+      <div class="stars-input">
+        <label>Rating:</label>
+        <span *ngFor="let star of [1,2,3,4,5]"
+              (click)="setReviewRating(star)"
+              (mouseover)="hoverRating = star"
+              (mouseleave)="hoverRating = 0">
+          <i class="star"
+             [class.filled]="star <= reviewForm.rating || star <= hoverRating"
+             [class.unfilled]="star > reviewForm.rating && star > hoverRating">★</i>
+        </span>
+      </div>
+
+      <textarea [(ngModel)]="reviewText" rows="3" placeholder="Write your review..."></textarea>
+
+      <div class="review-actions">
+        <button (click)="submitReview()" class="btn submit">
+          {{ isEditing ? 'Update Review' : 'Submit Review' }}
         </button>
+        <button (click)="cancelReview()" class="btn cancel">Cancel</button>
       </div>
 
+      <p *ngIf="warningMessage" class="warning-message">{{ warningMessage }}</p>
+    </div>
 
-      <div class="reviews-slide" *ngIf="showReviews">
-        <div class="stars-input">
-          <label>Rating:</label>
-          <span *ngFor="let star of [1,2,3,4,5]"
-                (click)="setReviewRating(star)"
-                (mouseover)="hoverRating = star"
-                (mouseleave)="hoverRating = 0">
-            <i class="star"
-              [class.filled]="star <= reviewForm.rating || star <= hoverRating"
-              [class.unfilled]="star > reviewForm.rating && star > hoverRating">★</i>
-          </span>
+    <div *ngFor="let review of submittedReviews; let i = index" class="single-review">
+      <div class="review-top">
+        <div class="stars-display">
+          <i *ngFor="let star of [1,2,3,4,5]" class="star" [class.filled]="star <= review.rating">★</i>
         </div>
-
-        <textarea [(ngModel)]="reviewText" rows="3" placeholder="Write your review..."></textarea>
-
-        <div class="review-actions">
-          <button (click)="submitReview()" class="btn submit">
-            {{ isEditing ? 'Update Review' : 'Submit Review' }}
-          </button>
-          <button (click)="cancelReview()" class="btn cancel">Cancel</button>
-        </div>
-
-        <p *ngIf="warningMessage" class="warning-message">{{ warningMessage }}</p>
+        <div class="review-date">{{ review.date }}</div>
       </div>
 
+      <div class="review-user">
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="user" class="avatar" />
+        <strong>{{ review.name || 'Anonymous' }}</strong>
+      </div>
 
-      <div *ngFor="let review of submittedReviews; let i = index" class="single-review">
-        <div class="review-top">
-          <div class="stars-display">
-            <i *ngFor="let star of [1,2,3,4,5]" class="star" [class.filled]="star <= review.rating">★</i>
-          </div>
-          <div class="review-date">{{ review.date }}</div>
-        </div>
+      <p class="review-title">Consequat ac felis donec</p>
+      <p class="review-content">{{ review.text }}</p>
 
-        <div class="review-user">
-          <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="user" class="avatar" />
-          <strong>{{ review.name || 'Anonymous' }}</strong>
-        </div>
-
-        <p class="review-title">Consequat ac felis donec</p>
-        <p class="review-content">{{ review.text }}</p>
-
-        <div class="review-actions-inline">
-          <button class="btn small" (click)="editReview(i)">Edit</button>
-          <button class="btn small cancel" (click)="deleteReview(i)">Delete</button>
-        </div>
+      <div class="review-actions-inline">
+        <button class="btn small" (click)="editReview(i)">Edit</button>
+        <button class="btn small cancel" (click)="deleteReview(i)">Delete</button>
       </div>
     </div>
   </div>
