@@ -24,6 +24,8 @@ export class ProductDetailsComponent {
     email: '',
     rating: 0
   };
+  isEditing: boolean = false;
+  editIndex: number | null = null;
 
   submittedReviews: any[] = [
     // { name: 'Sara', email: 'sara@example.com', rating: 5, text: 'Amazing book! Very helpful and inspiring.' },
@@ -91,52 +93,53 @@ export class ProductDetailsComponent {
     this.reviewForm.rating = star;
     this.showWarning = false;
   }
-
 submitReview() {
-  const email = this.reviewForm.email?.trim().toLowerCase(); // تنظيف الإيميل
-
-  // ✅ تأكد من وجود كل البيانات
-  if (
-    this.reviewForm.name.trim() &&
-    email &&
-    this.reviewForm.rating &&
-    this.reviewText.trim()
-  ) {
-    // ✅ تحقق إذا كان الإيميل ده أضاف مراجعة قبل كده
-    const alreadyReviewed = this.submittedReviews.some(
-      (review) => review.email.toLowerCase() === email
-    );
-
-    if (alreadyReviewed) {
-      this.warningMessage = '⚠️ You have already submitted a review.';
-      return;
-    }
-
-    // ✅ إضافة المراجعة
-    this.submittedReviews.push({
-      name: this.reviewForm.name.trim(),
-      email: email,
-      rating: this.reviewForm.rating,
-      text: this.reviewText.trim()
-    });
-
-    // ✅ Reset
-    this.reviewForm = { name: '', email: '', rating: 0 };
-    this.reviewText = '';
-    this.hoverRating = 0;
-    this.showReviews = false;
-    this.warningMessage = '';
-  } else {
-    this.warningMessage = '⭐ Please fill in all fields and rate before submitting!';
+  if (!this.reviewForm.rating || !this.reviewText.trim()) {
+    this.warningMessage = '⭐ Please give a rating and a comment before submitting!';
+    return;
   }
+
+  const newReview = {
+    name: '',
+    email: '',
+    rating: this.reviewForm.rating,
+    text: this.reviewText.trim(),
+    date: new Date().toLocaleDateString('en-US')  // التاريخ
+  };
+
+  if (this.isEditing && this.editIndex !== null) {
+    this.submittedReviews[this.editIndex] = newReview;
+  } else {
+    this.submittedReviews.push(newReview);
+  }
+
+  this.cancelReview();
+}
+
+editReview(index: number) {
+  const review = this.submittedReviews[index];
+  this.reviewForm.rating = review.rating;
+  this.reviewText = review.text;
+  this.isEditing = true;
+  this.editIndex = index;
+  this.showReviews = true;
+  this.warningMessage = '';
+}
+
+deleteReview(index: number) {
+  this.submittedReviews.splice(index, 1);
 }
 
 
-  cancelReview() {
-    this.showReviews = false;
-    this.reviewForm = { name: '', email: '', rating: 0 };
-    this.reviewText = '';
-    this.hoverRating = 0;
-    this.showWarning = false;
-  }
+cancelReview() {
+  this.showReviews = false;
+  this.reviewForm = { name: '', email: '', rating: 0 };
+  this.reviewText = '';
+  this.hoverRating = 0;
+  this.showWarning = false;
+  this.warningMessage = '';
+  this.isEditing = false;
+  this.editIndex = null;
+}
+
 }
