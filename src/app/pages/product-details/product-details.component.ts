@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component,ElementRef,ViewChild  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -26,13 +26,22 @@ export class ProductDetailsComponent {
   };
   isEditing: boolean = false;
   editIndex: number | null = null;
+ showDescription: boolean = false;
 
+  showReviewsSection: boolean = false;
+showSection: 'review' | 'description' | '' = '';
+ @ViewChild('reviewSection') reviewSection!: ElementRef;
   submittedReviews: any[] = [
     // { name: 'Sara', email: 'sara@example.com', rating: 5, text: 'Amazing book! Very helpful and inspiring.' },
     // { name: 'Omar', email: 'omar@example.com', rating: 4, text: 'Good read, but delivery was a bit late.' },
     // { name: 'Mona', email: 'mona@example.com', rating: 5, text: 'Excellent quality and great story.' }
   ];
-
+scrollToReview() {
+    this.showSection = 'review';
+    setTimeout(() => {
+      this.reviewSection?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 0);
+  }
   product = {
     title: 'Visit in the North',
     description: `About Author: This book's author, John, is one of the most popular writers in American history.
@@ -104,7 +113,7 @@ submitReview() {
     email: '',
     rating: this.reviewForm.rating,
     text: this.reviewText.trim(),
-    date: new Date().toLocaleDateString('en-US')  // التاريخ
+    date: new Date().toLocaleDateString('en-US')
   };
 
   if (this.isEditing && this.editIndex !== null) {
