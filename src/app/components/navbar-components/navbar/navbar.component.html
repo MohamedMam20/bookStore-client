@@ -10,7 +10,13 @@
     >
 
     <div class="navbar-right-controls">
-      <i class="fas fa-user-friends"></i>
+      <div class="user-dropdown">
+        <i class="fas fa-user-friends"></i>
+        <div class="user-dropdown-content">
+          <a routerLink="/">View profile</a>
+          <a routerLink="/" (click)="logOut()">Logout</a>
+        </div>
+      </div>
       <i class="fas fa-search" (click)="toggleSearchMenu()"></i>
       <i class="fas fa-bars navbar-menu-toggle" (click)="toggleMenu()"></i>
     </div>

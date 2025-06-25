@@ -54,6 +54,9 @@ export class NavbarComponent {
   toggleMenu() {
     this.isToggleMenuOpen = !this.isToggleMenuOpen;
   }
+  logOut() {
+    console.log('logout');
+  }
 }
 
 //https://bookly-theme.myshopify.com/
