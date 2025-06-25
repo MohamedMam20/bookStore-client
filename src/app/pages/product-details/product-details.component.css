@@ -1,4 +1,3 @@
-
 .product-details-wrapper {
   max-width: 1200px;
   margin: auto;
@@ -6,7 +5,6 @@
   font-family: 'Segoe UI', sans-serif;
   color: #333;
 }
-
 
 .product-container {
   display: flex;
@@ -44,7 +42,6 @@
 .thumbnail:hover {
   border-color: #d14031;
 }
-
 
 .right-section {
   flex: 1 1 600px;
@@ -91,26 +88,10 @@
   margin: 10px 0;
   font-size: 14px;
 }
-.option-label {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-.option-group span {
-  display: inline-block;
-  padding: 5px 10px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  margin-right: 5px;
-  cursor: pointer;
-}
-.option-group .selected {
-  background-color: black;
-  color: white;
-}
 
 .option-label {
-  margin: 10px 0 4px;
   font-weight: 600;
+  margin: 10px 0 4px;
 }
 
 .option-group span {
@@ -122,13 +103,13 @@
   margin-top: 5px;
   cursor: pointer;
   transition: all 0.2s ease;
+  border: 1px solid #aaa;
 }
 
-.option-group span.selected {
+.option-group .selected {
   background: #d14031;
   color: white;
 }
-
 
 .star {
   font-size: 20px;
@@ -198,11 +179,11 @@
 .btn:hover {
   background: #4d120c;
 }
+
 .btn.add,
 .btn.wishlist {
   flex: 1;
 }
-
 
 .btn.buy {
   background-color: #a82820;
@@ -213,20 +194,12 @@
   background-color: #d14031;
   margin-top: 10px;
 }
-/*
+
 .btn.cancel {
-  background: #da5c4e;
+  background-color: #999;
+  padding-left: 15px;
 }
 
-.btn.wishlist {
-  background: #d14031;
-}
-
-.btn.buy {
-  background: #d14031;
-} */
-
-/* Meta Info */
 .meta-info {
   font-size: 13px;
   color: #555;
@@ -248,11 +221,28 @@
 .reviews-slide {
   margin-top: 10px;
   background: #f8f8f8;
-  padding: 15px;
-  border-radius: 10px;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
 }
 
-.review-input, textarea {
+.reviews-slide label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.review-input {
   width: 100%;
   padding: 8px;
   margin: 8px 0;
@@ -260,11 +250,15 @@
   border: 1px solid #ccc;
   font-size: 14px;
 }
-.btn.cancel {
-  background-color: #999;
-  padding-left: 15px;
- 
-}.submitted-reviews {
+
+.review-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.submitted-reviews {
   margin-top: 30px;
   padding-top: 20px;
   border-top: 1px solid #ddd;
@@ -299,4 +293,71 @@
 .review-content {
   font-size: 14px;
   color: #444;
+  margin-bottom: 10px;
+}
+
+.review-actions-inline {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.btn.small {
+  padding: 5px 10px;
+  font-size: 13px;
+  border-radius: 4px;
+}
+
+.reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.write-review {
+  background-color: transparent;
+  border: none;
+  color: #d14031;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.review-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.review-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.review-date {
+  font-size: 13px;
+  color: #888;
+}
+
+.stars-display .star {
+  color: #FFA500;
+  font-size: 16px;
+}
+.review-section {
+  margin-top: 20px;
+  width:100%;
 }
