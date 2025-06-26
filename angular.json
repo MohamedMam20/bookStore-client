@@ -21,11 +21,8 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-<<<<<<< Updated upstream
-=======
               "@angular/material/prebuilt-themes/purple-green.css",
               "node_modules/ngx-toastr/toastr.css",
->>>>>>> Stashed changes
               "src/styles.css"
             ],
             "scripts": [
