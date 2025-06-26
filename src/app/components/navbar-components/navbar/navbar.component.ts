@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { SearchMenuComponent } from '../search-menu/search-menu.component';
 import { CommonModule } from '@angular/common';
 import { ToggleMenuComponent } from '../toggle-menu/toggle-menu.component';
+import { AuthService } from '../../../services/auth/auth.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -18,6 +19,11 @@ import { ToggleMenuComponent } from '../toggle-menu/toggle-menu.component';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
+   constructor(private authService: AuthService) {}
+
+onLogout() {
+  this.authService.logout();
+}
   isCartMenuOpen = false;
   isSearchMenuOpen = false;
   isToggleMenuOpen = false;
@@ -53,6 +59,9 @@ export class NavbarComponent {
 
   toggleMenu() {
     this.isToggleMenuOpen = !this.isToggleMenuOpen;
+  }
+  logOut() {
+    console.log('logout');
   }
 }
 

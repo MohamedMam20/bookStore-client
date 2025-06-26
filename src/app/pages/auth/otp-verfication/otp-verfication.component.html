@@ -1,0 +1,64 @@
+<div class="login-container">
+  <div class="particles-container" id="particles-container"></div>
+  <div class="login-wrapper">
+    <div class="form-section">
+      <div class="logo">
+        <!-- <span class="logo-text">BookStore</span> -->
+         <img src="assets/logo2-transparent.png" alt="BookStore Logo" class="logo-image">
+      </div>
+
+      <div class="form-container">
+        <div class="verification-image">
+          <img src="assets/otp-icon.png" alt="Verification" />
+        </div>
+
+        <h1 class="title">Validate OTP</h1>
+        <p class="subtitle">
+          Please enter the OTP (one-time password) to verify your account. A code has been sent to your email.
+        </p>
+
+        <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="login-form">
+          <div class="otp-boxes">
+            <input
+              *ngFor="let digit of [1,2,3,4,5,6]; let i = index"
+              type="text"
+              maxlength="1"
+              formControlName="digit{{digit}}"
+              class="otp-box"
+              [ngClass]="{
+                'valid-box': otpForm.get('digit' + digit)?.valid && otpForm.get('digit' + digit)?.touched,
+                'invalid-box': otpForm.get('digit' + digit)?.invalid && otpForm.get('digit' + digit)?.touched
+              }"
+              (keyup)="onOtpInput($event, i)"
+              (paste)="onOtpPaste($event)"
+              #otpInput
+            />
+          </div>
+
+          <button type="submit" class="submit-btn" [disabled]="!otpForm.valid || loading">
+            <ng-container *ngIf="!loading; else spinner">Verify OTP</ng-container>
+          </button>
+
+          <ng-template #spinner>
+            <div class="spinner"></div>
+          </ng-template>
+
+          <div class="resend-section">
+            <p class="resend-text">
+              Not received your code?
+              <button
+                type="button"
+                class="resend-btn"
+                [disabled]="resendCooldown > 0"
+                (click)="onResendOtp()"
+              >
+                Resend code
+                <span *ngIf="resendCooldown > 0">({{ resendCooldown }}s)</span>
+              </button>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

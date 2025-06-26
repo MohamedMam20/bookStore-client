@@ -1,0 +1,382 @@
+.login-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('../../../../assets/background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.particles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(225, 37, 3, 0.6);
+  border-radius: 50%;
+  animation: float-up linear infinite;
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) scale(1);
+    opacity: 0;
+  }
+}
+
+.login-wrapper {
+  background: rgba(255, 248, 235, 0.95); /* Soft paper tone */
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 600px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-out;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-section {
+  /* padding: 30px; */
+  padding: 20px 30px 10px 30px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 600px;
+}
+
+.form-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.form-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.form-section::-webkit-scrollbar-thumb {
+  background: #e12503;
+  border-radius: 3px;
+}
+
+.form-section::-webkit-scrollbar-thumb:hover {
+  background: #c01f02;
+}
+
+.logo {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.logo-text {
+  background: #e12503;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  color: white;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(225, 37, 3, 0.2);
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite;
+}
+.logo-image{
+  width: 100px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.logo-text:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(225, 37, 3, 0.3);
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 6px 0;
+  text-align: center;
+}
+
+.subtitle {
+  color: #666;
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  text-align: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.form-input {
+  padding: 14px 16px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  font-size: 15px;
+  background: white;
+  transition: all 0.3s ease;
+  outline: none;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.form-input:hover {
+  border-color: #03BFE1;
+  transform: scale(1.01);
+}
+
+.form-input:focus {
+  border-color: #e12503;
+  box-shadow: 0 0 0 3px rgba(225, 37, 3, 0.1);
+  transform: scale(1.02);
+  animation: shimmer 1.5s ease-in-out;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+.password-container {
+  position: relative;
+}
+
+.password-input {
+  width: 100%;
+  padding-right: 45px;
+  box-sizing: border-box;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+  z-index: 2;
+  padding: 0;
+  margin: 0;
+}
+
+.password-toggle:hover {
+  color: #e12503;
+}
+
+.submit-btn {
+  background: #e12503;
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-btn:hover {
+  background: #c01f02;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(225, 37, 3, 0.2);
+}
+
+.submit-btn:active {
+  transform: translateY(1px);
+}
+
+.submit-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.submit-btn:focus:not(:active)::after {
+  animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(50, 50);
+    opacity: 0;
+  }
+}
+
+/* OTP Specific Styles */
+.otp-input {
+  text-align: center;
+  font-size: 24px;
+  letter-spacing: 8px;
+  font-weight: 600;
+}
+
+.timer-section {
+  text-align: center;
+  margin: 15px 0;
+}
+
+.countdown {
+  color: #666;
+}
+
+.timer-text {
+  font-size: 14px;
+}
+
+.timer-value {
+  font-weight: 600;
+  color: #e12503;
+  font-size: 16px;
+}
+
+.expired {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.resend-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.resend-btn {
+  background: none;
+  border: 1px solid #03BFE1;
+  color: #03BFE1;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.resend-btn:hover:not(:disabled) {
+  background: #03BFE1;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.resend-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 576px) {
+  .login-wrapper {
+    max-width: 100%;
+    border-radius: 12px;
+  }
+
+  .form-section {
+    padding: 30px 20px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+}
+
+.name-row {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.half-width {
+  flex: 1;
+  min-width: 0;
+}

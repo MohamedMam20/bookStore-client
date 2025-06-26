@@ -1,0 +1,65 @@
+<div class="login-container">
+  <div class="particles-container" id="particles-container"></div>
+  <div class="login-wrapper">
+    <div class="form-section">
+      <div class="logo">
+        <img src="assets/logo2-transparent.png" alt="BookStore Logo" class="logo-image">
+      </div>
+
+      <div class="form-container">
+        <h1 class="title">Create Your Account</h1>
+        <p class="subtitle">Join us today! Please fill in your details</p>
+
+        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="login-form">
+
+          <!-- Name Fields -->
+          <div class="name-row">
+            <!-- First Name -->
+            <div class="form-group half-width">
+              <label for="firstName" class="form-label">First Name *</label>
+              <input id="firstName" type="text" formControlName="firstName" class="form-input" placeholder="Enter your first name" />
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group half-width">
+              <label for="lastName" class="form-label">Last Name</label>
+              <input id="lastName" type="text" formControlName="lastName" class="form-input" placeholder="Enter your last name" />
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email" class="form-label">Email *</label>
+            <input id="email" type="email" formControlName="email" class="form-input" placeholder="Enter your email" />
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password" class="form-label">Password (8-16 characters) *</label>
+            <div class="password-container">
+              <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password" class="form-input password-input" placeholder="••••••••••••" />
+              <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+                <!-- Eye icons go here -->
+              </button>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group">
+            <label for="confirmPassword" class="form-label">Confirm Password *</label>
+            <div class="password-container">
+              <input id="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword" class="form-input password-input" placeholder="••••••••••••" />
+              <button type="button" class="password-toggle" (click)="toggleConfirmPasswordVisibility()">
+                <!-- Eye icons go here -->
+              </button>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="submit-btn">Create Account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
