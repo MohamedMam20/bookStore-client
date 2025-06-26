@@ -1,0 +1,102 @@
+<div class="p-3 d-none d-md-block m" style="width: 300px; min-height: 100vh">
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <h5 class="fw-bold mb-0">Filter:</h5>
+    <button
+      *ngIf="activeFilters.length > 0"
+      class="remove-btn btn p-0 text-dark"
+      (click)="clearAllFilters()"
+    >
+      Remove all
+    </button>
+  </div>
+
+  <div class="active-filters d-flex flex-wrap gap-2 mb-3">
+    <span
+      *ngFor="let filter of activeFilters"
+      class="badge rounded-pill active-filter-badge"
+    >
+      {{ filter.label }}: {{ filter.value }}
+      <span class="ms-1" style="cursor: pointer" (click)="removeFilter(filter)"
+        >×</span
+      >
+    </span>
+  </div>
+
+  <!-- Genre Section -->
+  <div class="mb-3">
+    <button
+      class="filter-title-button w-100 text-start p-0 d-flex justify-content-between align-items-center"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#genreCollapse"
+    >
+      Genre <span>&#9662;</span>
+    </button>
+    <div class="collapse show pt-2 text-secondary" id="genreCollapse">
+      <div class="form-check mb-1" *ngFor="let item of filters.genre">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [checked]="isChecked('Genre', item)"
+          (change)="toggleFilter('Genre', item, $event)"
+          [id]="'genre-' + item"
+        />
+        <label class="form-check-label" [for]="'genre-' + item">{{
+          item
+        }}</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Price Section -->
+  <div class="mb-3 border-top pt-3 text-secondary">
+    <button
+      class="filter-title-button w-100 text-start p-0 d-flex justify-content-between align-items-center"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#priceCollapse"
+    >
+      Price <span>&#9662;</span>
+    </button>
+    <div class="collapse show pt-2" id="priceCollapse">
+      <div class="form-check mb-1" *ngFor="let item of filters.price">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [checked]="isChecked('Price', item)"
+          (change)="toggleFilter('Price', item, $event)"
+          [id]="'price-' + item"
+        />
+        <label class="form-check-label" [for]="'price-' + item">{{
+          item
+        }}</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Language Section -->
+  <div class="mb-3 border-top pt-3 text-secondary">
+    <button
+      class="filter-title-button w-100 text-start p-0 d-flex justify-content-between align-items-center"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#languageCollapse"
+    >
+      Language <span>&#9662;</span>
+    </button>
+    <div class="collapse show pt-2" id="languageCollapse">
+      <div class="form-check mb-1" *ngFor="let item of filters.language">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [checked]="isChecked('Language', item)"
+          (change)="toggleFilter('Language', item, $event)"
+          [id]="'lang-' + item"
+        />
+        <label class="form-check-label" [for]="'lang-' + item">{{
+          item
+        }}</label>
+      </div>
+    </div>
+  </div>
+</div>

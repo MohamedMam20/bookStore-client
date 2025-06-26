@@ -20,14 +20,20 @@
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+<<<<<<< productCard
+
+=======
 <<<<<<< Updated upstream
 =======
               "@angular/material/prebuilt-themes/purple-green.css",
               "node_modules/ngx-toastr/toastr.css",
 >>>>>>> Stashed changes
+>>>>>>> main
               "src/styles.css"
             ],
+
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]

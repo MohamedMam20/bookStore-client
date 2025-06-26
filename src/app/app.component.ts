@@ -7,7 +7,11 @@ import { NavbarComponent } from './components/navbar-components/navbar/navbar.co
   standalone: true,
   imports: [RouterOutlet, NavbarComponent],
   templateUrl: './app.component.html',
+<<<<<<< productCard
+  styleUrls: ['./app.component.css'],
+=======
   styleUrls: ['./app.component.css']
+>>>>>>> main
 })
 export class AppComponent {
   title = 'bookStore-client';
