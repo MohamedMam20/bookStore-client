@@ -10,10 +10,11 @@ import { PasswordResetRequestComponent } from './pages/auth/password-reset-reque
 import { PasswordResetConfirmComponent } from './pages/auth/password-reset-confirm/password-reset-confirm.component';
 import { OtpCompleteComponent } from './pages/auth/otp-complete/otp-complete.component';
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
-
+import { BooksPageComponent } from './pages/books-page/books-page.component';
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'wishlist', component: WishlistComponent },
+  { path: 'shop', component: BooksPageComponent },
   { path: 'checkout', component: CheckoutComponent, title: 'Payment Form' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
@@ -22,6 +23,5 @@ export const routes: Routes = [
   { path: 'password-reset', component: PasswordResetRequestComponent },
   { path: 'password-reset-confirm', component: PasswordResetConfirmComponent },
   { path: '**', component: NotFoundComponent },
-  { path: 'product-details', component: ProductDetailsComponent } ,
-
+  { path: 'product-details', component: ProductDetailsComponent },
 ];
