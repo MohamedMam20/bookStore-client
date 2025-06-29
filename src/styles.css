@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --main-color:#c43618;
+  --secondary-color:#e5dfc6;
+  --padding-color:#6f6f6f;
+}
+
+body{
+  background-color: #FBF6F0;
+  font-family: "Cormorant Garamond", serif;
+}
+
+/*Logo*/
+.gradient-icon {
+  font-size: 35px;
+  background: linear-gradient(to right, #dbc87e 40%,  var(--main-color)  50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.logo h4 {
+  font-size: 28px;
+  font-weight:600;
+  color: var(--main-color);
+}
