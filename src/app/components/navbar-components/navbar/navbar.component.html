@@ -5,13 +5,14 @@
       <a routerLink="/wishlist"><i class="fas fa-heart"></i></a>
     </div>
 
-    <a class="navbar-logo" routerLink="/"
-      >BOOK <span class="navbar-logo-highlight">SHOP</span></a
-    >
+    <div class="logo d-flex justify-content-between align-content-center">
+      <i class="fa-solid fa-paintbrush gradient-icon me-2"></i>
+      <h4>BookShelf</h4>
+    </div>
 
     <div class="navbar-right-controls">
       <div class="user-dropdown">
-        <i class="fas fa-user-friends"></i>
+        <i class="fas fa-user-friends" routerLink="/login"></i>
         <div class="user-dropdown-content">
           <a routerLink="/">View profile</a>
           <a routerLink="/" (click)="onLogout()">Logout</a>
@@ -23,7 +24,7 @@
   </div>
 
   <div class="navbar-bottom-bar">
-    <a routerLink="/checkout">Home</a>
+    <a routerLink="/">Home</a>
     <div class="navbar-recommended-dropdown">
       <a routerLink="/shop">Recommended <i class="fas fa-caret-down"></i></a>
       <div class="navbar-dropdown-content">
@@ -37,7 +38,8 @@
     </div>
     <a routerLink="/">Brands</a>
     <a routerLink="/">Best Sellers</a>
-    <div class="navbar-pages-dropdown">
+    <a routerLink="/">Contact us</a>
+    <!-- <div class="navbar-pages-dropdown">
       <a class="navbar-pages-link">Pages <i class="fas fa-caret-down"></i></a>
       <div class="navbar-pages-dropdown-content">
         <a routerLink="/about">About us</a>
@@ -45,7 +47,7 @@
         <a routerLink="/faq">FAQ's</a>
         <a routerLink="/contactus">Contact us</a>
       </div>
-    </div>
+    </div> -->
   </div>
 </nav>
 
