@@ -14,14 +14,14 @@
         <div class="row g-4">
           <div
             class="col-12 col-md-6 col-lg-6 col-xl-4"
-            *ngFor="let product of products | keyvalue"
+            *ngFor="let product of products"
           >
             <div class="card h-100 border-0">
               <div class="card-img-container position-relative">
                 <img
-                  [src]="product.value.image"
+                  [src]="product?.image"
+                  alt="{{ product.title }}"
                   class="card-img-top"
-                  alt="{{ product.value.name }}"
                 />
                 <div class="card-action-buttons">
                   <button class="btn btn-sm shadow">
@@ -38,11 +38,11 @@
 
               <div class="card-body text-center p-3">
                 <p class="card-text text-secondary mb-1">
-                  {{ product.value.author }}
+                  {{ product.author }}
                 </p>
-                <h5 class="card-title mb-1">{{ product.value.name }}</h5>
+                <h5 class="card-title mb-1">{{ product.title }}</h5>
                 <span class="card-text text-secondary">
-                  {{ product.value.price | currency }}
+                  {{ product.price | currency }}
                 </span>
               </div>
             </div>
