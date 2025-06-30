@@ -1,5 +1,5 @@
 /* Start Header */
-header .header-text{
+header .header-text {
   margin: 10px;
   padding: 5px;
   text-align: center;
@@ -10,17 +10,20 @@ header .header-text h1 {
   margin-bottom: 10px;
   padding: 2px;
 }
+
 header {
   position: relative;
   padding: 0;
 }
-/* wave-background*/
+
+/* wave-background */
 .wave-1 {
   position: absolute;
   top: -50px;
   left: 0px;
   z-index: -1000;
 }
+
 .wave-2 {
   overflow: hidden;
   position: absolute;
@@ -38,18 +41,19 @@ header .header-text p {
 }
 
 header .main-btn {
-    padding: 15px;
-    background-color: var(--main-color);
-    color: #fff;
-    border: 1px solid transparent;
-    border-radius: 20px;
-    font-size: 20px;
+  padding: 15px;
+  background-color: var(--main-color);
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  font-size: 20px;
 }
-/* About us*/
+
+/* About us */
 .main-header {
- font-size: 50px;
- margin-bottom: 20px;
- position: relative;
+  font-size: 50px;
+  margin-bottom: 20px;
+  position: relative;
 }
 
 .main-header::before {
@@ -69,15 +73,16 @@ header .main-btn {
   color: var(--padding-color);
 }
 
-/*offers*/
+/* offers */
 .card {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
-.offer .card img{
- background-color: #dbd8c9;
+
+.offer .card img {
+  background-color: #dbd8c9;
 }
 
-/*Servives*/
+/* Services */
 .services h4 {
   font-size: 26px;
 }
@@ -87,107 +92,106 @@ header .main-btn {
   font-size: 17px;
 }
 
-/*services*/
-
 .services .content i {
   background-color: #fff;
   padding: 12px;
   margin-bottom: 20px;
   border-radius: 10px;
   font-size: 25px;
-  box-shadow: 1px -3px 15px rgba(0, 0, 0, 0.3);;
+  box-shadow: 1px -3px 15px rgba(0, 0, 0, 0.3);
 }
 
-
-   .subscribe {
-     background-color: var(--secondary-color);
-  }
-
-  .subscribe p {
-    color: var(--padding-color);
-  }
-
-  .subscribe .field-style {
-    width: 350px;
-    border-radius: 2px;
-    border-color: transparent;
-  }
-
-  .subscribe .Sub-btn {
-    border: 1px solid transparent;
-    border-radius: 2px;
-    background-color: #c43618;
-    color: #fff;
-  }
-
-  /* Footer */
-  .footer {
-    background: var(--secondary-color);
-    color: white;
-    padding: 60px 0 30px;
-  }
-
-  .footer-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-  }
-
-  .footer-links {
-    list-style: none;
-  }
-
-  .footer-links li {
-    margin-bottom: 0.5rem;
-  }
-
-  .footer-links a {
-    color: #94a3b8;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-
-  .footer-links a:hover {
-    color: white;
-  }
-
-  .social-icons {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .social-icon {
-    width: 40px;
-    height: 40px;
-    background: var(--gradient);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-decoration: none;
-    transition: transform 0.3s ease;
-  }
-
-  .social-icon:hover {
-    transform: translateY(-3px);
-    color: white;
-  }
-
-  .copyright {
-    text-align: center;
-    padding-top: 2rem;
-    margin-top: 2rem;
-    border-top: 1px solid #334155;
-    color: #94a3b8;
-  }
-
-/*==================================*/
-/*books*/
-.popular{
- background-color: var(--secondary-color);
+/* Subscribe */
+.subscribe {
+  background-color: var(--secondary-color);
 }
-.popular .books-content{
+
+.subscribe p {
+  color: var(--padding-color);
+}
+
+.subscribe .field-style {
+  width: 350px;
+  border-radius: 2px;
+  border-color: transparent;
+}
+
+.subscribe .Sub-btn {
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: #c43618;
+  color: #fff;
+}
+
+/* Footer */
+.footer {
+  background: var(--secondary-color);
+  color: white;
+  padding: 60px 0 30px;
+}
+
+.footer-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: white;
+}
+
+.social-icons {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--gradient);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-3px);
+  color: white;
+}
+
+.copyright {
+  text-align: center;
+  padding-top: 2rem;
+  margin-top: 2rem;
+  border-top: 1px solid #334155;
+  color: #94a3b8;
+}
+
+/* ================================== */
+/* books */
+.popular {
+  background-color: var(--secondary-color);
+}
+
+.popular .books-content {
   height: 350px;
 }
 
