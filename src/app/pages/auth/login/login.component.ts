@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -22,11 +27,10 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router,
     private toastr: ToastrService // ✅ Add this
-
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
     });
   }
 
@@ -38,7 +42,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.loading = true;
       const formData = this.loginForm.value;
-  
+
       this.authService.login(formData).subscribe({
         next: (res) => {
           localStorage.setItem('authToken', res.token);
@@ -46,17 +50,18 @@ export class LoginComponent {
           this.router.navigate(['/dashboard']);
         },
         error: (err) => {
-          this.toastr.error(err.error.message || '❌ Login failed. Please try again.');
+          this.toastr.error(
+            err.error.message || '❌ Login failed. Please try again.'
+          );
         },
         complete: () => {
           this.loading = false;
-        }
+        },
       });
     } else {
       this.toastr.warning('⚠️ Please enter a valid email and password.');
     }
   }
-  
 
   signInWithFacebook(): void {
     console.log('Sign in with Facebook');

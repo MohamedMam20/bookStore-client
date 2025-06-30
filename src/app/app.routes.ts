@@ -11,7 +11,6 @@ import { PasswordResetConfirmComponent } from './pages/auth/password-reset-confi
 import { OtpCompleteComponent } from './pages/auth/otp-complete/otp-complete.component';
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 
-import { BooksPageComponent } from './pages/books-page/books-page.component';
 import { HomePageComponent } from './home-page/home-page.component';
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
