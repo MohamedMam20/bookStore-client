@@ -1,0 +1,18 @@
+/* scroll btn */
+.up {
+  position: fixed;
+  bottom: 10px;
+  right: -60px;
+  background-color:var(--main-color);
+  color: white;
+  font-weight: bold;
+  font-size: 25px;
+  padding: 10px 17px;
+  border-radius: 50%;
+  font-family: Arial, Tahoma;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.up.show {
+  right: 10px;
+}
