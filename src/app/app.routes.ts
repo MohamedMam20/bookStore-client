@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { WishlistComponent } from './pages/wishlist/wishlist.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CheckoutComponent } from './components/checkout-form/checkout-form.component';
-import { BooksPageComponent } from './pages/books-page/books-page.component';
+
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegistrationComponent } from './pages/auth/registration/registration.component';
 import { OtpVerificationComponent } from './pages/auth/otp-verfication/otp-verfication.component';
@@ -10,8 +10,9 @@ import { PasswordResetRequestComponent } from './pages/auth/password-reset-reque
 import { PasswordResetConfirmComponent } from './pages/auth/password-reset-confirm/password-reset-confirm.component';
 import { OtpCompleteComponent } from './pages/auth/otp-complete/otp-complete.component';
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
-
 import { BooksPageComponent } from './pages/books-page/books-page.component';
+import { UploadComponent } from './components/upload/upload.component';
+
 import { HomePageComponent } from './home-page/home-page.component';
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -24,6 +25,7 @@ export const routes: Routes = [
   { path: 'otp-complete', component: OtpCompleteComponent },
   { path: 'password-reset', component: PasswordResetRequestComponent },
   { path: 'password-reset-confirm', component: PasswordResetConfirmComponent },
+  { path: 'product-details', component: ProductDetailsComponent },
   { path: 'product-details', component: ProductDetailsComponent },
   { path: '**', component: NotFoundComponent },
 ];
