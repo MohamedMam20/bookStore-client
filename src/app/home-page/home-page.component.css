@@ -10,17 +10,20 @@ header .header-text h1 {
   margin-bottom: 10px;
   padding: 2px;
 }
+
 header {
   position: relative;
   padding: 0;
 }
-/* wave-background*/
+
+/* wave-background */
 .wave-1 {
   position: absolute;
   top: -50px;
   left: 0px;
   z-index: -1000;
 }
+
 .wave-2 {
   overflow: hidden;
   position: absolute;
@@ -45,7 +48,8 @@ header .main-btn {
   border-radius: 20px;
   font-size: 20px;
 }
-/* About us*/
+
+/* About us */
 .main-header {
   font-size: 50px;
   margin-bottom: 20px;
@@ -69,15 +73,16 @@ header .main-btn {
   color: var(--padding-color);
 }
 
-/*offers*/
+/* offers */
 .card {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
+
 .offer .card img {
   background-color: #dbd8c9;
 }
 
-/*Servives*/
+/* Services */
 .services h4 {
   font-size: 26px;
 }
@@ -86,8 +91,6 @@ header .main-btn {
   color: var(--padding-color);
   font-size: 17px;
 }
-
-/*services*/
 
 .services .content i {
   background-color: #fff;
@@ -98,6 +101,7 @@ header .main-btn {
   box-shadow: 1px -3px 15px rgba(0, 0, 0, 0.3);
 }
 
+/* Subscribe */
 .subscribe {
   background-color: var(--secondary-color);
 }
@@ -181,11 +185,12 @@ header .main-btn {
   color: #94a3b8;
 }
 
-/*==================================*/
-/*books*/
+/* ================================== */
+/* books */
 .popular {
   background-color: var(--secondary-color);
 }
+
 .popular .books-content {
   height: 350px;
 }
