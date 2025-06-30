@@ -11,12 +11,12 @@ import { PasswordResetConfirmComponent } from './pages/auth/password-reset-confi
 import { OtpCompleteComponent } from './pages/auth/otp-complete/otp-complete.component';
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 
-import { BooksPageComponent } from './pages/books-page/books-page.component';
+// import { BooksPageComponent } from './pages/books-page/books-page.component';
 import { HomePageComponent } from './home-page/home-page.component';
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'wishlist', component: WishlistComponent },
-  { path: 'shop', component: BooksPageComponent },
+  // { path: 'shop', component: BooksPageComponent },
   { path: 'checkout', component: CheckoutComponent, title: 'Payment Form' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
