@@ -48,6 +48,20 @@
             </div>
           </div>
         </div>
+
+        <!-- Empty State -->
+        <div
+          class="text-center mt-4 text-muted"
+          *ngIf="!isLoading && products.length === 0"
+        >
+          No products found.
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="text-center my-5" *ngIf="isLoading">
+          <div class="spinner-border text-primary" role="status"></div>
+          <div class="mt-2">Loading more products...</div>
+        </div>
       </div>
     </div>
   </div>
