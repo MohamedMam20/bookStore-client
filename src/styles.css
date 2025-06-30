@@ -1,8 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-
-
-
 :root {
   --main-color: #c43618;
   --secondary-color: #e5dfc6;
@@ -26,6 +23,11 @@
   padding: 0;
   box-sizing: border-box;
   font-size: 16px;
+}
+
+body {
+  background-color: #fbf6f0;
+  font-family: "Cormorant Garamond", serif;
 }
 
 a {
