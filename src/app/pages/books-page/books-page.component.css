@@ -23,3 +23,10 @@ button.btn:disabled {
   cursor: not-allowed;
   transform: none;
 }
+/* ======================================== */
+.page-title {
+  margin: 4rem 8rem;
+  font-size: 2.5rem;
+  font-family: serif;
+  font-weight: bolder;
+}
