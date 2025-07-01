@@ -21,7 +21,7 @@ import { ProductCardComponent } from './components/product-card/product-card.com
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'wishlist', component: WishlistComponent },
-  { path: 'shop', component: ProductCardComponent },
+  { path: 'shop', component: BooksPageComponent },
   { path: 'checkout', component: CheckoutComponent, title: 'Payment Form' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },

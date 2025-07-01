@@ -28,7 +28,7 @@ export class FilterComponent {
       '$400 - $500',
       '$500 - $700',
     ],
-    language: ['English', 'Hebrew', 'Japanese', 'Korean', 'Spanish'],
+    language: ['English', 'French', 'Arabic'],
   };
 
   isChecked(label: string, value: string): boolean {
