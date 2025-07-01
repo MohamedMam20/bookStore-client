@@ -19,11 +19,11 @@ import { AuthService } from '../../../services/auth/auth.service';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-   constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
-onLogout() {
-  this.authService.logout();
-}
+  onLogout() {
+    this.authService.logout();
+  }
   isCartMenuOpen = false;
   isSearchMenuOpen = false;
   isToggleMenuOpen = false;
@@ -59,9 +59,6 @@ onLogout() {
 
   toggleMenu() {
     this.isToggleMenuOpen = !this.isToggleMenuOpen;
-  }
-  logOut() {
-    console.log('logout');
   }
 }
 

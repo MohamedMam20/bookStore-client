@@ -21,6 +21,7 @@ export class CartSideMenuComponent {
     this.closed.emit();
   }
   continueShopping() {
+    this.isCartVisible = false;
     this.router.navigateByUrl('/');
   }
   login() {}

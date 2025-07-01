@@ -59,3 +59,17 @@
     border-top: 1px solid #334155;
     color: #94a3b8;
   }
+
+/*Logo*/
+.gradient-icon {
+  font-size: 35px;
+  background: linear-gradient(to right, #dbc87e 40%, var(--main-color) 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.logo h4 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--main-color);
+}

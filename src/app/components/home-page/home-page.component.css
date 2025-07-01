@@ -150,8 +150,6 @@ header .header-image img {
   font-size: 15px;
 }
 
-/*services*/
-
 .services .content i {
   background-color: #fff;
   padding: 12px;
@@ -161,39 +159,7 @@ header .header-image img {
   box-shadow: 1px -3px 15px rgba(0, 0, 0, 0.3);;
 }
 
-
-/*FAQ Section*/
-
-.faq-section {
-  padding: 100px 0;
-  background: var(--light-color);
-}
-
-.accordion-item {
-  border: none;
-  margin-bottom: 1rem;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-}
-
-.accordion-button {
-  background: white;
-  border: none;
-  font-weight: 600;
-  padding: 1.3rem;
-  font-size: 1.1rem;
-}
-
-.accordion-button:not(.collapsed) {
-  background: var(--main-color);
-  color: white;
-}
-
-.accordion-body {
-  padding: 1.3rem;
-  color: #64748b;
-}
+/*Subscribe*/
 
 .subscribe {
   background-color: var(--secondary-color);
@@ -227,7 +193,7 @@ header .header-image img {
 /*==================================*/
 /*books*/
 .popular {
-  background-color: var(--secondary-color);
+  background-color: #fff;
 }
 
 .popular .books-content {
@@ -236,4 +202,9 @@ header .header-image img {
 
 .popular h1 {
   font-size: 30px;
+}
+
+.best-seller {
+  background-color: var(--secondary-color);
+   height: 350px;
 }
