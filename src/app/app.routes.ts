@@ -17,6 +17,7 @@ import { UploadComponent } from './components/upload/upload.component';
 
 // import { HomePageComponent } from './home-page/home-page.component';
 import { HomePageComponent } from '././components/home-page/home-page.component';
+import { ProductCardComponent } from './components/product-card/product-card.component';
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'wishlist', component: WishlistComponent },

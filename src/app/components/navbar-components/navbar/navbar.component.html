@@ -12,8 +12,14 @@
 
     <div class="navbar-right-controls">
       <div class="user-dropdown">
-        <i class="fas fa-user-friends" routerLink="/login"></i>
-        <div class="user-dropdown-content">
+        <i
+          class="fas fa-user-friends"
+          [routerLink]="!loggedIn ? '/login' : null"
+          [class.disabled]="loggedIn"
+          style="cursor: pointer"
+          title="Login"
+        ></i>
+        <div class="user-dropdown-content" *ngIf="loggedIn">
           <a routerLink="/">View profile</a>
           <a routerLink="/" (click)="onLogout()">Logout</a>
         </div>
