@@ -9,15 +9,14 @@ import { Component, HostListener } from '@angular/core';
 })
 export class ScrollToTopComponent {
   isShown = false;
-
-  @HostListener('window:scroll',[])
-  onScroll(){
-    this.isShown = window.scrollY >= 500;
-  }
-
-  scrollToTop(){
-    window.scrollTo({
-      top:0,
-      behavior:'smooth'});
-  }
+@HostListener('window:scroll' ,[])
+onWindowScroll(){
+  this.isShown = window.scrollY >= 300;
+}
+scrollToTop(){
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+}
 }
