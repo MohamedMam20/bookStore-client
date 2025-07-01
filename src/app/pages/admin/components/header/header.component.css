@@ -1,0 +1,44 @@
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header-title h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.header-actions .btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #333;
+  background: none;
+  border: none;
+}
+
+.header-actions .btn:hover {
+  color: var(--main-color);
+}
+
+.header-actions .dropdown-menu {
+  min-width: 200px;
+  padding: 8px 0;
+  margin-top: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-actions .dropdown-item {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.header-actions .dropdown-item:hover {
+  background-color: rgba(196, 54, 24, 0.1);
+  color: var(--main-color);
+}

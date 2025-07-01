@@ -1,0 +1,153 @@
+<div class="dashboard-container">
+  <h2 class="dashboard-title">Dashboard Overview</h2>
+
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading">
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+          <div class="stat-card-body">
+            <div class="stat-card-icon bg-primary">
+              <i class="fas fa-book"></i>
+            </div>
+            <div class="stat-card-info">
+              <h5 class="stat-card-title">Total Books</h5>
+              <h3 class="stat-card-value">{{dashboardStats.totalBooks}}</h3>
+              <div class="stat-card-growth" [ngClass]="{'positive': dashboardStats.bookGrowth >= 0, 'negative': dashboardStats.bookGrowth < 0}">
+                <i class="fas" [ngClass]="{'fa-arrow-up': dashboardStats.bookGrowth >= 0, 'fa-arrow-down': dashboardStats.bookGrowth < 0}"></i>
+                <span>{{dashboardStats.bookGrowth}}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+          <div class="stat-card-body">
+            <div class="stat-card-icon bg-success">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="stat-card-info">
+              <h5 class="stat-card-title">Total Orders</h5>
+              <h3 class="stat-card-value">{{dashboardStats.totalOrders}}</h3>
+              <div class="stat-card-growth" [ngClass]="{'positive': dashboardStats.orderGrowth >= 0, 'negative': dashboardStats.orderGrowth < 0}">
+                <i class="fas" [ngClass]="{'fa-arrow-up': dashboardStats.orderGrowth >= 0, 'fa-arrow-down': dashboardStats.orderGrowth < 0}"></i>
+                <span>{{dashboardStats.orderGrowth}}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+          <div class="stat-card-body">
+            <div class="stat-card-icon bg-info">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-card-info">
+              <h5 class="stat-card-title">Total Users</h5>
+              <h3 class="stat-card-value">{{dashboardStats.totalUsers}}</h3>
+              <div class="stat-card-growth" [ngClass]="{'positive': dashboardStats.userGrowth >= 0, 'negative': dashboardStats.userGrowth < 0}">
+                <i class="fas" [ngClass]="{'fa-arrow-up': dashboardStats.userGrowth >= 0, 'fa-arrow-down': dashboardStats.userGrowth < 0}"></i>
+                <span>{{dashboardStats.userGrowth}}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+          <div class="stat-card-body">
+            <div class="stat-card-icon bg-warning">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="stat-card-info">
+              <h5 class="stat-card-title">Total Revenue</h5>
+              <h3 class="stat-card-value">${{dashboardStats.totalRevenue.toLocaleString()}}</h3>
+              <div class="stat-card-growth" [ngClass]="{'positive': dashboardStats.revenueGrowth >= 0, 'negative': dashboardStats.revenueGrowth < 0}">
+                <i class="fas" [ngClass]="{'fa-arrow-up': dashboardStats.revenueGrowth >= 0, 'fa-arrow-down': dashboardStats.revenueGrowth < 0}"></i>
+                <span>{{dashboardStats.revenueGrowth}}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Sections -->
+    <div class="row g-4">
+      <!-- Bestsellers -->
+      <div class="col-lg-6">
+        <div class="content-card">
+          <div class="content-card-header">
+            <h4>Bestselling Books</h4>
+          </div>
+          <div class="content-card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Author</th>
+                  <th>Sales</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let book of bestsellers">
+                  <td>{{book.title}}</td>
+                  <td>{{book.author}}</td>
+                  <td>{{book.sales}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Orders -->
+      <div class="col-lg-6">
+        <div class="content-card">
+          <div class="content-card-header">
+            <h4>Recent Orders</h4>
+          </div>
+          <div class="content-card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Date</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of recentOrders">
+                  <td>{{order.id}}</td>
+                  <td>{{order.customer}}</td>
+                  <td>{{order.date}}</td>
+                  <td>${{order.total.toFixed(2)}}</td>
+                  <td>
+                    <span class="badge" [ngClass]="{
+                      'bg-success': order.status === 'Completed',
+                      'bg-warning': order.status === 'Processing',
+                      'bg-info': order.status === 'Shipped'
+                    }">{{order.status}}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

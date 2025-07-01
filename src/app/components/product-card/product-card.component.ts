@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Book } from '../../models/book.model';
+import { CartService } from '../../services/cart/cart.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-card',
@@ -11,4 +13,5 @@ import { Book } from '../../models/book.model';
 })
 export class ProductCardComponent {
   @Input() product!: Book;
+
 }

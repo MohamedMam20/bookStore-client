@@ -15,12 +15,21 @@ import { ProductDetailsComponent } from './pages/product-details/product-details
 import { BooksPageComponent } from './pages/books-page/books-page.component';
 import { UploadComponent } from './components/upload/upload.component';
 
-// import { HomePageComponent } from './home-page/home-page.component';
-import { HomePageComponent } from '././components/home-page/home-page.component';
+import { HomePageComponent } from './home-page/home-page.component';
+import { AdminComponent } from './pages/admin/admin.component';
+
+// Admin Components
+import { BookListComponent } from './pages/admin/components/book-list/book-list.component';
+import { BookFormComponent } from './pages/admin/components/book-form/book-form.component';
+import { DashboardOverviewComponent } from './pages/admin/components/dashboard-overview/dashboard-overview.component';
+import { UserListComponent } from './pages/admin/components/user-list/user-list.component';
+import { UserFormComponent } from './pages/admin/components/user-form/user-form.component';
+
+
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'wishlist', component: WishlistComponent },
-  { path: 'shop', component: BooksPageComponent },
+  { path: 'shop', component: BooksPageComponent},
   { path: 'checkout', component: CheckoutComponent, title: 'Payment Form' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
@@ -29,6 +38,18 @@ export const routes: Routes = [
   { path: 'password-reset', component: PasswordResetRequestComponent },
   { path: 'password-reset-confirm', component: PasswordResetConfirmComponent },
   { path: 'product-details', component: ProductDetailsComponent },
-  { path: 'product-details', component: ProductDetailsComponent },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardOverviewComponent },
+      { path: 'books', component: BookListComponent },
+      { path: 'books/new', component: BookFormComponent },
+      { path: 'books/edit/:id', component: BookFormComponent },
+      { path: 'users', component: UserListComponent },
+      { path: 'users/edit/:id', component: UserFormComponent },
+    ]
+  },
   { path: '**', component: NotFoundComponent },
 ];
