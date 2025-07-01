@@ -65,7 +65,7 @@
 
 /* Button style */
 .card-action-buttons button {
-  background-color: #d14031;
+  background-color: #c43618;
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -102,7 +102,7 @@
 
 /* Change book title color when card is hovered */
 .card-img-container:hover + .card-body .card-title {
-  color: #d14031;
+  color: #c43618;
 }
 .card-img-top {
   transition: transform 0.4s ease;

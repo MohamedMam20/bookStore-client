@@ -23,7 +23,8 @@ export class ProductDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private toastr = inject(ToastrService);
   private booksService = inject(BooksService);
-
+  Math = Math;
+  Number = Number;
   averageRating = 0;
   reviewsCount = 0;
   selectedLanguage: 'ar' | 'en' | 'fr' = 'en';
@@ -36,7 +37,7 @@ export class ProductDetailsComponent implements OnInit {
   bookLoading = false;
   bookError: string | null = null;
 
-  product: any = {}; // يمكن تعديلها لاحقًا لـ Book model
+  product: any = {};
   @ViewChild('reviewSection') reviewSection!: ElementRef;
 
   ngOnInit() {
@@ -66,7 +67,7 @@ export class ProductDetailsComponent implements OnInit {
     return names[code] || code;
   }
 
- fetchProduct(id: string) {
+fetchProduct(id: string) {
   this.bookLoading = true;
   this.bookError = null;
 
@@ -74,10 +75,14 @@ export class ProductDetailsComponent implements OnInit {
     next: (res: any) => {
       this.product = res.data || res;
 
-      // ✅ تعيين الـ slug للكتاب (ضروري للمراجعات)
+
       this.slug = this.product.slug;
 
-      // ✅ توليد قائمة اللغات من الـ stock
+
+      this.averageRating = this.product.averageRating || 0;
+      this.reviewsCount = this.product.reviewsCount || 0;
+
+
       this.product.languages = (Object.entries(this.product.stock || {}) as [string, number][])
         .filter(([_, quantity]) => quantity > 0)
         .map(([code]) => ({
@@ -86,7 +91,7 @@ export class ProductDetailsComponent implements OnInit {
           selected: code === 'en'
         }));
 
-      // ✅ تعيين اللغة الافتراضية المختارة
+
       this.selectedLanguage = this.product.languages.find((l: any) => l.selected)?.code || 'en';
 
       this.bookLoading = false;
@@ -98,6 +103,8 @@ export class ProductDetailsComponent implements OnInit {
     }
   });
 }
+
+
 
 
   increment() {

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="container-fluid" style="font-family: 'Segoe UI', sans-serif">
   <div class="d-flex">
     <!-- Sidebar -->
@@ -51,6 +52,30 @@
           </div>
         </div>
       </div>
+=======
+<div class="card h-100 border-0">
+  <div class="card-img-container position-relative">
+    <img [src]="product.image" alt="{{ product.title }}" class="card-img-top" />
+    <div class="card-action-buttons">
+      <button class="btn btn-sm shadow">
+        <i class="fa-solid fa-bolt"></i>
+      </button>
+      <button class="btn btn-sm shadow">
+        <i class="fa-solid fa-cart-plus"></i>
+      </button>
+      <button class="btn btn-sm shadow">
+        <i class="fa-solid fa-heart"></i>
+      </button>
+>>>>>>> f81e3c34affb691b19b319be946277375aafdbe9
     </div>
+  </div>
+  <div class="card-body text-center p-3">
+    <p class="card-text text-secondary mb-1">
+      {{ product.author }}
+    </p>
+    <h5 class="card-title mb-1">{{ product.title }}</h5>
+    <span class="card-text text-secondary">
+      {{ product.price | currency }}
+    </span>
   </div>
 </div>

@@ -35,13 +35,28 @@
 
       <div class="info-pair"><strong>Publication Date:</strong> {{ product.createdAt | date }}</div>
 
-      <div class="info-pair stars-box">
-        <strong>Rating:</strong>
-        <span *ngFor="let star of [1,2,3,4,5]">
-          <i class="star" [class.filled]="star <= averageRating" [class.unfilled]="star > averageRating">★</i>
-        </span>
-        <span class="rating-count">({{ reviewsCount }} reviews)</span>
-      </div>
+    <div class="info-pair stars-box" *ngIf="reviewsCount > 0">
+  <strong>Rating:</strong>
+  <span *ngFor="let star of [1,2,3,4,5]">
+    <i
+      class="star"
+      [ngClass]="{
+        'filled': star <= Math.floor(averageRating),
+        'half-filled': star === Math.ceil(averageRating) && !Number.isInteger(averageRating),
+        'unfilled': star > averageRating
+      }"
+    >
+      ★
+    </i>
+  </span>
+  <span class="rating-count">({{ reviewsCount }} reviews)</span>
+</div>
+
+<div class="info-pair stars-box" *ngIf="reviewsCount === 0">
+  <strong>Rating:</strong>
+  <span>No reviews yet</span>
+</div>
+
 
       <div class="quantity-box">
         <strong>Quantity:</strong>
