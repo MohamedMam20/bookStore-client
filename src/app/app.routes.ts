@@ -4,7 +4,6 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CheckoutComponent } from './components/checkout-form/checkout-form.component';
 // import { BooksPageComponent } from './pages/books-page/books-page.component';
 
-
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegistrationComponent } from './pages/auth/registration/registration.component';
 import { OtpVerificationComponent } from './pages/auth/otp-verfication/otp-verfication.component';
@@ -21,7 +20,7 @@ import { HomePageComponent } from '././components/home-page/home-page.component'
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'wishlist', component: WishlistComponent },
-  // { path: 'shop', component: BooksPageComponent },
+  { path: 'shop', component: BooksPageComponent },
   { path: 'checkout', component: CheckoutComponent, title: 'Payment Form' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Book } from '../../models/book.model';
 
 @Injectable({
@@ -11,12 +12,33 @@ export class BooksService {
 
   constructor(private http: HttpClient) {}
 
-  getBooks(after?: string, limit: number = 6): Observable<Book[]> {
-    let params = new HttpParams().set('limit', limit.toString());
-    if (after) {
-      params = params.set('after', after);
-    }
+  getBooks(
+    page: number = 1,
+    limit: number = 6
+  ): Observable<{
+    books: Book[];
+    totalPages: number;
+    totalItems: number;
+  }> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
 
-    return this.http.get<Book[]>(this.apiUrl, { params });
+    return this.http
+      .get<{
+        status: string;
+        page: number;
+        totalPages: number;
+        totalItems: number;
+        results: number;
+        data: Book[];
+      }>(this.apiUrl, { params })
+      .pipe(
+        map((response) => ({
+          books: response.data,
+          totalPages: response.totalPages,
+          totalItems: response.totalItems,
+        }))
+      );
   }
 }
