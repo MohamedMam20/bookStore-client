@@ -1,0 +1,38 @@
+<h3>Customer Reviews</h3>
+
+
+
+<div *ngIf="true">
+  <div class="stars-input">
+    <label>Rating:</label>
+    <span *ngFor="let star of [1,2,3,4,5]"
+          (click)="setReviewRating(star)"
+          (mouseover)="hoverRating = star"
+          (mouseleave)="hoverRating = 0">
+      <i class="star"
+         [class.filled]="star <= reviewForm.rating || star <= hoverRating"
+         [class.unfilled]="star > reviewForm.rating && star > hoverRating">★</i>
+    </span>
+  </div>
+
+  <textarea [(ngModel)]="reviewText" rows="3" placeholder="Write your review..."></textarea>
+
+  <button (click)="submitReview()" class="btn submit">
+    {{ isEditing ? 'Update Review' : 'Submit Review' }}
+  </button>
+  <button (click)="cancelReview()" class="btn cancel">Cancel</button>
+
+  <p *ngIf="warningMessage" class="warning-message">{{ warningMessage }}</p>
+</div>
+
+<hr />
+
+<div *ngFor="let review of reviews; let i = index" class="single-review">
+  <div>
+    <strong>{{ review.user?.firstName }} {{ review.user?.lastName }}</strong>
+    <span *ngFor="let star of [1,2,3,4,5]" class="star" [class.filled]="star <= review.rating">★</span>
+  </div>
+  <p>{{ review.review }}</p>
+  <button class="btn" (click)="editReview(i)">Edit</button>
+  <button class="btn" (click)="deleteReview(i)">Delete</button>
+</div>

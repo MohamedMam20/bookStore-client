@@ -9,7 +9,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
-    provideAnimations(),  // ✅ Required for Toastr
-    provideToastr()       // ✅ Enables Toastr
+    provideAnimations(),  // Required for Toastr
+    provideToastr(),      // Enables Toastr globally
   ]
 };

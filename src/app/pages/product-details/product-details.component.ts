@@ -1,154 +1,138 @@
-
-import { Component,ElementRef,ViewChild  } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  ViewChild,
+  OnInit,
+  inject
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { BooksService } from '../../services/books/books.service';
+import { BookReviewsComponent } from '../book-reviews/book-reviews.component';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, BookReviewsComponent]
 })
-export class ProductDetailsComponent {
-  quantity: number = 1;
-  viewsCount: number = 0;
-  showReviews: boolean = false;
-  reviewText: string = '';
-  hoverRating: number = 0;
-  showWarning: boolean = false;
-  averageRating: number = 4;
+export class ProductDetailsComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private toastr = inject(ToastrService);
+  private booksService = inject(BooksService);
 
-  reviewForm = {
-    name: '',
-    email: '',
-    rating: 0
-  };
-  isEditing: boolean = false;
-  editIndex: number | null = null;
- showDescription: boolean = false;
+  averageRating = 0;
+  reviewsCount = 0;
+  selectedLanguage: 'ar' | 'en' | 'fr' = 'en';
+  slug: string = '';
+  quantity = 1;
+  viewsCount = 0;
+  showDescription = false;
+  showReviewsSection = false;
+  showSection: 'review' | 'description' | '' = '';
+  bookLoading = false;
+  bookError: string | null = null;
 
-  showReviewsSection: boolean = false;
-showSection: 'review' | 'description' | '' = '';
- @ViewChild('reviewSection') reviewSection!: ElementRef;
-  submittedReviews: any[] = [
-    // { name: 'Sara', email: 'sara@example.com', rating: 5, text: 'Amazing book! Very helpful and inspiring.' },
-    // { name: 'Omar', email: 'omar@example.com', rating: 4, text: 'Good read, but delivery was a bit late.' },
-    // { name: 'Mona', email: 'mona@example.com', rating: 5, text: 'Excellent quality and great story.' }
-  ];
-scrollToReview() {
-    this.showSection = 'review';
-    setTimeout(() => {
-      this.reviewSection?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 0);
-  }
-  product = {
-    title: 'Visit in the North',
-    description: `About Author: This book's author, John, is one of the most popular writers in American history.
-    He was California-born but attended school in New York. He attended Harvard University...`,
-    price: 514.60,
-    originalPrice: 1086.50,
-    vendor: 'James Dylan',
-    type: 'Business',
-    formats: [
-      { name: 'Audible Audiobook', selected: true },
-      { name: 'Paperback', selected: false },
-      { name: 'Hardcover', selected: false }
-    ],
-    languages: [
-      { name: 'Korean', selected: true },
-      { name: 'English', selected: false },
-      { name: 'Spanish', selected: false }
-    ],
-    publicationDate: new Date('2022-11-23'),
-    stock: 12,
-    image: 'https://bookly-theme.myshopify.com/cdn/shop/products/shop-new-57.jpg?v=1587119315',
-    thumbnails: [
-      'https://bookly-theme.myshopify.com/cdn/shop/products/shop-new-57.jpg?v=1587119315',
-      'https://bookly-theme.myshopify.com/cdn/shop/products/shop-new-57.jpg?v=1587119315',
-      'https://bookly-theme.myshopify.com/cdn/shop/products/shop-new-57.jpg?v=1587119315'
-    ]
-  };
- warningMessage: string = '';
-
+  product: any = {}; // يمكن تعديلها لاحقًا لـ Book model
+  @ViewChild('reviewSection') reviewSection!: ElementRef;
 
   ngOnInit() {
     this.viewsCount = Math.floor(Math.random() * 200) + 50;
+
+    this.route.paramMap.subscribe((params) => {
+  const id = params.get('id');
+  if (id) {
+    this.slug = id;
+    this.fetchProduct(id);
+  }
+});
+
   }
 
-  selectFormat(format: any) {
-    this.product.formats.forEach(f => f.selected = false);
-    format.selected = true;
+  onRatingStatsChange(data: { average: number; count: number }) {
+    this.averageRating = data.average;
+    this.reviewsCount = data.count;
   }
 
-  selectLanguage(lang: any) {
-    this.product.languages.forEach(l => l.selected = false);
-    lang.selected = true;
+  getLanguageName(code: string): string {
+    const names: any = {
+      en: 'English',
+      ar: 'Arabic',
+      fr: 'French'
+    };
+    return names[code] || code;
   }
+
+ fetchProduct(id: string) {
+  this.bookLoading = true;
+  this.bookError = null;
+
+  this.booksService.getBookById(id).subscribe({
+    next: (res: any) => {
+      this.product = res.data || res;
+
+      // ✅ تعيين الـ slug للكتاب (ضروري للمراجعات)
+      this.slug = this.product.slug;
+
+      // ✅ توليد قائمة اللغات من الـ stock
+      this.product.languages = (Object.entries(this.product.stock || {}) as [string, number][])
+        .filter(([_, quantity]) => quantity > 0)
+        .map(([code]) => ({
+          name: this.getLanguageName(code),
+          code,
+          selected: code === 'en'
+        }));
+
+      // ✅ تعيين اللغة الافتراضية المختارة
+      this.selectedLanguage = this.product.languages.find((l: any) => l.selected)?.code || 'en';
+
+      this.bookLoading = false;
+    },
+    error: (err: any) => {
+      this.bookError = err?.error?.message || 'Error fetching book details.';
+      this.toastr.error(this.bookError || 'Error fetching book details.');
+      this.bookLoading = false;
+    }
+  });
+}
+
 
   increment() {
-    if (this.quantity < this.product.stock) {
-      this.quantity++;
-    }
+    const maxStock = this.getStockForSelectedLang();
+    if (this.quantity < maxStock) this.quantity++;
   }
 
   decrement() {
-    if (this.quantity > 1) {
-      this.quantity--;
-    }
+    if (this.quantity > 1) this.quantity--;
   }
 
-  setReviewRating(star: number) {
-    this.reviewForm.rating = star;
-    this.showWarning = false;
-  }
-submitReview() {
-  if (!this.reviewForm.rating || !this.reviewText.trim()) {
-    this.warningMessage = '⭐ Please give a rating and a comment before submitting!';
-    return;
+  selectLanguage(lang: any) {
+    this.product.languages?.forEach((l: any) => (l.selected = false));
+    lang.selected = true;
+    this.selectedLanguage = lang.code;
   }
 
-  const newReview = {
-    name: '',
-    email: '',
-    rating: this.reviewForm.rating,
-    text: this.reviewText.trim(),
-    date: new Date().toLocaleDateString('en-US')
-  };
-
-  if (this.isEditing && this.editIndex !== null) {
-    this.submittedReviews[this.editIndex] = newReview;
-  } else {
-    this.submittedReviews.push(newReview);
+  getStockForSelectedLang(): number {
+    return this.product.stock?.[this.selectedLanguage] || 0;
   }
 
-  this.cancelReview();
-}
+  toggleSection(section: 'review' | 'description') {
+    this.showSection = section;
+    this.showReviewsSection = section === 'review';
+    this.showDescription = section === 'description';
+  }
 
-editReview(index: number) {
-  const review = this.submittedReviews[index];
-  this.reviewForm.rating = review.rating;
-  this.reviewText = review.text;
-  this.isEditing = true;
-  this.editIndex = index;
-  this.showReviews = true;
-  this.warningMessage = '';
-}
-
-deleteReview(index: number) {
-  this.submittedReviews.splice(index, 1);
-}
-
-
-cancelReview() {
-  this.showReviews = false;
-  this.reviewForm = { name: '', email: '', rating: 0 };
-  this.reviewText = '';
-  this.hoverRating = 0;
-  this.showWarning = false;
-  this.warningMessage = '';
-  this.isEditing = false;
-  this.editIndex = null;
-}
-
+  scrollToReview() {
+    this.showSection = 'review';
+    this.showReviewsSection = true;
+    setTimeout(() => {
+      this.reviewSection?.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }, 0);
+  }
 }

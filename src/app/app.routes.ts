@@ -18,7 +18,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'wishlist', component: WishlistComponent },
-  // { path: 'shop', component: BooksPageComponent },
+  { path: 'shop', component: BooksPageComponent },
   { path: 'checkout', component: CheckoutComponent, title: 'Payment Form' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
@@ -26,7 +26,8 @@ export const routes: Routes = [
   { path: 'otp-complete', component: OtpCompleteComponent },
   { path: 'password-reset', component: PasswordResetRequestComponent },
   { path: 'password-reset-confirm', component: PasswordResetConfirmComponent },
-  { path: 'product-details', component: ProductDetailsComponent },
-  { path: 'product-details', component: ProductDetailsComponent },
+ { path: 'product-details/:id', component: ProductDetailsComponent },
+
+
   { path: '**', component: NotFoundComponent },
 ];
