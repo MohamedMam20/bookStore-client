@@ -27,7 +27,11 @@
                   <button class="btn btn-sm shadow">
                     <i class="fa-solid fa-bolt"></i>
                   </button>
-                  <button class="btn btn-sm shadow">
+                  <button
+                    class="btn btn-sm shadow"
+                    [disabled]="product.stock?.en === 0"
+                    (click)="addToCart(product._id, 'en')"
+                  >
                     <i class="fa-solid fa-cart-plus"></i>
                   </button>
                   <button class="btn btn-sm shadow">
