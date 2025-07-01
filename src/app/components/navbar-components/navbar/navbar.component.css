@@ -39,7 +39,7 @@
 
 .navbar-logo-highlight {
   font-size: 2rem;
-  color: #e22302;
+  color: var(--main-color);
 }
 
 .navbar-right-controls {
@@ -49,7 +49,7 @@
 }
 
 .navbar-bottom-bar {
-  background-color: #e22302;
+  background-color: var(--main-color);
   display: flex;
   justify-content: center;
   gap: 1.5rem;
