@@ -1,14 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 
+/*Narimaaan bodyStyle color*/
+body {
+  background-color: #fbf6f0;
+  font-family: "Cormorant Garamond", serif;
+}
+
 :root {
   --main-color: #c43618;
   --secondary-color: #e5dfc6;
   --padding-color: #6f6f6f;
-  --primary-color: #cc3a2e;
+  /* --primary-color: #cc3a2e; */
+  --primary-color: #c43618;
   --text-color: #000000;
   --overlay-bg: rgba(0, 0, 0, 0.4);
   --overlay-white: rgba(255, 255, 255, 0.85);
-  --font-main: Georgia, serif;
+  --font-main: "Cormorant Garamond", serif;
+  /* --font-main: Georgia, serif; */
   --border-color: #cccccc;
   --box-shadow-color: rgba(0, 0, 0, 0.1);
   --icon-color: #333333;

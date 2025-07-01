@@ -26,7 +26,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private toastr: ToastrService // ✅ Add this
+    private toastr: ToastrService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -46,7 +46,7 @@ export class LoginComponent {
       this.authService.login(formData).subscribe({
         next: (res) => {
           localStorage.setItem('authToken', res.token);
-          this.toastr.success('✅ Login successful!');
+          this.toastr.success(' Login successful!');
           this.router.navigate(['/dashboard']);
         },
         error: (err) => {
@@ -59,7 +59,7 @@ export class LoginComponent {
         },
       });
     } else {
-      this.toastr.warning('⚠️ Please enter a valid email and password.');
+      this.toastr.warning('⚠️ Enter a valid email or password.');
     }
   }
 

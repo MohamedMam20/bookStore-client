@@ -1,0 +1,32 @@
+/*FAQ Section*/
+
+.faq-section {
+  padding: 100px 0;
+  background: var(--light-color);
+}
+
+.accordion-item {
+  border: none;
+  margin-bottom: 1rem;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.accordion-button {
+  background: white;
+  border: none;
+  font-weight: 600;
+  padding: 1.3rem;
+  font-size: 1.1rem;
+}
+
+.accordion-button:not(.collapsed) {
+  background: var(--main-color);
+  color: white;
+}
+
+.accordion-body {
+  padding: 1.3rem;
+  color: #64748b;
+}
