@@ -7,6 +7,7 @@ import { provideToastr } from 'ngx-toastr';
 import { AuthService } from './services/auth/auth.service';
 import { AuthInterceptor } from './intercepter/auth.intercepter';
 
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
@@ -19,4 +20,5 @@ export const appConfig: ApplicationConfig = {
       preventDuplicates: true,
     }),
   ],
+
 };

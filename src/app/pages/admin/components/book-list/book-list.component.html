@@ -1,0 +1,92 @@
+<div class="book-list-container">
+  <div class="book-list-header">
+    <h2>Book Management</h2>
+    <a [routerLink]="['/admin/books/new']" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Add New Book
+    </a>
+  </div>
+
+  <div class="book-list-filters">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search by title or author..."
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()"
+          >
+          <button class="btn btn-outline-secondary" type="button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <select class="form-select" [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
+          <option value="">All Categories</option>
+          <option *ngFor="let category of categories" [value]="category">{{category}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger my-3">
+    {{error}}
+    <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadBooks()">Retry</button>
+  </div>
+
+  <div *ngIf="!loading && !error" class="table-responsive">
+    <table class="table table-hover book-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="filteredBooks.length === 0">
+          <td colspan="7" class="text-center py-4">
+            No books found. Try adjusting your filters or add a new book.
+          </td>
+        </tr>
+        <tr *ngFor="let book of filteredBooks">
+          <td>
+            <img [src]="book.image || 'assets/placeholder-book.png'" alt="{{book.title}}" class="book-thumbnail">
+          </td>
+          <td>{{book.title}}</td>
+          <td>{{book.author || 'N/A'}}</td>
+          <td>{{book.category || 'Uncategorized'}}</td>
+          <td>${{book.price?.toFixed(2) || '0.00'}}</td>
+          <td>
+            <span *ngIf="book.stock?.en">EN: {{book.stock?.en}}</span>
+            <span *ngIf="book.stock?.ar">AR: {{book.stock?.ar}}</span>
+            <span *ngIf="book.stock?.fr">FR: {{book.stock?.fr}}</span>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <a [routerLink]="['/admin/books/edit', book._id]" class="btn btn-sm btn-outline-primary">
+                <i class="fas fa-edit"></i>
+              </a>
+              <button class="btn btn-sm btn-outline-danger ms-1" (click)="deleteBook(book._id)">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
