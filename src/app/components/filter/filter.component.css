@@ -12,7 +12,7 @@ button {
   border: none;
 }
 .filter-title-button:hover {
-  color: #d14031;
+  color: #c43618;
 }
 h5 {
   font-size: 1.3rem;
@@ -32,7 +32,7 @@ h5 {
 }
 
 .form-check-input:hover {
-  border-color: #d14031;
+  border-color: #c43618;
 }
 
 .form-check-input:checked {
@@ -54,7 +54,7 @@ h5 {
 }
 
 .form-check-input:checked:hover::before {
-  border-color: #d14031;
+  border-color: #c43618;
 }
 
 .form-check-input:focus {
@@ -81,8 +81,8 @@ h5 {
 }
 
 .active-filter-badge:hover {
-  color: #d14031;
-  border-color: #d14031;
+  color: #c43618;
+  border-color: #c43618;
 }
 
 .remove-btn {
@@ -94,5 +94,5 @@ h5 {
 }
 
 .remove-btn:hover {
-  color: #d14031 !important;
+  color: #c43618 !important;
 }

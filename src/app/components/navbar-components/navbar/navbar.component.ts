@@ -21,6 +21,9 @@ import { AuthService } from '../../../services/auth/auth.service';
 export class NavbarComponent {
   constructor(private authService: AuthService) {}
 
+  get loggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
   onLogout() {
     this.authService.logout();
   }

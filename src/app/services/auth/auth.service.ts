@@ -3,9 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private baseUrl = 'http://localhost:3000/api/v1/auth';
@@ -28,24 +27,23 @@ export class AuthService {
   }
 
   // Confirm Password Reset
-  resetPassword(email: string, otp: string, newPassword: string): Observable<any> {
+  resetPassword(
+    email: string,
+    otp: string,
+    newPassword: string
+  ): Observable<any> {
     return this.http.post(`${this.baseUrl}/resetPassword`, {
       email,
       otp,
-      newPassword
+      newPassword,
     });
   }
 
-
-
   logout(): void {
     localStorage.removeItem('authToken');
-    this.router.navigate(['/login']); 
   }
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('authToken');
   }
-
-
 }

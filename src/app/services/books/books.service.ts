@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Book } from '../../models/book.model';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -10,7 +12,33 @@ export class BooksService {
 
   constructor(private http: HttpClient) {}
 
-  getBooks(): Observable<Book[]> {
-    return this.http.get<Book[]>(this.apiUrl);
+  getBooks(
+    page: number = 1,
+    limit: number = 6
+  ): Observable<{
+    books: Book[];
+    totalPages: number;
+    totalItems: number;
+  }> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http
+      .get<{
+        status: string;
+        page: number;
+        totalPages: number;
+        totalItems: number;
+        results: number;
+        data: Book[];
+      }>(this.apiUrl, { params })
+      .pipe(
+        map((response) => ({
+          books: response.data,
+          totalPages: response.totalPages,
+          totalItems: response.totalItems,
+        }))
+      );
   }
 }
