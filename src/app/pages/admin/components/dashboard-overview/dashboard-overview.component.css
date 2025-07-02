@@ -1,0 +1,114 @@
+.dashboard-container {
+  padding: 0;
+}
+
+.dashboard-title {
+  margin-bottom: 24px;
+  color: #333;
+}
+
+/* Stat Cards */
+.stat-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-card-body {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.stat-card-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.stat-card-icon i {
+  font-size: 24px;
+  color: #fff;
+}
+
+.bg-primary {
+  background-color: var(--main-color);
+}
+
+.stat-card-info {
+  flex: 1;
+}
+
+.stat-card-title {
+  margin: 0;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.stat-card-value {
+  margin: 5px 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.stat-card-growth {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.stat-card-growth i {
+  margin-right: 5px;
+}
+
+.stat-card-growth.positive {
+  color: #28a745;
+}
+
+.stat-card-growth.negative {
+  color: #dc3545;
+}
+
+/* Content Cards */
+.content-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  height: 100%;
+}
+
+.content-card-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.content-card-header h4 {
+  margin: 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.content-card-body {
+  padding: 20px;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.badge {
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-weight: normal;
+}

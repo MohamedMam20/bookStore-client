@@ -1,0 +1,113 @@
+<div class="book-form-container">
+  <div class="book-form-header">
+    <h2>{{isEditMode ? 'Edit' : 'Add New'}} Book</h2>
+  </div>
+
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+    <div class="row g-3">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="title" class="form-label">Title*</label>
+              <input type="text" class="form-control" id="title" formControlName="title" required>
+              <div *ngIf="bookForm.get('title')?.invalid && bookForm.get('title')?.touched" class="text-danger">
+                Title is required
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="author" class="form-label">Author</label>
+              <input type="text" class="form-control" id="author" formControlName="author">
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="category" class="form-label">Category</label>
+                <select class="form-select" id="category" formControlName="category">
+                  <option value="">Select Category</option>
+                  <option *ngFor="let category of categories" [value]="category">{{category}}</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="price" class="form-label">Price*</label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input type="number" class="form-control" id="price" formControlName="price" min="0" step="0.01" required>
+                </div>
+                <div *ngIf="bookForm.get('price')?.invalid && bookForm.get('price')?.touched" class="text-danger">
+                  Valid price is required
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Book Description</label>
+              <textarea class="form-control" id="description" formControlName="description" rows="4"></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="authorDescription" class="form-label">Author Description</label>
+              <textarea class="form-control" id="authorDescription" formControlName="authorDescription" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label">Book Cover Image</label>
+              <div class="image-upload-container">
+                <div class="image-preview" *ngIf="imagePreview">
+                  <img [src]="imagePreview" alt="Book cover preview">
+                </div>
+                <div class="image-upload" *ngIf="!imagePreview">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <p>Click to upload image</p>
+                </div>
+                <input type="file" class="file-input" accept="image/*" (change)="onFileSelected($event)">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Stock Information</h5>
+
+            <div class="mb-3">
+              <label for="stockEn" class="form-label">English Stock</label>
+              <input type="number" class="form-control" id="stockEn" formControlName="stockEn" min="0">
+            </div>
+
+            <div class="mb-3">
+              <label for="stockAr" class="form-label">Arabic Stock</label>
+              <input type="number" class="form-control" id="stockAr" formControlName="stockAr" min="0">
+            </div>
+
+            <div class="mb-3">
+              <label for="stockFr" class="form-label">French Stock</label>
+              <input type="number" class="form-control" id="stockFr" formControlName="stockFr" min="0">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions mt-4">
+      <button type="button" class="btn btn-outline-secondary me-2" routerLink="/admin/books">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="bookForm.invalid || loading">
+        {{isEditMode ? 'Update' : 'Create'}} Book
+      </button>
+    </div>
+  </form>
+</div>

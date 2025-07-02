@@ -1,0 +1,85 @@
+<div class="user-list-container">
+  <div class="user-list-header">
+    <h2>User Management</h2>
+  </div>
+
+  <div class="user-list-filters">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search by name or email..."
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()"
+          >
+          <button class="btn btn-outline-secondary" type="button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <select class="form-select" [(ngModel)]="selectedRole" (change)="onRoleChange()">
+          <option value="">All Roles</option>
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger my-3">
+    {{error}}
+    <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadUsers()">Retry</button>
+  </div>
+
+  <div *ngIf="!loading && !error" class="table-responsive">
+    <table class="table table-hover user-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Joined Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="filteredUsers.length === 0">
+          <td colspan="5" class="text-center py-4">
+            No users found. Try adjusting your filters.
+          </td>
+        </tr>
+        <tr *ngFor="let user of filteredUsers">
+          <td>{{user.firstName}} {{user.lastName}}</td>
+          <td>{{user.email}}</td>
+          <td>
+            <span class="badge" [ngClass]="{
+              'bg-primary': user.role === 'user',
+              'bg-danger': user.role === 'admin'
+            }">{{user.role}}</span>
+          </td>
+          <td>{{user.createdAt | date:'medium'}}</td>
+          <td>
+            <div class="action-buttons">
+              <a [routerLink]="['/admin/users/edit', user._id]" class="btn btn-sm btn-outline-primary">
+                <i class="fas fa-edit"></i>
+              </a>
+              <button class="btn btn-sm btn-outline-danger ms-1" (click)="deleteUser(user._id)">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

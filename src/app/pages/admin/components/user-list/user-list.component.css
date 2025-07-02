@@ -1,0 +1,25 @@
+.user-list-container {
+  padding: 20px;
+}
+
+.user-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.user-list-filters {
+  margin-bottom: 20px;
+}
+
+.user-table img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.action-buttons {
+  display: flex;
+}
