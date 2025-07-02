@@ -63,7 +63,9 @@ export class BookFormComponent implements OnInit {
 
     this.loading = true;
     this.adminService.getAllBooks().subscribe({
-      next: (books) => {
+      next: (response) => {
+        // Access the books array from the data property
+        const books = response.data;
         const book = books.find((b: Book) => b._id === id);
         if (book) {
           this.bookForm.patchValue({
