@@ -1,0 +1,19 @@
+<aside class="admin-sidebar">
+  <div class="sidebar-header">
+    <div class="logo d-flex justify-content-center align-items-center">
+      <i class="fa-solid fa-paintbrush gradient-icon me-2"></i>
+      <h4>BookShelf</h4>
+    </div>
+  </div>
+  
+  <nav class="sidebar-nav">
+    <ul>
+      <li *ngFor="let item of menuItems">
+        <a [routerLink]="item.route" routerLinkActive="active">
+          <i class="fas {{item.icon}}"></i>
+          <span>{{item.label}}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</aside>
