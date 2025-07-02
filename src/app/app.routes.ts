@@ -14,6 +14,7 @@ import { ProductDetailsComponent } from './pages/product-details/product-details
 
 import { BooksPageComponent } from './pages/books-page/books-page.component';
 
+import { HomePageComponent } from './components/home-page/home-page.component';
 import { AdminComponent } from './pages/admin/admin.component';
 
 // Admin Components
@@ -47,6 +48,13 @@ export const routes: Routes = [
       { path: 'users', component: UserListComponent },
       { path: 'users/edit/:id', component: UserFormComponent },
     ],
+  },
+  {
+    path: 'product-details/:id',
+    loadComponent: () =>
+      import('./pages/product-details/product-details.component').then(
+        (m) => m.ProductDetailsComponent
+      ),
   },
   { path: '**', component: NotFoundComponent },
 ];
