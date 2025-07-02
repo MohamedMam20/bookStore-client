@@ -37,7 +37,7 @@ export const routes: Routes = [
   { path: 'otp-complete', component: OtpCompleteComponent },
   { path: 'password-reset', component: PasswordResetRequestComponent },
   { path: 'password-reset-confirm', component: PasswordResetConfirmComponent },
-  { path: 'product-details', component: ProductDetailsComponent },
+  // { path: 'product-details', component: ProductDetailsComponent },
   {
     path: 'admin',
     component: AdminComponent,
