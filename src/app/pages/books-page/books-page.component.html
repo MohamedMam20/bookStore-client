@@ -1,1 +1,65 @@
-<app-product-card></app-product-card>
+<div
+  class="container-fluid"
+  style="font-family: 'Segoe UI', sans-serif; background-color: #fbf6f0"
+>
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <div
+      class="p-3 d-none d-lg-block flex-shrink-0"
+      style="width: 300px; height: 100vh"
+    >
+      <app-filter></app-filter>
+    </div>
+
+    <!-- Product Cards Section -->
+    <div class="flex-grow-1 p-3">
+      <div class="container-fluid">
+        <!-- Loading Spinner -->
+        <div class="text-center my-5" *ngIf="isLoading">
+          <div class="spinner-border text-primary" role="status"></div>
+          <div class="mt-2">Loading products...</div>
+        </div>
+
+        <!-- Empty State -->
+        <div
+          class="text-center mt-4 text-muted"
+          *ngIf="!isLoading && products.length === 0"
+        >
+          No products found.
+        </div>
+
+        <!-- Product Grid -->
+        <div class="row g-4" *ngIf="!isLoading && products.length > 0">
+          <div
+            class="col-12 col-md-6 col-lg-6 col-xl-4"
+            *ngFor="let product of products"
+          >
+            <app-product-card [product]="product"></app-product-card>
+          </div>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div
+          class="d-flex justify-content-center align-items-center my-4"
+          *ngIf="!isLoading && totalPages > 1"
+        >
+          <button
+            class="btn mx-1"
+            (click)="goToPage(currentPage - 1)"
+            [disabled]="currentPage === 1"
+          >
+            Previous
+          </button>
+          <span class="mx-2"> Page {{ currentPage }} of {{ totalPages }} </span>
+          <button
+            class="btn mx-1"
+            (click)="goToPage(currentPage + 1)"
+            [disabled]="currentPage === totalPages"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -16,16 +16,23 @@
       </div>
     </div>
 
-    <!--
     <div class="cart-items" *ngIf="cartItems.length > 0">
       <h2>Your Cart</h2>
       <ul>
-        <li *ngFor="let item of cartItems">
-          {{ item.name }} - {{ item.quantity }}
+        <li *ngFor="let item of cartItems" class="cart-item">
+          <img
+            [src]="item.book?.image"
+            alt="{{ item.book?.title }}"
+            width="40"
+          />
+          <div class="cart-details">
+            <p>{{ item.book?.title }}</p>
+            <p>Qty: {{ item.quantity }} | Lang: {{ item.language }}</p>
+            <p>{{ item.book?.price | currency }}</p>
+          </div>
         </li>
       </ul>
       <button class="continue-btn" (click)="checkout()">Checkout</button>
     </div>
-    -->
   </div>
 </div>
