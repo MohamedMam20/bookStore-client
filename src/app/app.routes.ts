@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { WishlistComponent } from './pages/wishlist/wishlist.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CheckoutComponent } from './components/checkout-form/checkout-form.component';
+// import { BooksPageComponent } from './pages/books-page/books-page.component';
+
 
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegistrationComponent } from './pages/auth/registration/registration.component';
@@ -23,6 +25,7 @@ import { BookFormComponent } from './pages/admin/components/book-form/book-form.
 import { DashboardOverviewComponent } from './pages/admin/components/dashboard-overview/dashboard-overview.component';
 import { UserListComponent } from './pages/admin/components/user-list/user-list.component';
 import { UserFormComponent } from './pages/admin/components/user-form/user-form.component';
+
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
