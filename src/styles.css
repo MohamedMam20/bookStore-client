@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 /*Narimaaan bodyStyle color*/
-body{
-  background-color: #FBF6F0;
+body {
+  background-color: #fbf6f0;
   font-family: "Cormorant Garamond", serif;
 }
 
@@ -11,7 +11,7 @@ body{
   --secondary-color: #e5dfc6;
   --padding-color: #6f6f6f;
   /* --primary-color: #cc3a2e; */
-  --primary-color:#c43618 ;
+  --primary-color: #c43618;
   --text-color: #000000;
   --overlay-bg: rgba(0, 0, 0, 0.4);
   --overlay-white: rgba(255, 255, 255, 0.85);
@@ -31,6 +31,11 @@ body{
   padding: 0;
   box-sizing: border-box;
   font-size: 16px;
+}
+
+body {
+  background-color: #fbf6f0;
+  font-family: "Cormorant Garamond", serif;
 }
 
 a {

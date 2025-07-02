@@ -4,7 +4,6 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CheckoutComponent } from './components/checkout-form/checkout-form.component';
 // import { BooksPageComponent } from './pages/books-page/books-page.component';
 
-
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegistrationComponent } from './pages/auth/registration/registration.component';
 import { OtpVerificationComponent } from './pages/auth/otp-verfication/otp-verfication.component';
