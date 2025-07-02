@@ -1,0 +1,210 @@
+/* Start Header */
+header .header-text{
+  margin: 10px;
+  padding: 5px;
+  text-align: center;
+}
+
+header .header-text h1 {
+  font-size: 60px;
+  margin-bottom: 8px;
+  padding: 2px;
+  line-height: 1.1;
+}
+header {
+  position: relative;
+  padding: 0;
+}
+/* wave-background*/
+.wave-1 {
+  position: absolute;
+  top: -50px;
+  left: 0px;
+  z-index: -1000;
+}
+.wave-2 {
+  overflow: hidden;
+  position: absolute;
+  width: 50%;
+  bottom: 0px;
+  right: 0px;
+  z-index: -1000;
+}
+
+header .header-text p {
+  font-size: 22px;
+  padding: 15px 4rem;
+  margin-top: 20px;
+  color: var(--padding-color);
+}
+
+header .main-btn {
+    padding: 15px;
+    background-color: var(--main-color);
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    font-size: 20px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.main-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(183, 54, 29, 0.6);
+}
+
+
+header .header-image img {
+  position: relative;
+  animation: up-and-down 5s linear infinite ;
+}
+/*Animation*/
+@keyframes up-and-down {
+  0%, 100% {
+    top: 0;
+  }
+  50% {
+    top: -30px;
+  }
+}
+
+@media (max-width: 992px) {
+  .header-image img,
+  .wave-1,
+  .wave-2 {
+    display: none !important;
+  }
+
+  .header-text {
+    text-align: center;
+    align-items: center;
+  }
+
+ .header-text h1 {
+    font-size: 10px;
+    padding: 5px;
+    margin: 10px;
+    text-align: center;
+  }
+  .header-text p{
+    font-size: 10px;
+    padding: 2px;
+    margin: 2px;
+  }
+  .header-text .main-btn {
+      padding: 8px;
+      font-size: 16px;
+  }
+
+}
+
+
+/* About us*/
+.main-header {
+ font-size: 50px;
+ margin-bottom: 20px;
+ position: relative;
+}
+
+.main-header::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  bottom: -10px;
+  width: 60px;
+  height: 5px;
+  background-color: var(--main-color);
+  border-radius: 2px;
+}
+
+.about-us p {
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--padding-color);
+}
+
+/*offers*/
+.card {
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.5s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.offer .card img{
+ background-color: #dbd8c9;
+ border-radius: 10px;
+}
+
+/*Servives*/
+.services h4 {
+  font-size: 22px;
+  line-height: 0.02;
+}
+
+.services p {
+  color: var(--padding-color);
+  font-size: 15px;
+}
+
+.services .content i {
+  background-color: #fff;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  font-size: 25px;
+  box-shadow: 1px -3px 15px rgba(0, 0, 0, 0.3);;
+}
+
+/*Subscribe*/
+
+.subscribe {
+  background-color: var(--secondary-color);
+}
+.subscribe h1 {
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.subscribe p {
+  color: var(--padding-color);
+}
+
+.subscribe .field-style {
+  width: 350px;
+  padding: 15px;
+  border-radius: 2px;
+  border-color: transparent;
+}
+
+.subscribe .Sub-btn {
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: #c43618;
+  color: #fff;
+  padding: 15px;
+}
+
+
+
+/*==================================*/
+/*books*/
+.popular {
+  background-color: #fff;
+}
+
+.popular .books-content {
+  height: 350px;
+}
+
+.popular h1 {
+  font-size: 30px;
+}
+
+.best-seller {
+  background-color: var(--secondary-color);
+   height: 350px;
+}

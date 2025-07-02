@@ -1,1 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
+
+/*Narimaaan bodyStyle color*/
+body{
+  background-color: #FBF6F0;
+  font-family: "Cormorant Garamond", serif;
+}
+
+:root {
+  --main-color: #c43618;
+  --secondary-color: #e5dfc6;
+  --padding-color: #6f6f6f;
+  /* --primary-color: #cc3a2e; */
+  --primary-color:#c43618 ;
+  --text-color: #000000;
+  --overlay-bg: rgba(0, 0, 0, 0.4);
+  --overlay-white: rgba(255, 255, 255, 0.85);
+  --font-main: "Cormorant Garamond", serif;
+  /* --font-main: Georgia, serif; */
+  --border-color: #cccccc;
+  --box-shadow-color: rgba(0, 0, 0, 0.1);
+  --icon-color: #333333;
+  --icon-hover-color: #000000;
+  --search-bg: #ffffff;
+  --search-border: #000000;
+  --hover-shadow: rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.toast-success {
+  background-color: #4caf50;
+}
+.toast-error {
+  background-color: #f44336;
+}
+.toast-warning {
+  background-color: #ff9800;
+}

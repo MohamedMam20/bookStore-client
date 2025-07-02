@@ -1,0 +1,31 @@
+<div class="cart-overlay" [class.show]="isCartVisible" (click)="closeCart()">
+  <div class="cart-panel" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="closeCart()">X</button>
+
+    <div class="cart-content" *ngIf="cartItems.length === 0">
+      <p class="title-cart">Your cart is empty</p>
+      <button class="continue-btn" (click)="continueShopping()">
+        Continue Shopping
+      </button>
+
+      <div class="login-section">
+        <p class="account-question">Have an account?</p>
+        <p class="login-text">
+          <a href="#" (click)="login()">Log in</a> to check out faster.
+        </p>
+      </div>
+    </div>
+
+    <!--
+    <div class="cart-items" *ngIf="cartItems.length > 0">
+      <h2>Your Cart</h2>
+      <ul>
+        <li *ngFor="let item of cartItems">
+          {{ item.name }} - {{ item.quantity }}
+        </li>
+      </ul>
+      <button class="continue-btn" (click)="checkout()">Checkout</button>
+    </div>
+    -->
+  </div>
+</div>

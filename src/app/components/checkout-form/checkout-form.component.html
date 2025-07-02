@@ -1,0 +1,161 @@
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-7">
+      <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+
+        <div class="mb-4 p-4 bg-white shadow-sm rounded border">
+          <h5 class="mb-3">Contact</h5>
+          <input type="text" class="form-control" placeholder="Email or mobile phone number"
+                 formControlName="emailOrPhone">
+          <div *ngIf="checkoutForm.get('emailOrPhone')?.invalid && checkoutForm.get('emailOrPhone')?.touched" class="text-danger mt-1">
+            This field is required
+          </div>
+          <div class="form-check mt-2">
+            <input class="form-check-input" type="checkbox" id="offersCheck">
+            <label class="form-check-label" for="offersCheck">Email me with news and offers</label>
+          </div>
+        </div>
+
+        <div formGroupName="delivery" class="mb-4 p-4 bg-white shadow-sm rounded border">
+          <h5 class="mb-3">Delivery</h5>
+          <select class="form-select mb-2" formControlName="country">
+            <option selected>Egypt</option>
+            <option>Saudi Arabia</option>
+            <option>UAE</option>
+          </select>
+
+          <div class="row g-2 mb-2">
+            <div class="col">
+              <input type="text" class="form-control" placeholder="First name" formControlName="firstName">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Last name" formControlName="lastName">
+            </div>
+          </div>
+
+          <input type="text" class="form-control mb-2" placeholder="Address" formControlName="address">
+          <input type="text" class="form-control mb-2" placeholder="Apartment, suite, etc." formControlName="apartment">
+
+          <div class="row g-2 mb-2">
+            <div class="col">
+              <input type="text" class="form-control" placeholder="City" formControlName="city">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Governorate" formControlName="governorate">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Postal Code" formControlName="postalCode">
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4 p-4 bg-white shadow-sm rounded border">
+          <h5 class="mb-3">Shipping Method</h5>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" formControlName="shippingMethod" value="Standard" checked>
+            <label class="form-check-label">Standard - EGP 890.84</label>
+          </div>
+        </div>
+
+        <!-- Payment Section -->
+        <div formGroupName="payment" class="mb-4 p-4 bg-white shadow-sm rounded border">
+          <h5 class="mb-3">Payment</h5>
+
+          <div class="mb-3">
+            <label class="form-check" *ngFor="let method of ['stripe', 'paypal', 'paymob', 'cash']">
+              <input class="form-check-input" type="radio" formControlName="method" [value]="method">
+              <span class="form-check-label text-capitalize">{{ method === 'cash' ? 'Cash on Delivery' : method }}</span>
+            </label>
+          </div>
+
+          <!-- Stripe Payment Form -->
+          <div *ngIf="paymentMethod === 'stripe'" [formGroup]="stripeForm">
+            <input type="text" class="form-control mb-2" placeholder="Card Number" formControlName="cardNumber">
+            <div *ngIf="stripeForm.get('cardNumber')?.invalid && stripeForm.get('cardNumber')?.touched" class="text-danger">
+              Card number is required
+            </div>
+
+            <div class="row g-2 mb-2">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Expiry (MM/YY)" formControlName="expiry">
+                <div *ngIf="stripeForm.get('expiry')?.invalid && stripeForm.get('expiry')?.touched" class="text-danger">
+                  Expiry is required
+                </div>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="CVV" formControlName="cvv">
+                <div *ngIf="stripeForm.get('cvv')?.invalid && stripeForm.get('cvv')?.touched" class="text-danger">
+                  CVV must be 3 or 4 digits
+                </div>
+              </div>
+            </div>
+
+            <input type="text" class="form-control mb-2" placeholder="Name on Card" formControlName="nameOnCard">
+            <div *ngIf="stripeForm.get('nameOnCard')?.invalid && stripeForm.get('nameOnCard')?.touched" class="text-danger">
+              Name is required
+            </div>
+          </div>
+
+          <!-- PayPal -->
+          <div *ngIf="paymentMethod === 'paypal'" [formGroup]="paypalForm">
+            <input type="email" class="form-control mb-2" placeholder="PayPal Email" formControlName="email">
+            <div *ngIf="paypalForm.get('email')?.invalid && paypalForm.get('email')?.touched" class="text-danger">
+              Valid email is required
+            </div>
+          </div>
+
+          <!-- Paymob -->
+          <div *ngIf="paymentMethod === 'paymob'" [formGroup]="paymobForm">
+            <input type="text" class="form-control mb-2" placeholder="Phone Number" formControlName="phone">
+            <div *ngIf="paymobForm.get('phone')?.invalid && paymobForm.get('phone')?.touched" class="text-danger">
+              Valid phone number required (10–15 digits)
+            </div>
+          </div>
+
+          <!-- Cash -->
+          <div *ngIf="paymentMethod === 'cash'" class="alert alert-info mt-3">
+            You will pay in cash upon delivery.
+          </div>
+
+          <!-- Billing Checkbox -->
+          <div class="form-check mt-3">
+            <input class="form-check-input" type="checkbox" formControlName="useSameAddress">
+            <label class="form-check-label">Use shipping address as billing address</label>
+          </div>
+        </div>
+
+        <button class="btn btn-danger w-100" type="submit">Pay now</button>
+      </form>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="col-md-5">
+      <div class="card shadow-sm p-4 mt-4 mt-md-0">
+        <h6>Visit to the North</h6>
+        <p class="text-muted mb-1">Audiobook | 21 Nov 2022</p>
+        <p class="fw-bold mb-3">EGP 514.05</p>
+
+        <hr>
+
+        <div class="d-flex justify-content-between">
+          <span>Subtotal</span>
+          <span>EGP 514.05</span>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span>Shipping</span>
+          <span>EGP 890.84</span>
+        </div>
+
+        <hr>
+        <div class="d-flex justify-content-between fw-bold fs-5">
+          <span>Total</span>
+          <span>EGP 1,404.89</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

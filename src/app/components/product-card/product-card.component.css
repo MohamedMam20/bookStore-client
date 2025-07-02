@@ -1,0 +1,112 @@
+.card-body {
+  font-family: serif;
+  font-size: 1.2rem;
+}
+
+.card-title {
+  font-size: 1.7rem;
+  font-family: sans-serif;
+  font-weight: bold;
+  transition: color 0.4s ease;
+}
+
+/* Container around image */
+.card-img-container {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Image itself */
+.card-img-top {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: opacity 0.4s ease;
+}
+
+/* Overlay */
+.card-img-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255, 247, 235, 0.5); /* Sheer beige */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+/* Show overlay on hover */
+.card-img-container:hover::after {
+  opacity: 1;
+}
+
+/* Button group positioned right vertically centered */
+.card-action-buttons {
+  position: absolute;
+  top: 50%;
+  right: -20px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Slide in buttons on hover */
+.card-img-container:hover .card-action-buttons button {
+  opacity: 1;
+  transform: translateX(-30px);
+  pointer-events: auto;
+}
+
+/* Button style */
+.card-action-buttons button {
+  background-color: #d14031;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateX(0);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Hover effect for button: turn black */
+.card-action-buttons button:hover {
+  background-color: #000;
+}
+
+/* Icon style */
+.card-action-buttons i {
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+/* Sequential delays */
+.card-img-container:hover .card-action-buttons button:nth-child(1) {
+  transition-delay: 0.1s;
+}
+.card-img-container:hover .card-action-buttons button:nth-child(2) {
+  transition-delay: 0.4s;
+}
+.card-img-container:hover .card-action-buttons button:nth-child(3) {
+  transition-delay: 0.6s;
+}
+
+/* Change book title color when card is hovered */
+.card-img-container:hover + .card-body .card-title {
+  color: #d14031;
+}
+.card-img-top {
+  transition: transform 0.4s ease;
+}
+.card-img-container:hover .card-img-top {
+  transform: scale(1.03);
+}
