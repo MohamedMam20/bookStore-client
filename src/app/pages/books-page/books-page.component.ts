@@ -28,6 +28,7 @@ export class BooksPageComponent implements OnInit {
     this.isLoading = true;
     this.booksService.getBooks(page).subscribe({
       next: (data) => {
+        console.log('📦 Received books data:', data);
         this.products = data.books;
         this.totalPages = data.totalPages;
         this.currentPage = page;
