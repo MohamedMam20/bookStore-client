@@ -1,6 +1,11 @@
-import { Component } from '@angular/core';
-import { NgIf, NgFor } from '@angular/common'; // Required for *ngIf, *ngFor
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NgIf, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import {
+  Filter,
+  FilterService,
+} from '../../services/filter/filter-state.service';
 
 @Component({
   selector: 'app-filter',
@@ -9,8 +14,9 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css'],
 })
-export class FilterComponent {
-  activeFilters: { label: string; value: string }[] = [];
+export class FilterComponent implements OnInit, OnDestroy {
+  activeFilters: Filter[] = [];
+  subscription!: Subscription;
 
   filters = {
     genre: [
@@ -22,14 +28,26 @@ export class FilterComponent {
       'Sugar Flakes',
     ],
     price: [
-      '$100 - $200',
-      '$200 - $300',
-      '$300 - $400',
-      '$400 - $500',
-      '$500 - $700',
+      'LE 100 - LE 200',
+      'LE 200 - LE 300',
+      'LE 300 - LE 400',
+      'LE 400 - LE 500',
+      'LE 500 - LE 700',
     ],
     language: ['English', 'French', 'Arabic'],
   };
+
+  constructor(private filterService: FilterService) {}
+
+  ngOnInit() {
+    this.subscription = this.filterService.filters$.subscribe((filters) => {
+      this.activeFilters = filters;
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
   isChecked(label: string, value: string): boolean {
     return this.activeFilters.some(
@@ -40,29 +58,17 @@ export class FilterComponent {
   toggleFilter(label: string, value: string, event: Event) {
     const checked = (event.target as HTMLInputElement).checked;
     if (checked) {
-      this.addFilter(label, value);
+      this.filterService.addFilter({ label, value });
     } else {
-      this.removeFilter({ label, value });
+      this.filterService.removeFilter({ label, value });
     }
   }
 
-  addFilter(label: string, value: string) {
-    const exists = this.activeFilters.some(
-      (f) => f.label === label && f.value === value
-    );
-    if (!exists) {
-      this.activeFilters.push({ label, value });
-    }
-  }
-
-  removeFilter(filterToRemove: { label: string; value: string }) {
-    this.activeFilters = this.activeFilters.filter(
-      (f) =>
-        !(f.label === filterToRemove.label && f.value === filterToRemove.value)
-    );
+  removeFilter(filter: Filter) {
+    this.filterService.removeFilter(filter);
   }
 
   clearAllFilters() {
-    this.activeFilters = [];
+    this.filterService.clearFilters();
   }
 }

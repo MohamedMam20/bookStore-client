@@ -1,24 +1,30 @@
+/* Buttons used for toggling collapse */
 button {
   font-family: serif;
   border: none;
   font-size: 1.5rem;
 }
 
-.filter-title-button {
+/* Section toggle buttons (Genre, Price, Language) */
+.btn {
   font-size: 1.5rem;
   font-weight: 600;
   transition: color 0.5s ease;
   background-color: transparent;
   border: none;
+  padding: 0;
 }
-.filter-title-button:hover {
+.btn:hover {
   color: #c43618;
 }
+
+/* Section header (Filter:) */
 h5 {
   font-size: 1.3rem;
   font-family: serif;
 }
 
+/* Checkbox styling */
 .form-check-input {
   margin-right: 5px;
   appearance: none;
@@ -62,21 +68,25 @@ h5 {
   box-shadow: none;
 }
 
+/* Label next to checkbox */
 .form-check-label {
   font-family: sans-serif;
   margin-left: 8px;
 }
+
+/* Active filter badges */
 .active-filter-badge {
   background-color: transparent;
-  border: 1px solid rgb(139, 139, 139);
-  color: #4e4e4e;
-  font-size: 0.9rem;
-  font-family: sans-serif;
+  border: 1px solid black;
+  border-radius: 9999px;
+
+  color: black;
+  font-size: 0.8rem;
+  font-family: serif;
   padding: 0.6em;
   cursor: pointer;
-  display: inline-flex;
+  display: inline-flex; /* Inline-flex makes them wrap horizontally */
   align-items: center;
-  gap: 0.25rem;
   transition: color 0.4s ease, border-color 0.4s ease;
 }
 
@@ -85,14 +95,11 @@ h5 {
   border-color: #c43618;
 }
 
+/* "Remove all" link */
 .remove-btn {
-  font-size: 1rem;
-  font-family: sans-serif;
-  color: black;
-
+  font-size: 1.2rem;
   transition: color 0.3s ease;
 }
-
 .remove-btn:hover {
   color: #c43618 !important;
 }

@@ -1,28 +1,26 @@
-<h1 class="page-title text-center">Products</h1>
+<h1 class="page-title text-center my-4 fw-bold display-4">Products</h1>
+
+<app-toggle-filter-menu></app-toggle-filter-menu>
 
 <div
   class="container-fluid"
-  style="font-family: 'Segoe UI', sans-serif; background-color: #fbf6f0"
+  style="font-family: 'Segoe UI'; background-color: #fbf6f0"
 >
   <div class="d-flex">
-    <!-- Sidebar -->
     <div
       class="p-3 d-none d-lg-block flex-shrink-0"
-      style="width: 300px; height: 100vh"
+      style="width: 300px; min-height: 100vh"
     >
       <app-filter></app-filter>
     </div>
 
-    <!-- Product Cards Section -->
     <div class="flex-grow-1 p-3">
       <div class="container-fluid">
-        <!-- Loading Spinner -->
         <div class="text-center my-5" *ngIf="isLoading">
           <div class="spinner-border text-primary" role="status"></div>
           <div class="mt-2">Loading products...</div>
         </div>
 
-        <!-- Empty State -->
         <div
           class="text-center mt-4 text-muted"
           *ngIf="!isLoading && products.length === 0"
@@ -30,7 +28,6 @@
           No products found.
         </div>
 
-        <!-- Product Grid -->
         <div class="row g-4" *ngIf="!isLoading && products.length > 0">
           <div
             class="col-12 col-md-6 col-lg-6 col-xl-4"
@@ -40,21 +37,20 @@
           </div>
         </div>
 
-        <!-- Pagination Controls -->
         <div
           class="d-flex justify-content-center align-items-center my-4"
           *ngIf="!isLoading && totalPages > 1"
         >
           <button
-            class="btn mx-1"
+            class="btn btn-primary mx-1"
             (click)="goToPage(currentPage - 1)"
             [disabled]="currentPage === 1"
           >
             Previous
           </button>
-          <span class="mx-2"> Page {{ currentPage }} of {{ totalPages }} </span>
+          <span class="mx-2">Page {{ currentPage }} of {{ totalPages }}</span>
           <button
-            class="btn mx-1"
+            class="btn btn-primary mx-1"
             (click)="goToPage(currentPage + 1)"
             [disabled]="currentPage === totalPages"
           >
