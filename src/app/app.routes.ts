@@ -40,6 +40,7 @@ export const routes: Routes = [
   { path: 'password-reset-confirm', component: PasswordResetConfirmComponent },
   { path: 'product-details', component: ProductDetailsComponent },
   { path: 'my-account', component: MyAccountComponent},
+
   {
     path: 'admin',
     component: AdminComponent,
