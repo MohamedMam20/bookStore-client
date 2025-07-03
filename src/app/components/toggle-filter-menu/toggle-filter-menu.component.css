@@ -1,0 +1,29 @@
+/* Make sure there is no focus outline or highlight */
+.offcanvas .custom-close-btn:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+/* Style the icon inside the close button */
+.offcanvas .custom-close-btn i {
+  font-size: 1.5rem;
+  color: black;
+  transition: color 0.3s ease;
+}
+
+/* Hover effect: turn orange */
+.offcanvas .custom-close-btn:hover i {
+  color: #c43618;
+}
+.filter-toggle-btn {
+  margin-left: 2rem; /* or any spacing you prefer */
+  background-color: #c43618; /* orange background */
+  color: white; /* white text/icons */
+  border: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.filter-toggle-btn:hover {
+  background-color: black; /* black background on hover */
+  color: white; /* keep text white */
+}

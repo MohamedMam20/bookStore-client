@@ -4,13 +4,19 @@ import { ProductCardComponent } from '../../components/product-card/product-card
 import { FilterComponent } from '../../components/filter/filter.component';
 import { Book } from '../../models/book.model';
 import { BooksService } from '../../services/books/books.service';
+import { ToggleFilterMenuComponent } from '../../components/toggle-filter-menu/toggle-filter-menu.component';
 
 @Component({
   selector: 'app-books-page',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent, FilterComponent],
+  imports: [
+    CommonModule,
+    ProductCardComponent,
+    FilterComponent,
+    ToggleFilterMenuComponent,
+  ],
   templateUrl: './books-page.component.html',
-  styleUrls: ['./books-page.component.css'], // fixed typo from "styleUrl"
+  styleUrls: ['./books-page.component.css'],
 })
 export class BooksPageComponent implements OnInit {
   products: Book[] = [];
