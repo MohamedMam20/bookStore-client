@@ -11,7 +11,6 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
-  font-family: var(--font-main);
 }
 
 .cart-overlay.show {
@@ -24,17 +23,32 @@
   width: 100%;
   max-width: 25rem;
   height: 100%;
-  padding: 2.5rem 1.875rem;
+  padding: 2.5rem 1.875rem 9rem; /* bottom padding to avoid footer overlap */
   position: relative;
   box-shadow: -0.125rem 0 0.5rem rgba(0, 0, 0, 0.1);
   transform: translateX(100%);
   transition: transform 0.3s ease;
   font-family: var(--font-main);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) #f0f0f0;
+}
+
+.cart-panel::-webkit-scrollbar {
+  width: 6px;
+}
+.cart-panel::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+.cart-panel::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 4px;
 }
 
 .cart-overlay.show .cart-panel {
   transform: translateX(0);
 }
+
 .close-btn {
   right: 1.5rem;
   position: absolute;
@@ -45,10 +59,10 @@
   color: var(--icon-b);
   transition: color 0.2s;
 }
-
 .close-btn:hover {
   color: var(--icon-hover-color);
 }
+
 .cart-content {
   margin-top: 12rem;
   text-align: center;
@@ -64,7 +78,7 @@
 .continue-btn {
   background-color: var(--primary-color);
   color: #ffffff;
-  padding: 0.625rem 1.25rem;
+  padding: 1rem 0;
   border: none;
   font-weight: bold;
   font-size: 0.875rem;
@@ -72,9 +86,7 @@
   margin-bottom: 2.5rem;
   width: 12.5rem;
   transition: background-color 0.3s ease;
-  padding: 1rem 0;
 }
-
 .continue-btn:hover {
   background-color: #b03025;
 }
@@ -83,7 +95,6 @@
   text-align: center;
   font-size: 1rem;
   margin-top: 2rem;
-  font-family: var(--font-main);
   color: var(--text-color);
 }
 
@@ -95,14 +106,114 @@
 .login-text {
   font-size: 0.875rem;
 }
-
 .login-text a {
   color: var(--text-color);
   text-decoration: underline;
   font-weight: normal;
   transition: color 0.2s ease;
 }
-
 .login-text a:hover {
   color: var(--primary-color);
+}
+
+.cart-items {
+  padding: 1.5rem 0.5rem;
+}
+
+.cart-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.cart-item {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+}
+
+.book-image {
+  width: 100px;
+  height: auto;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+.cart-details {
+  flex: 1;
+}
+
+.book-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0.3rem 0;
+}
+
+.cart-details p {
+  font-size: 0.9rem;
+  margin: 0.2rem 0;
+}
+
+.quantity-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.quantity-container button {
+  padding: 0.2rem 0.6rem;
+  font-size: 1rem;
+  background: white;
+  border: 1px solid black;
+  cursor: pointer;
+}
+.quantity-container span {
+  min-width: 1.5rem;
+  text-align: center;
+}
+.delete-icon {
+  font-size: 1.2rem;
+  color: black;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+/* ===== Fixed Footer ===== */
+.cart-footer {
+  width: 100%;
+  max-width: 25rem;
+  background: #fff;
+  padding: 1rem 2rem;
+  border-top: 1px solid #ccc;
+}
+
+.total-section {
+  font-family: sans-serif;
+  display: flex;
+  justify-content: space-between;
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.total-section span {
+  font-size: 1.3rem;
+}
+
+.purchase-btn {
+  background-color: var(--primary-color);
+  color: #fff;
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 2rem;
+}
+.purchase-btn:hover {
+  background-color: #b03025;
 }

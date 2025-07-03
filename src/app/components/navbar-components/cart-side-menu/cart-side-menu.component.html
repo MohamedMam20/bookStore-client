@@ -2,12 +2,12 @@
   <div class="cart-panel" (click)="$event.stopPropagation()">
     <button class="close-btn" (click)="closeCart()">X</button>
 
+    <!-- Empty Cart -->
     <div class="cart-content" *ngIf="cartItems.length === 0">
       <p class="title-cart">Your cart is empty</p>
       <button class="continue-btn" (click)="continueShopping()">
         Continue Shopping
       </button>
-
       <div class="login-section">
         <p class="account-question">Have an account?</p>
         <p class="login-text">
@@ -16,23 +16,45 @@
       </div>
     </div>
 
+    <!-- Cart Items -->
     <div class="cart-items" *ngIf="cartItems.length > 0">
-      <h2>Your Cart</h2>
+      <h2 class="cart-title">Your cart</h2>
+      <hr />
       <ul>
         <li *ngFor="let item of cartItems" class="cart-item">
           <img
-            [src]="item.book?.image"
+            [src]="item.image"
             alt="{{ item.book?.title }}"
-            width="40"
+            class="book-image"
           />
           <div class="cart-details">
-            <p>{{ item.book?.title }}</p>
-            <p>Qty: {{ item.quantity }} | Lang: {{ item.language }}</p>
-            <p>{{ item.book?.price | currency }}</p>
+            <h3 class="book-title">{{ item.title }}</h3>
+            <p><strong>Language:</strong> {{ item.language }}</p>
+            <p><strong>Qty:</strong> {{ item.quantity }}</p>
+            <p><strong>Price:</strong> {{ item.price }}</p>
+            <div class="quantity-container">
+              <button (click)="decreaseQuantity(item)">−</button>
+              <span>{{ item.quantity }}</span>
+              <button (click)="increaseQuantity(item)">+</button>
+              <i
+                class="fa fa-trash delete-icon"
+                (click)="removeFromCart(item.id)"
+              ></i>
+            </div>
           </div>
         </li>
       </ul>
-      <button class="continue-btn" (click)="checkout()">Checkout</button>
+    </div>
+
+    <!-- Fixed Footer -->
+    <div class="cart-footer" *ngIf="cartItems.length > 0">
+      <div class="total-section">
+        <span>Total:</span>
+        <span class="total-price">{{ getTotalPrice() }}L.E</span>
+      </div>
+      <button class="purchase-btn" (click)="proceedToPurchase()">
+        Proceed to Purchase
+      </button>
     </div>
   </div>
 </div>
