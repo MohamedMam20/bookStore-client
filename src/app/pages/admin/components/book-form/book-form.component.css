@@ -90,3 +90,19 @@
   background-color: #6c757d;
   color: white;
 }
+
+
+.ocr-results {
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  padding: 10px;
+  border: 1px solid #dee2e6;
+}
+
+.ocr-text {
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-bottom: 0;
+}

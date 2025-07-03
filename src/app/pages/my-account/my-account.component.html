@@ -1,0 +1,588 @@
+<div class="my-account-container">
+  <!-- Notifications -->
+  <div class="notifications" *ngIf="notifications.length > 0">
+    <div *ngFor="let notification of notifications" class="notification success-notification">
+      <i class="fas fa-check-circle"></i>
+      {{ notification }}
+      <button class="notification-close" (click)="dismissNotification(notification)">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="user-profile">
+      <div class="avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <h3>{{ userInfo.name }}</h3>
+      <p>{{ userInfo.email }}</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li [class.active]="selectedSection === 'dashboard'" (click)="selectSection('dashboard')">
+          <i class="fas fa-tachometer-alt"></i> Dashboard
+        </li>
+        <li [class.active]="selectedSection === 'profile'" (click)="selectSection('profile')">
+          <i class="fas fa-user-edit"></i> Profile
+        </li>
+        <li [class.active]="selectedSection === 'orders'" (click)="selectSection('orders')">
+          <i class="fas fa-box"></i> Orders
+        </li>
+        <li [class.active]="selectedSection === 'cart'" (click)="selectSection('cart')">
+          <i class="fas fa-shopping-cart"></i> Cart
+          <span class="badge" *ngIf="cartItems.length > 0">{{ cartItems.length }}</span>
+        </li>
+        <li [class.active]="selectedSection === 'wishlist'" (click)="selectSection('wishlist')">
+          <i class="fas fa-heart"></i> Wishlist
+          <span class="badge" *ngIf="wishlist.length > 0">{{ wishlist.length }}</span>
+        </li>
+        <li [class.active]="selectedSection === 'reviews'" (click)="selectSection('reviews')">
+          <i class="fas fa-star"></i> Reviews
+        </li>
+        <li [class.active]="selectedSection === 'billing'" (click)="selectSection('billing')">
+          <i class="fas fa-credit-card"></i> Billing & Payment
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="content">
+
+    <!-- Dashboard Section -->
+    <section *ngIf="selectedSection === 'dashboard'" class="dashboard-section">
+      <header class="dashboard-header">
+        <h1>Welcome back, {{ userInfo.name }}!</h1>
+        <p class="dashboard-desc">Here's what's happening with your account today.</p>
+      </header>
+
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <div class="stat-icon orders">
+            <i class="fas fa-box"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ orders.length }}</h3>
+            <p>Total Orders</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon cart">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ cartItems.length }}</h3>
+            <p>Cart Items</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon wishlist">
+            <i class="fas fa-heart"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ wishlist.length }}</h3>
+            <p>Wishlist Items</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon reviews">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ reviews.length }}</h3>
+            <p>Reviews Written</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-quick-actions">
+        <h2>Quick Actions</h2>
+        <div class="quick-actions-grid">
+          <button class="action-card" (click)="selectSection('orders')">
+            <i class="fas fa-eye"></i>
+            <span>View Orders</span>
+          </button>
+          <button class="action-card" (click)="selectSection('cart')">
+            <i class="fas fa-shopping-cart"></i>
+            <span>View Cart</span>
+          </button>
+          <button class="action-card" (click)="selectSection('profile')">
+            <i class="fas fa-user-edit"></i>
+            <span>Edit Profile</span>
+          </button>
+          <button class="action-card" (click)="selectSection('billing')">
+            <i class="fas fa-credit-card"></i>
+            <span>Manage Billing</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="recent-activity">
+        <h2>Recent Activity</h2>
+        <div class="activity-list">
+          <div class="activity-item" *ngFor="let order of orders.slice(0, 3)">
+            <div class="activity-icon">
+              <i class="fas fa-box"></i>
+            </div>
+            <div class="activity-content">
+              <h4>Order #{{ order.id }}</h4>
+              <p>{{ order.status }} • {{ order.date }} • ${{ order.total }}</p>
+            </div>
+            <button class="btn-link" (click)="viewOrderDetails(order.id)">View Details</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section *ngIf="selectedSection === 'profile'" class="section-card">
+      <header class="section-header">
+        <h2><i class="fas fa-user-edit"></i> Profile Settings</h2>
+        <p>Manage your personal information and account settings</p>
+      </header>
+
+      <div class="profile-tabs">
+        <button class="tab-btn" [class.active]="!showPasswordChange" (click)="showPasswordChange = false">
+          Personal Info
+        </button>
+        <button class="tab-btn" [class.active]="showPasswordChange" (click)="showPasswordChange = true">
+          Change Password
+        </button>
+      </div>
+
+      <!-- Personal Info Tab -->
+      <div *ngIf="!showPasswordChange" class="tab-content">
+        <form (ngSubmit)="updateUserInfo()" #userInfoForm="ngForm" class="profile-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" [(ngModel)]="userInfo.name" name="name" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" [(ngModel)]="userInfo.email" name="email" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" [(ngModel)]="userInfo.phone" name="phone" />
+          </div>
+          <button class="primary-btn" type="submit">
+            <i class="fas fa-save"></i> Update Profile
+          </button>
+        </form>
+      </div>
+
+      <!-- Change Password Tab -->
+      <div *ngIf="showPasswordChange" class="tab-content">
+        <form (ngSubmit)="changePassword()" #passwordForm="ngForm" class="profile-form">
+          <div class="form-group">
+            <label for="currentPassword">Current Password</label>
+            <input type="password" id="currentPassword" [(ngModel)]="userInfo.currentPassword" name="currentPassword" required />
+          </div>
+          <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" id="newPassword" [(ngModel)]="userInfo.newPassword" name="newPassword" required />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm New Password</label>
+            <input type="password" id="confirmPassword" [(ngModel)]="userInfo.confirmPassword" name="confirmPassword" required />
+          </div>
+          <button class="primary-btn" type="submit">
+            <i class="fas fa-lock"></i> Change Password
+          </button>
+        </form>
+      </div>
+
+      <div class="success-message" *ngIf="userInfoMessage">
+        <i class="fas fa-check-circle"></i> {{ userInfoMessage }}
+      </div>
+    </section>
+
+    <!-- Orders Section -->
+    <section *ngIf="selectedSection === 'orders'" class="section-card">
+      <header class="section-header">
+        <h2><i class="fas fa-box"></i> Order History</h2>
+        <p>Track and manage your orders</p>
+      </header>
+
+      <div class="orders-grid">
+        <div *ngFor="let order of orders" class="order-card" (click)="viewOrderDetails(order.id)">
+          <div class="order-header">
+            <div class="order-id">Order #{{ order.id }}</div>
+            <div class="order-status" [ngClass]="'status-' + order.status.toLowerCase()">
+              {{ order.status }}
+            </div>
+          </div>
+          <div class="order-info">
+            <p><i class="fas fa-calendar"></i> {{ order.date }}</p>
+            <p><i class="fas fa-dollar-sign"></i> ${{ order.total }}</p>
+            <p><i class="fas fa-box"></i> {{ order.items.length }} item(s)</p>
+          </div>
+          <div class="order-actions">
+            <button class="btn-outline">View Details</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Order Details Section -->
+    <section *ngIf="selectedSection === 'order-details'" class="section-card">
+      <header class="section-header">
+        <button class="back-btn" (click)="selectSection('orders')">
+          <i class="fas fa-arrow-left"></i> Back to Orders
+        </button>
+        <h2>Order #{{ selectedOrderId }}</h2>
+      </header>
+
+      <div *ngIf="getSelectedOrder() as order" class="order-details">
+        <div class="order-summary">
+          <div class="summary-item">
+            <strong>Status:</strong>
+            <span class="status-badge" [ngClass]="'status-' + order.status.toLowerCase()">
+              {{ order.status }}
+            </span>
+          </div>
+          <div class="summary-item">
+            <strong>Order Date:</strong> {{ order.date }}
+          </div>
+          <div class="summary-item">
+            <strong>Total:</strong> ${{ order.total }}
+          </div>
+          <div class="summary-item">
+            <strong>Payment Method:</strong> {{ order.paymentMethod }}
+          </div>
+          <div class="summary-item">
+            <strong>Shipping Address:</strong> {{ order.shippingAddress }}
+          </div>
+        </div>
+
+        <div class="order-items">
+          <h3>Items Ordered</h3>
+          <div class="items-list">
+            <div *ngFor="let item of order.items" class="item-card">
+              <div class="item-image">
+                <i class="fas fa-book"></i>
+              </div>
+              <div class="item-details">
+                <h4>{{ item.name }}</h4>
+                <p>Quantity: {{ item.quantity }}</p>
+                <p class="item-price">${{ item.price }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cart Section -->
+    <section *ngIf="selectedSection === 'cart'" class="section-card">
+      <header class="section-header">
+        <h2><i class="fas fa-shopping-cart"></i> Shopping Cart</h2>
+        <p>Review your items before checkout</p>
+      </header>
+
+      <div *ngIf="cartItems.length === 0" class="empty-state">
+        <i class="fas fa-shopping-cart"></i>
+        <h3>Your cart is empty</h3>
+        <p>Add some books to get started!</p>
+      </div>
+
+      <div *ngIf="cartItems.length > 0">
+        <div class="cart-items">
+          <div *ngFor="let item of cartItems" class="cart-item">
+            <div class="item-image">
+              <i class="fas fa-book"></i>
+            </div>
+            <div class="item-details">
+              <h4>{{ item.name }}</h4>
+              <p class="item-author">by {{ item.author }}</p>
+              <div class="item-controls">
+                <span class="quantity">Qty: {{ item.quantity }}</span>
+                <span class="price">${{ item.price }}</span>
+              </div>
+            </div>
+            <button class="remove-btn" (click)="removeFromCart(item.id)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span>Subtotal:</span>
+            <span>${{ getCartTotal() }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping:</span>
+            <span>Free</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total:</span>
+            <span>${{ getCartTotal() }}</span>
+          </div>
+          <button class="primary-btn checkout-btn" (click)="placeOrder()">
+            <i class="fas fa-credit-card"></i> Proceed to Checkout
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wishlist Section -->
+    <section *ngIf="selectedSection === 'wishlist'" class="section-card">
+      <header class="section-header">
+        <h2><i class="fas fa-heart"></i> My Wishlist</h2>
+        <p>Save your favorite books for later</p>
+      </header>
+
+      <div *ngIf="wishlist.length === 0" class="empty-state">
+        <i class="fas fa-heart"></i>
+        <h3>Your wishlist is empty</h3>
+        <p>Start adding books you'd like to read!</p>
+      </div>
+
+      <div *ngIf="wishlist.length > 0" class="wishlist-grid">
+        <div *ngFor="let item of wishlist" class="wishlist-item">
+          <div class="item-image">
+            <i class="fas fa-book"></i>
+          </div>
+          <div class="item-details">
+            <h4>{{ item.name }}</h4>
+            <p class="item-author">by {{ item.author }}</p>
+            <p class="item-price">${{ item.price }}</p>
+          </div>
+          <div class="item-actions">
+            <button class="primary-btn" (click)="moveToCart(item.id)">
+              <i class="fas fa-cart-plus"></i> Add to Cart
+            </button>
+            <button class="remove-btn" (click)="removeFromWishlist(item.id)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section *ngIf="selectedSection === 'reviews'" class="section-card">
+      <header class="section-header">
+        <h2><i class="fas fa-star"></i> My Reviews</h2>
+        <p>Your reviews and ratings for purchased books</p>
+      </header>
+
+      <div *ngIf="reviews.length === 0" class="empty-state">
+        <i class="fas fa-star"></i>
+        <h3>No reviews yet</h3>
+        <p>Purchase some books and share your thoughts!</p>
+      </div>
+
+      <div *ngIf="reviews.length > 0" class="reviews-list">
+        <div *ngFor="let review of reviews" class="review-card">
+          <div class="review-header">
+            <h4>{{ review.product }}</h4>
+            <div class="rating">
+              <span *ngFor="let star of getStarsArray(review.rating)"
+                    class="star" [class.filled]="star.filled">
+                ★
+              </span>
+            </div>
+          </div>
+          <p class="review-comment">{{ review.comment }}</p>
+          <div class="review-footer">
+            <span class="review-date">{{ review.date }}</span>
+            <span class="review-helpful">
+              <i class="fas fa-thumbs-up"></i> {{ review.helpful }} helpful
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Billing & Payment Section -->
+    <section *ngIf="selectedSection === 'billing'" class="section-card">
+      <header class="section-header">
+        <h2><i class="fas fa-credit-card"></i> Billing & Payment</h2>
+        <p>Manage your addresses and payment methods</p>
+      </header>
+
+      <div class="billing-tabs">
+        <button class="tab-btn" [class.active]="!showAddressForm && !showPaymentForm"
+                (click)="showAddressForm = false; showPaymentForm = false">
+          Addresses
+        </button>
+        <button class="tab-btn" [class.active]="showPaymentForm"
+                (click)="showPaymentForm = true; showAddressForm = false">
+          Payment Methods
+        </button>
+      </div>
+
+      <!-- Addresses Tab -->
+      <div *ngIf="!showAddressForm && !showPaymentForm" class="tab-content">
+        <div class="addresses-section">
+          <div class="address-cards">
+            <div class="address-card">
+              <div class="address-header">
+                <h4><i class="fas fa-home"></i> Billing Address</h4>
+                <button class="btn-link" (click)="showAddressForm = true">Edit</button>
+              </div>
+              <div class="address-content">
+                <p>{{ billingAddress.fullName }}</p>
+                <p>{{ billingAddress.street }}</p>
+                <p>{{ billingAddress.city }}, {{ billingAddress.state }} {{ billingAddress.zipCode }}</p>
+                <p>{{ billingAddress.country }}</p>
+              </div>
+            </div>
+
+            <div class="address-card">
+              <div class="address-header">
+                <h4><i class="fas fa-truck"></i> Shipping Address</h4>
+                <button class="btn-link">Edit</button>
+              </div>
+              <div class="address-content">
+                <p>{{ shippingAddress.fullName }}</p>
+                <p>{{ shippingAddress.street }}</p>
+                <p>{{ shippingAddress.city }}, {{ shippingAddress.state }} {{ shippingAddress.zipCode }}</p>
+                <p>{{ shippingAddress.country }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address Form -->
+      <div *ngIf="showAddressForm" class="tab-content">
+        <form (ngSubmit)="updateBillingAddress()" class="address-form">
+          <h3>Edit Billing Address</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fullName">Full Name</label>
+              <input type="text" id="fullName" [(ngModel)]="billingAddress.fullName" name="fullName" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="street">Street Address</label>
+            <input type="text" id="street" [(ngModel)]="billingAddress.street" name="street" required />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city">City</label>
+              <input type="text" id="city" [(ngModel)]="billingAddress.city" name="city" required />
+            </div>
+            <div class="form-group">
+              <label for="state">State</label>
+              <input type="text" id="state" [(ngModel)]="billingAddress.state" name="state" required />
+            </div>
+            <div class="form-group">
+              <label for="zipCode">ZIP Code</label>
+              <input type="text" id="zipCode" [(ngModel)]="billingAddress.zipCode" name="zipCode" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="country">Country</label>
+            <select id="country" [(ngModel)]="billingAddress.country" name="country">
+              <option value="United States">United States</option>
+              <option value="Canada">Canada</option>
+              <option value="United Kingdom">United Kingdom</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-outline" (click)="showAddressForm = false">Cancel</button>
+            <button type="submit" class="primary-btn">
+              <i class="fas fa-save"></i> Save Address
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Payment Methods Tab -->
+      <div *ngIf="showPaymentForm && !showAddressForm" class="tab-content">
+        <div class="payment-methods-section">
+          <div class="payment-methods-list">
+            <div *ngFor="let method of paymentMethods" class="payment-card">
+              <div class="payment-info">
+                <div class="card-icon">
+                  <i class="fab" [ngClass]="method.type === 'Visa' ? 'fa-cc-visa' : 'fa-cc-mastercard'"></i>
+                </div>
+                <div class="card-details">
+                  <h4>{{ method.type }} •••• {{ method.last4 }}</h4>
+                  <p>Expires {{ method.expiryDate }}</p>
+                  <span *ngIf="method.isDefault" class="default-badge">Default</span>
+                </div>
+              </div>
+              <div class="payment-actions">
+                <button *ngIf="!method.isDefault" class="btn-link" (click)="setDefaultPaymentMethod(method.id)">
+                  Set as Default
+                </button>
+                <button class="remove-btn" (click)="removePaymentMethod(method.id)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="primary-btn add-payment-btn" (click)="showPaymentForm = false; showAddressForm = false">
+            <i class="fas fa-plus"></i> Add Payment Method
+          </button>
+        </div>
+      </div>
+
+      <!-- Add Payment Method Form -->
+      <div *ngIf="!showPaymentForm && !showAddressForm" class="add-payment-section">
+        <form (ngSubmit)="addPaymentMethod()" class="payment-form">
+          <h3>Add New Payment Method</h3>
+          <div class="form-group">
+            <label for="cardHolder">Cardholder Name</label>
+            <input type="text" id="cardHolder" [(ngModel)]="newPaymentMethod.cardHolder" name="cardHolder" required />
+          </div>
+          <div class="form-group">
+            <label for="cardNumber">Card Number</label>
+            <input type="text" id="cardNumber" [(ngModel)]="newPaymentMethod.cardNumber" name="cardNumber"
+                   placeholder="1234 5678 9012 3456" required />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="expiryDate">Expiry Date</label>
+              <input type="text" id="expiryDate" [(ngModel)]="newPaymentMethod.expiryDate" name="expiryDate"
+                     placeholder="MM/YY" required />
+            </div>
+            <div class="form-group">
+              <label for="cvv">CVV</label>
+              <input type="text" id="cvv" [(ngModel)]="newPaymentMethod.cvv" name="cvv"
+                     placeholder="123" required />
+            </div>
+            <div class="form-group">
+              <label for="cardType">Card Type</label>
+              <select id="cardType" [(ngModel)]="newPaymentMethod.type" name="cardType">
+                <option value="Visa">Visa</option>
+                <option value="Mastercard">Mastercard</option>
+                <option value="American Express">American Express</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-outline" (click)="showPaymentForm = true">Cancel</button>
+            <button type="submit" class="primary-btn">
+              <i class="fas fa-plus"></i> Add Payment Method
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="success-message" *ngIf="billingMessage || paymentMessage">
+        <i class="fas fa-check-circle"></i> {{ billingMessage || paymentMessage }}
+      </div>
+    </section>
+
+  </main>
+</div>

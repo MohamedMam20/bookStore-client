@@ -23,6 +23,9 @@ import { BookFormComponent } from './pages/admin/components/book-form/book-form.
 import { DashboardOverviewComponent } from './pages/admin/components/dashboard-overview/dashboard-overview.component';
 import { UserListComponent } from './pages/admin/components/user-list/user-list.component';
 import { UserFormComponent } from './pages/admin/components/user-form/user-form.component';
+import { MyAccountComponent } from './pages/my-account/my-account.component';
+
+
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'wishlist', component: WishlistComponent },
@@ -35,6 +38,8 @@ export const routes: Routes = [
   { path: 'password-reset', component: PasswordResetRequestComponent },
   { path: 'password-reset-confirm', component: PasswordResetConfirmComponent },
   { path: 'product-details', component: ProductDetailsComponent },
+  { path: 'my-account', component: MyAccountComponent},
+
   {
     path: 'admin',
     component: AdminComponent,
@@ -45,6 +50,7 @@ export const routes: Routes = [
       { path: 'books/new', component: BookFormComponent },
       { path: 'books/edit/:id', component: BookFormComponent },
       { path: 'users', component: UserListComponent },
+      { path: 'users/new', component: UserFormComponent }, // New route for creating users
       { path: 'users/edit/:id', component: UserFormComponent },
     ],
   },

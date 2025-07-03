@@ -63,7 +63,9 @@ export class BookFormComponent implements OnInit {
 
     this.loading = true;
     this.adminService.getAllBooks().subscribe({
-      next: (books) => {
+      next: (response) => {
+        // Access the books array from the data property
+        const books = response.data;
         const book = books.find((b: Book) => b._id === id);
         if (book) {
           this.bookForm.patchValue({
@@ -110,6 +112,44 @@ export class BookFormComponent implements OnInit {
     }
   }
 
+  // Add these properties to the class
+  ocrText: string = '';
+  ocrLoading: boolean = false;
+  cloudinaryImageUrl: string | null = null;
+
+  // Add this new method for OCR processing
+  extractTextFromImage(): void {
+    if (!this.selectedFile) {
+      alert('Please select an image first');
+      return;
+    }
+
+    this.ocrLoading = true;
+    const formData = new FormData();
+    formData.append('image', this.selectedFile);
+
+    this.adminService.createBook(formData).subscribe({
+      next: (response) => {
+        if (response.status === 'partial' && response.ocrText) {
+          console.log('OCR text extracted:', response.ocrText);
+          this.ocrText = response.ocrText;
+          this.cloudinaryImageUrl = response.image;
+          this.fillFormFromOcr(response.ocrText);
+        } else {
+          console.error('Unexpected response:', response);
+          alert('Failed to extract text from image');
+        }
+        this.ocrLoading = false;
+      },
+      error: (err) => {
+        console.error('Error extracting text:', err);
+        alert('Failed to extract text: ' + (err.error?.message || 'Unknown error'));
+        this.ocrLoading = false;
+      }
+    });
+  }
+
+  // Update the onSubmit method to use the cloudinaryImageUrl if available
   onSubmit(): void {
     if (this.bookForm.invalid) {
       return;
@@ -129,8 +169,12 @@ export class BookFormComponent implements OnInit {
     formData.append('stockAr', this.bookForm.value.stockAr.toString());
     formData.append('stockFr', this.bookForm.value.stockFr.toString());
 
-    // Add image if selected
-    if (this.selectedFile) {
+    // If we already have a cloudinary URL from OCR, use it
+    if (this.cloudinaryImageUrl) {
+      formData.append('image', this.cloudinaryImageUrl);
+    }
+    // Otherwise, add the image file if selected
+    else if (this.selectedFile) {
       formData.append('image', this.selectedFile);
     }
 
@@ -168,4 +212,20 @@ export class BookFormComponent implements OnInit {
       });
     }
   }
+  fillFormFromOcr(ocrText: string): void {
+    if (!ocrText) return;
+
+    const lines = ocrText.split('\n');
+    const title = lines[0]; // naive assumption: first line = title
+    const authorLine = lines.find(line => /by|author/i.test(line));
+    const descriptionStartIndex = lines.findIndex(line => line.length > 30);
+    const description = lines.slice(descriptionStartIndex).join(' ');
+
+    this.bookForm.patchValue({
+      title: title?.trim(),
+      author: authorLine?.replace(/by|author/i, '').trim(),
+      description: description.trim()
+    });
+  }
+
 }
