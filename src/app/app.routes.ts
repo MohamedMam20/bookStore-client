@@ -25,6 +25,7 @@ import { UserListComponent } from './pages/admin/components/user-list/user-list.
 import { UserFormComponent } from './pages/admin/components/user-form/user-form.component';
 import { MyAccountComponent } from './pages/my-account/my-account.component';
 
+
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'wishlist', component: WishlistComponent },
@@ -37,7 +38,7 @@ export const routes: Routes = [
   { path: 'password-reset', component: PasswordResetRequestComponent },
   { path: 'password-reset-confirm', component: PasswordResetConfirmComponent },
   { path: 'product-details', component: ProductDetailsComponent },
-  { path: 'my-account', component: MyAccountComponent },
+  { path: 'my-account', component: MyAccountComponent},
 
   {
     path: 'admin',
