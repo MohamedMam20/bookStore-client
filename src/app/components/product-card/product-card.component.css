@@ -110,3 +110,12 @@
 .card-img-container:hover .card-img-top {
   transform: scale(1.03);
 }
+
+.wishlist-active {
+  background-color: #ffeded !important;
+  border: 1px solid #c43618;
+}
+
+.wishlist-active i {
+  color: #c43618;
+}

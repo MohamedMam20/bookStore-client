@@ -38,11 +38,10 @@ export class CartSideMenuComponent implements OnChanges {
   loadCart() {
     this.cartService.viewCart().subscribe({
       next: (res) => {
-        this.cartItems = res.items || [];
-        console.log(res);
+        this.cartItems = res.data || [];
+        console.log(res.data);
       },
       error: (err) => {
-        this.toastr.error(err.error?.message || 'Failed to load cart');
         this.cartItems = [];
       },
     });
@@ -67,5 +66,59 @@ export class CartSideMenuComponent implements OnChanges {
       return;
     }
     this.router.navigateByUrl('/checkout');
+  }
+  increaseQuantity(item: any): void {
+    const newQuantity = item.quantity + 1;
+
+    const maxStock = item.book?.stock?.[item.language];
+    if (maxStock !== undefined && newQuantity > maxStock) {
+      this.toastr.warning(`Only ${maxStock} items in stock.`);
+      return;
+    }
+
+    this.cartService.updateItemQuantity(item.id, newQuantity).subscribe({
+      next: () => {
+        this.loadCart();
+      },
+      error: (err) => {
+        this.toastr.error(err.error?.message || 'Failed to update quantity.');
+      },
+    });
+  }
+
+  decreaseQuantity(item: any): void {
+    const newQuantity = item.quantity - 1;
+
+    this.cartService.updateItemQuantity(item.id, newQuantity).subscribe({
+      next: () => {
+        this.loadCart();
+      },
+      error: (err) => {
+        this.toastr.error(err.error?.message || 'Failed to update quantity.');
+      },
+    });
+  }
+
+  removeFromCart(itemId: string): void {
+    this.cartService.deleteItem(itemId).subscribe({
+      next: () => {
+        this.loadCart();
+      },
+      error: (err) => {
+        console.error('Delete failed:', err);
+      },
+    });
+  }
+
+  proceedToPurchase() {
+    this.router.navigateByUrl('/checkout');
+    this.isCartVisible = false;
+  }
+  getTotalPrice(): number {
+    return this.cartItems.reduce((total, item) => {
+      const price = parseFloat(item.price);
+      const quantity = parseInt(item.quantity, 10) || 1;
+      return total + price * quantity;
+    }, 0);
   }
 }

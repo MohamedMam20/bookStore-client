@@ -22,4 +22,16 @@ export class CartService {
   viewCart(): Observable<any> {
     return this.http.get(`${this.baseUrl}/`);
   }
+
+  deleteItem(id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}`, {
+      body: { id },
+    });
+  }
+  updateItemQuantity(itemId: string, quantity: number) {
+    return this.http.patch<any>(`${this.baseUrl}/update-quantity`, {
+      id: itemId,
+      quantity,
+    });
+  }
 }

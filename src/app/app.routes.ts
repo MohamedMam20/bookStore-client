@@ -13,7 +13,6 @@ import { OtpCompleteComponent } from './pages/auth/otp-complete/otp-complete.com
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 
 import { BooksPageComponent } from './pages/books-page/books-page.component';
-import { UploadComponent } from './components/upload/upload.component';
 
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { AdminComponent } from './pages/admin/admin.component';
@@ -30,7 +29,7 @@ import { MyAccountComponent } from './pages/my-account/my-account.component';
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'wishlist', component: WishlistComponent },
-  { path: 'shop', component: BooksPageComponent},
+  { path: 'shop', component: BooksPageComponent },
   { path: 'checkout', component: CheckoutComponent, title: 'Payment Form' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
@@ -53,14 +52,14 @@ export const routes: Routes = [
       { path: 'users', component: UserListComponent },
       { path: 'users/new', component: UserFormComponent }, // New route for creating users
       { path: 'users/edit/:id', component: UserFormComponent },
-    ]
+    ],
   },
   {
-  path: 'product-details/:id',
-  loadComponent: () =>
-    import('./pages/product-details/product-details.component').then(
-      (m) => m.ProductDetailsComponent
-    ),
-},
+    path: 'product-details/:id',
+    loadComponent: () =>
+      import('./pages/product-details/product-details.component').then(
+        (m) => m.ProductDetailsComponent
+      ),
+  },
   { path: '**', component: NotFoundComponent },
 ];

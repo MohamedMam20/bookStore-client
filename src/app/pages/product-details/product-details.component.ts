@@ -3,7 +3,7 @@ import {
   ElementRef,
   ViewChild,
   OnInit,
-  inject
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,17 +12,17 @@ import { ToastrService } from 'ngx-toastr';
 import { BooksService } from '../../services/books/books.service';
 import { BookReviewsComponent } from '../book-reviews/book-reviews.component';
 import { environment } from '../../../environments/environment';
-
-
+import { CartService } from '../../services/cart/cart.service';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.css'],
-   imports: [CommonModule, FormsModule, BookReviewsComponent]
+  imports: [CommonModule, FormsModule, BookReviewsComponent],
 })
 export class ProductDetailsComponent implements OnInit {
+  constructor(private cartService: CartService) {}
   imageBaseUrl = environment.imageBaseUrl;
   private route = inject(ActivatedRoute);
   private toastr = inject(ToastrService);
@@ -48,13 +48,12 @@ export class ProductDetailsComponent implements OnInit {
     this.viewsCount = Math.floor(Math.random() * 200) + 50;
 
     this.route.paramMap.subscribe((params) => {
-  const id = params.get('id');
-  if (id) {
-    this.slug = id;
-    this.fetchProduct(id);
-  }
-});
-
+      const id = params.get('id');
+      if (id) {
+        this.slug = id;
+        this.fetchProduct(id);
+      }
+    });
   }
 
   onRatingStatsChange(data: { average: number; count: number }) {
@@ -66,50 +65,46 @@ export class ProductDetailsComponent implements OnInit {
     const names: any = {
       en: 'English',
       ar: 'Arabic',
-      fr: 'French'
+      fr: 'French',
     };
     return names[code] || code;
   }
 
-fetchProduct(id: string) {
-  this.bookLoading = true;
-  this.bookError = null;
+  fetchProduct(id: string) {
+    this.bookLoading = true;
+    this.bookError = null;
 
-  this.booksService.getBookById(id).subscribe({
-    next: (res: any) => {
-      this.product = res.data || res;
+    this.booksService.getBookById(id).subscribe({
+      next: (res: any) => {
+        this.product = res.data || res;
 
+        this.slug = this.product.slug;
 
-      this.slug = this.product.slug;
+        this.averageRating = this.product.averageRating || 0;
+        this.reviewsCount = this.product.reviewsCount || 0;
 
+        this.product.languages = (
+          Object.entries(this.product.stock || {}) as [string, number][]
+        )
+          .filter(([_, quantity]) => quantity > 0)
+          .map(([code]) => ({
+            name: this.getLanguageName(code),
+            code,
+            selected: code === 'en',
+          }));
 
-      this.averageRating = this.product.averageRating || 0;
-      this.reviewsCount = this.product.reviewsCount || 0;
+        this.selectedLanguage =
+          this.product.languages.find((l: any) => l.selected)?.code || 'en';
 
-
-      this.product.languages = (Object.entries(this.product.stock || {}) as [string, number][])
-        .filter(([_, quantity]) => quantity > 0)
-        .map(([code]) => ({
-          name: this.getLanguageName(code),
-          code,
-          selected: code === 'en'
-        }));
-
-
-      this.selectedLanguage = this.product.languages.find((l: any) => l.selected)?.code || 'en';
-
-      this.bookLoading = false;
-    },
-    error: (err: any) => {
-      this.bookError = err?.error?.message || 'Error fetching book details.';
-      this.toastr.error(this.bookError || 'Error fetching book details.');
-      this.bookLoading = false;
-    }
-  });
-}
-
-
-
+        this.bookLoading = false;
+      },
+      error: (err: any) => {
+        this.bookError = err?.error?.message || 'Error fetching book details.';
+        this.toastr.error(this.bookError || 'Error fetching book details.');
+        this.bookLoading = false;
+      },
+    });
+  }
 
   increment() {
     const maxStock = this.getStockForSelectedLang();
@@ -142,8 +137,24 @@ fetchProduct(id: string) {
     setTimeout(() => {
       this.reviewSection?.nativeElement.scrollIntoView({
         behavior: 'smooth',
-        block: 'start'
+        block: 'start',
       });
     }, 0);
+  }
+  addToCart() {
+    const bookId = this.product._id;
+    const quantity = this.quantity;
+    const language = this.selectedLanguage;
+
+    this.cartService.addToCart({ bookId, quantity, language }).subscribe({
+      next: (res) => {
+        this.toastr.success(res.message);
+        console.log(res);
+      },
+      error: (err) => {
+        this.toastr.error(err.error.message || 'Error adding to cart');
+        console.error(err);
+      },
+    });
   }
 }

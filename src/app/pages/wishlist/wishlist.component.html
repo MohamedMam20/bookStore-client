@@ -5,10 +5,65 @@
   </div>
 </div>
 
-<div class="wishlist-empty">
-  <p class="empty-message">Nothing found in wishlist!</p>
-  <i class="fas fa-shopping-cart empty-icon"></i>
-  <button class="continue-btn" (click)="continueShopping()">
-    Continue Shopping
-  </button>
+<div
+  class="container-fluid"
+  style="font-family: 'Segoe UI', sans-serif; background-color: #fbf6f0"
+>
+  <div class="d-flex">
+    <!-- Wishlist Cards Section -->
+    <div class="flex-grow-1 p-3">
+      <div class="container-fluid">
+        <!-- Loading Spinner -->
+        <div class="text-center my-5" *ngIf="isLoading">
+          <div class="spinner-border text-primary" role="status"></div>
+          <div class="mt-2">Loading wishlist...</div>
+        </div>
+
+        <!-- Empty State -->
+        <div
+          class="wishlist-empty text-center"
+          *ngIf="!isLoading && products.length === 0"
+        >
+          <p class="empty-message">Nothing found in wishlist!</p>
+          <i class="fas fa-shopping-cart empty-icon fa-3x mb-3"></i>
+          <br />
+          <button class="continue-btn" (click)="continueShopping()">
+            Continue Shopping
+          </button>
+        </div>
+        <div class="row g-4" *ngIf="!isLoading && products.length > 0">
+          @for (product of products; track product._id) {
+          <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+            <app-product-card
+              [product]="product"
+              (wishlistChanged)="loadWishlist()"
+            ></app-product-card>
+          </div>
+          }
+        </div>
+
+        <!-- Pagination -->
+        <div
+          class="d-flex justify-content-center align-items-center my-4"
+          *ngIf="!isLoading && totalPages > 1"
+        >
+          <button
+            class="btn mx-1"
+            (click)="goToPage(currentPage - 1)"
+            [disabled]="currentPage === 1"
+          >
+            Previous
+          </button>
+          <span class="mx-2"> Page {{ currentPage }} of {{ totalPages }} </span>
+          <button
+            class="btn mx-1"
+            (click)="goToPage(currentPage + 1)"
+            [disabled]="currentPage === totalPages"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
