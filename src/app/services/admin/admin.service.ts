@@ -79,6 +79,12 @@ export class AdminService {
     });
   }
 
+  createUser(userData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/admin`, userData, {
+      headers: this.getAuthHeaders().set('Content-Type', 'application/json')
+    });
+  }
+
   updateUser(id: string, userData: any): Observable<any> {
     return this.http.patch(`${this.baseUrl}/admin/${id}`, userData, {
       headers: this.getAuthHeaders().set('Content-Type', 'application/json')

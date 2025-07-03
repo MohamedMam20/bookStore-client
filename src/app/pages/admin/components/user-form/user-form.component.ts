@@ -17,6 +17,7 @@ export class UserFormComponent implements OnInit {
   userId: string | null = null;
   loading: boolean = false;
   error: string | null = null;
+  isEditMode: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -31,10 +32,17 @@ export class UserFormComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.userId = params['id'];
+        this.isEditMode = true;
         // Only call loadUserDetails if userId is not null
         if (this.userId) {
           this.loadUserDetails(this.userId);
         }
+      } else {
+        this.isEditMode = false;
+        // Enable email field for new users
+        this.userForm.get('email')?.enable();
+        // Add password field for new users
+        this.userForm.addControl('password', this.fb.control('', [Validators.required, Validators.minLength(6)]));
       }
     });
   }
@@ -61,7 +69,7 @@ export class UserFormComponent implements OnInit {
             role: user.role
           });
 
-          // Disable email field as it shouldn't be changed
+          // Disable email field as it shouldn't be changed in edit mode
           this.userForm.get('email')?.disable();
         } else {
           this.error = 'User not found';
@@ -85,22 +93,47 @@ export class UserFormComponent implements OnInit {
     }
 
     this.loading = true;
-    const userData = {
-      firstName: this.userForm.value.firstName,
-      lastName: this.userForm.value.lastName,
-      role: this.userForm.value.role
-    };
 
-    this.adminService.updateUser(this.userId!, userData).subscribe({
-      next: (response) => {
-        alert('User updated successfully');
-        this.router.navigate(['/admin/users']);
-      },
-      error: (err) => {
-        this.error = 'Failed to update user';
-        this.loading = false;
-        console.error('Error updating user:', err);
-      }
-    });
+    if (this.isEditMode) {
+      // Update existing user
+      const userData = {
+        firstName: this.userForm.value.firstName,
+        lastName: this.userForm.value.lastName,
+        role: this.userForm.value.role
+      };
+
+      this.adminService.updateUser(this.userId!, userData).subscribe({
+        next: (response) => {
+          alert('User updated successfully');
+          this.router.navigate(['/admin/users']);
+        },
+        error: (err) => {
+          this.error = 'Failed to update user';
+          this.loading = false;
+          console.error('Error updating user:', err);
+        }
+      });
+    } else {
+      // Create new user
+      const userData = {
+        firstName: this.userForm.value.firstName,
+        lastName: this.userForm.value.lastName,
+        email: this.userForm.value.email,
+        password: this.userForm.value.password,
+        role: this.userForm.value.role
+      };
+
+      this.adminService.createUser(userData).subscribe({
+        next: (response) => {
+          alert('User created successfully');
+          this.router.navigate(['/admin/users']);
+        },
+        error: (err) => {
+          this.error = 'Failed to create user';
+          this.loading = false;
+          console.error('Error creating user:', err);
+        }
+      });
+    }
   }
 }

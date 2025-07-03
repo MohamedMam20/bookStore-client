@@ -76,6 +76,17 @@
                 </div>
                 <input type="file" class="file-input" accept="image/*" (change)="onFileSelected($event)">
               </div>
+              <!-- Add OCR button here -->
+              <button type="button" class="btn btn-info mt-2 w-100" [disabled]="!selectedFile || ocrLoading" (click)="extractTextFromImage()">
+                <span *ngIf="ocrLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Extract Text from Image
+              </button>
+            </div>
+
+            <!-- Add OCR results display -->
+            <div *ngIf="ocrText" class="mt-3 ocr-results">
+              <h6>Extracted Text:</h6>
+              <pre class="ocr-text">{{ ocrText }}</pre>
             </div>
           </div>
         </div>
@@ -106,6 +117,7 @@
     <div class="form-actions mt-4">
       <button type="button" class="btn btn-outline-secondary me-2" routerLink="/admin/books">Cancel</button>
       <button type="submit" class="btn btn-primary" [disabled]="bookForm.invalid || loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
         {{isEditMode ? 'Update' : 'Create'}} Book
       </button>
     </div>
