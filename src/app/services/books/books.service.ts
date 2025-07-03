@@ -41,4 +41,9 @@ export class BooksService {
         }))
       );
   }
+ getBookById(slug: string): Observable<Book> {
+  return this.http.get<Book>(`http://localhost:3000/api/v1/book/${slug}`);
 }
+
+}
+

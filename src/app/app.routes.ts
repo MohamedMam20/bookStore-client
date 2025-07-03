@@ -13,8 +13,8 @@ import { OtpCompleteComponent } from './pages/auth/otp-complete/otp-complete.com
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 
 import { BooksPageComponent } from './pages/books-page/books-page.component';
-import { UploadComponent } from './components/upload/upload.component';
 
+import { HomePageComponent } from './components/home-page/home-page.component';
 import { AdminComponent } from './pages/admin/admin.component';
 
 // Admin Components
@@ -23,7 +23,7 @@ import { BookFormComponent } from './pages/admin/components/book-form/book-form.
 import { DashboardOverviewComponent } from './pages/admin/components/dashboard-overview/dashboard-overview.component';
 import { UserListComponent } from './pages/admin/components/user-list/user-list.component';
 import { UserFormComponent } from './pages/admin/components/user-form/user-form.component';
-import { HomePageComponent } from './components/home-page/home-page.component';
+import { MyAccountComponent } from './pages/my-account/my-account.component';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -37,6 +37,8 @@ export const routes: Routes = [
   { path: 'password-reset', component: PasswordResetRequestComponent },
   { path: 'password-reset-confirm', component: PasswordResetConfirmComponent },
   { path: 'product-details', component: ProductDetailsComponent },
+  { path: 'my-account', component: MyAccountComponent },
+
   {
     path: 'admin',
     component: AdminComponent,
@@ -47,8 +49,16 @@ export const routes: Routes = [
       { path: 'books/new', component: BookFormComponent },
       { path: 'books/edit/:id', component: BookFormComponent },
       { path: 'users', component: UserListComponent },
+      { path: 'users/new', component: UserFormComponent }, // New route for creating users
       { path: 'users/edit/:id', component: UserFormComponent },
     ],
+  },
+  {
+    path: 'product-details/:id',
+    loadComponent: () =>
+      import('./pages/product-details/product-details.component').then(
+        (m) => m.ProductDetailsComponent
+      ),
   },
   { path: '**', component: NotFoundComponent },
 ];

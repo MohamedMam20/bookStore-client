@@ -1,10 +1,16 @@
 <div class="product-details-wrapper">
-
   <div class="product-container">
     <div class="left-section">
       <img [src]="product.image" alt="product" class="main-image" />
-      <div class="thumbnail-row">
-        <img *ngFor="let img of product.thumbnails" [src]="img" class="thumbnail" />
+
+      <div class="thumbnail-row" *ngIf="product.thumbnails?.length">
+        <!-- <img *ngFor="let img of product.thumbnails" [src]="img" class="thumbnail" /> -->
+        <img
+          [src]="product.image"
+          alt="product"
+          class="main-image"
+          style="width: 300px; height: auto"
+        />
       </div>
     </div>
 
@@ -14,30 +20,59 @@
 
       <div class="price-box">
         <span class="price">LE {{ product.price }}</span>
-        <span class="original-price">LE {{ product.originalPrice }}</span>
+        <span *ngIf="product.originalPrice" class="original-price"
+          >LE {{ product.originalPrice }}</span
+        >
         <span class="sale-badge">sale</span>
       </div>
 
-      <div class="info-pair"><strong>Vendor:</strong> {{ product.vendor }}</div>
-      <div class="info-pair"><strong>Type:</strong> {{ product.type }}</div>
+      <div class="info-pair"><strong>Author:</strong> {{ product.author }}</div>
+      <div class="info-pair">
+        <strong>Author Bio:</strong> {{ product.authorDescription }}
+      </div>
+      <div class="info-pair">
+        <strong>Category:</strong> {{ product.category }}
+      </div>
 
-      <div class="options">
+      <div class="options" *ngIf="product.languages?.length">
         <p class="option-label">Language:</p>
         <div class="option-group">
-          <span *ngFor="let lang of product.languages"
-                (click)="selectLanguage(lang)"
-                [class.selected]="lang.selected">{{ lang.name }}</span>
+          <span
+            *ngFor="let lang of product.languages"
+            (click)="selectLanguage(lang)"
+            [class.selected]="lang.selected"
+          >
+            {{ lang.name }}
+          </span>
         </div>
       </div>
 
-      <div class="info-pair"><strong>Publication Date:</strong> {{ product.publicationDate | date }}</div>
+      <div class="info-pair">
+        <strong>Publication Date:</strong> {{ product.createdAt | date }}
+      </div>
 
-      <div class="info-pair stars-box">
+      <div class="info-pair stars-box" *ngIf="reviewsCount > 0">
         <strong>Rating:</strong>
-        <span *ngFor="let star of [1,2,3,4,5]">
-          <i class="star" [class.filled]="star <= averageRating" [class.unfilled]="star > averageRating">★</i>
+        <span *ngFor="let star of [1, 2, 3, 4, 5]">
+          <i
+            class="star"
+            [ngClass]="{
+              filled: star <= Math.floor(averageRating),
+              'half-filled':
+                star === Math.ceil(averageRating) &&
+                !Number.isInteger(averageRating),
+              unfilled: star > averageRating
+            }"
+          >
+            ★
+          </i>
         </span>
-        <span class="rating-count">({{ submittedReviews.length }} reviews)</span>
+        <span class="rating-count">({{ reviewsCount }} reviews)</span>
+      </div>
+
+      <div class="info-pair stars-box" *ngIf="reviewsCount === 0">
+        <strong>Rating:</strong>
+        <span>No reviews yet</span>
       </div>
 
       <div class="quantity-box">
@@ -46,29 +81,45 @@
         <span>{{ quantity }}</span>
         <button (click)="increment()">+</button>
       </div>
-      <p *ngIf="quantity >= product.stock" class="warning-message">⚠️ Maximum quantity reached!</p>
 
-      <div class="info-pair">Availability: <strong>{{ product.stock }} in stock</strong></div>
-      <div class="info-pair">Sub total: <strong>LE {{ product.price * quantity | number:'1.2-2' }}</strong></div>
+      <p *ngIf="quantity >= getStockForSelectedLang()" class="warning-message">
+        ⚠️ Maximum quantity reached!
+      </p>
+
+      <div class="info-pair">
+        Availability:
+        <strong
+          >{{ getStockForSelectedLang() }} in stock ({{
+            selectedLanguage.toUpperCase()
+          }})</strong
+        >
+      </div>
+
+      <div class="info-pair">
+        Sub total:
+        <strong>LE {{ product.price * quantity | number : "1.2-2" }}</strong>
+      </div>
 
       <div class="actions">
-        <button class="btn add">Add To Cart</button>
+        <button class="btn add" (click)="addToCart()">Add To Cart</button>
         <button class="btn wishlist">View Wishlist</button>
         <button class="btn buy">Buy It Now</button>
       </div>
 
       <p class="meta-info">🚚 Estimated delivery 5-7 days</p>
-      <p class="meta-info">👀 {{ viewsCount }} people are viewing this right now</p>
+      <p class="meta-info">
+        👀 {{ viewsCount }} people are viewing this right now
+      </p>
     </div>
   </div>
 
   <div class="review-section">
     <div class="review-toggle-wrapper">
-      <button class="toggle-reviews" (click)="showDescription = false; showReviewsSection = !showReviewsSection">
-        {{ showReviewsSection ? 'Hide Reviews' : 'View Reviews' }}
+      <button class="toggle-reviews" (click)="toggleSection('review')">
+        {{ showReviewsSection ? "Hide Reviews" : "View Reviews" }}
       </button>
-      <button class="toggle-reviews" (click)="showReviewsSection = false; showDescription = !showDescription">
-        {{ showDescription ? 'Hide Description' : 'View Full Description' }}
+      <button class="toggle-reviews" (click)="toggleSection('description')">
+        {{ showDescription ? "Hide Description" : "View Full Description" }}
       </button>
     </div>
 
@@ -76,61 +127,11 @@
       <h3>Full Description</h3>
       <p>{{ product.description }}</p>
     </div>
-  </div>
 
-  <div *ngIf="showReviewsSection" #reviewSection class="submitted-reviews full-width-reviews">
-    <div class="full-description-box">
-      <h3>Customer Reviews</h3>
-      <button class="btn write-review" (click)="showReviews = !showReviews">
-        {{ showReviews ? 'Cancel' : 'Write a Review' }}
-      </button>
-    </div>
-
-    <div class="reviews-slide" *ngIf="showReviews">
-      <div class="stars-input">
-        <label>Rating:</label>
-        <span *ngFor="let star of [1,2,3,4,5]"
-              (click)="setReviewRating(star)"
-              (mouseover)="hoverRating = star"
-              (mouseleave)="hoverRating = 0">
-          <i class="star"
-             [class.filled]="star <= reviewForm.rating || star <= hoverRating"
-             [class.unfilled]="star > reviewForm.rating && star > hoverRating">★</i>
-        </span>
-      </div>
-
-      <textarea [(ngModel)]="reviewText" rows="3" placeholder="Write your review..."></textarea>
-
-      <div class="review-actions">
-        <button (click)="submitReview()" class="btn submit">
-          {{ isEditing ? 'Update Review' : 'Submit Review' }}
-        </button>
-        <button (click)="cancelReview()" class="btn cancel">Cancel</button>
-      </div>
-
-      <p *ngIf="warningMessage" class="warning-message">{{ warningMessage }}</p>
-    </div>
-
-    <div *ngFor="let review of submittedReviews; let i = index" class="single-review">
-      <div class="review-top">
-        <div class="stars-display">
-          <i *ngFor="let star of [1,2,3,4,5]" class="star" [class.filled]="star <= review.rating">★</i>
-        </div>
-        <div class="review-date">{{ review.date }}</div>
-      </div>
-
-      <div class="review-user">
-        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="user" class="avatar" />
-        <strong>{{ review.name || 'Anonymous' }}</strong>
-      </div>
-
-      <p class="review-title">Consequat ac felis donec</p>
-      <p class="review-content">{{ review.text }}</p>
-
-      <div class="review-actions-inline">
-        <button class="btn small" (click)="editReview(i)">Edit</button>
-        <button class="btn small cancel" (click)="deleteReview(i)">Delete</button>
-      </div>
-    </div>
+    <app-book-reviews
+      *ngIf="showReviewsSection && slug"
+      [slug]="slug"
+      (ratingStats)="onRatingStatsChange($event)"
+    ></app-book-reviews>
   </div>
 </div>
