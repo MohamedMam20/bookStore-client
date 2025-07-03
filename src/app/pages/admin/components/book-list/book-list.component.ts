@@ -4,8 +4,8 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../../../services/admin/admin.service';
 import { Book } from '../../../../models/book.model';
-import { ToastrService } from 'ngx-toastr'; // Add this import
-import { forkJoin } from 'rxjs'; // Add this import at the top
+import { ToastrService } from 'ngx-toastr';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-book-list',
@@ -22,13 +22,19 @@ export class BookListComponent implements OnInit {
   error: string | null = null;
   categories: string[] = [];
   selectedCategory: string = '';
-  selectedBooks = new Set<string>(); // Make sure this is defined
-  sortColumn: string = 'title'; // Add this property
-  sortDirection: 'asc' | 'desc' = 'asc'; // Add this property
+  selectedBooks = new Set<string>();
+  sortColumn: string = 'title';
+  sortDirection: 'asc' | 'desc' = 'asc';
+
+  // Pagination properties
+  currentPage: number = 1;
+  totalPages: number = 1;
+  itemsPerPage: number = 10;
+  totalItems: number = 0;
 
   constructor(
     private adminService: AdminService,
-    private toastr: ToastrService // Add ToastrService
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -37,12 +43,28 @@ export class BookListComponent implements OnInit {
 
   loadBooks(): void {
     this.loading = true;
-    this.adminService.getAllBooks().subscribe({
-      next: (data) => {
-        this.books = data;
+    this.adminService.getAllBooks(this.currentPage, this.itemsPerPage).subscribe({
+      next: (response) => {
+        // Check if response has the expected structure
+        if (response && response.data) {
+          this.books = response.data;
+        } else if (Array.isArray(response)) {
+          // If response is an array, use it directly
+          this.books = response;
+        } else {
+          console.error('Unexpected response format:', response);
+          this.error = 'Unexpected data format from server';
+          this.books = [];
+        }
+
         this.filteredBooks = [...this.books];
         this.extractCategories();
         this.loading = false;
+
+        // Set pagination data if available
+        if (response.page) this.currentPage = response.page;
+        if (response.totalPages) this.totalPages = response.totalPages;
+        if (response.totalItems) this.totalItems = response.totalItems;
       },
       error: (err) => {
         this.error = 'Failed to load books. Please try again.';
@@ -176,6 +198,28 @@ export class BookListComponent implements OnInit {
           this.showError('Failed to delete some books. Please try again.');
         }
       });
+    }
+  }
+
+  // Add pagination methods
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
+      this.currentPage = page;
+      this.loadBooks();
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadBooks();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadBooks();
     }
   }
 }

@@ -47,7 +47,7 @@ export class LoginComponent {
         next: (res) => {
           localStorage.setItem('authToken', res.token);
           this.toastr.success(' Login successful!');
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/admin']);
         },
         error: (err) => {
           this.toastr.error(
