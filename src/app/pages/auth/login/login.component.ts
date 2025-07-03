@@ -38,6 +38,31 @@ export class LoginComponent {
     this.showPassword = !this.showPassword;
   }
 
+  // onSubmit(): void {
+  //   if (this.loginForm.valid) {
+  //     this.loading = true;
+  //     const formData = this.loginForm.value;
+
+  //     this.authService.login(formData).subscribe({
+  //       next: (res) => {
+  //         localStorage.setItem('authToken', res.token);
+  //         this.toastr.success(' Login successful!');
+  //         this.router.navigate(['/admin']);
+  //       },
+  //       error: (err) => {
+  //         this.toastr.error(
+  //           err.error.message || '❌ Login failed. Please try again.'
+  //         );
+  //       },
+  //       complete: () => {
+  //         this.loading = false;
+  //       },
+  //     });
+  //   } else {
+  //     this.toastr.warning('⚠️ Enter a valid email or password.');
+  //   }
+  // }
+
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.loading = true;
@@ -46,13 +71,21 @@ export class LoginComponent {
       this.authService.login(formData).subscribe({
         next: (res) => {
           localStorage.setItem('authToken', res.token);
-          this.toastr.success(' Login successful!');
-          this.router.navigate(['/admin']);
+
+          const role = res.user?.role || 'user'; // default to 'user' if undefined
+          this.toastr.success('✅ Login successful!');
+
+          if (role === 'admin') {
+            this.router.navigate(['/admin']);
+          } else {
+            this.router.navigate(['/']);
+          }
         },
         error: (err) => {
           this.toastr.error(
             err.error.message || '❌ Login failed. Please try again.'
           );
+          this.loading = false;
         },
         complete: () => {
           this.loading = false;
@@ -62,6 +95,7 @@ export class LoginComponent {
       this.toastr.warning('⚠️ Enter a valid email or password.');
     }
   }
+
 
   signInWithFacebook(): void {
     console.log('Sign in with Facebook');
