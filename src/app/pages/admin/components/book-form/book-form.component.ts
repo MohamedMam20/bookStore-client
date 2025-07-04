@@ -9,7 +9,7 @@ import { Book } from '../../../../models/book.model';
   selector: 'app-book-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './book-form.component.html', // Changed from CSS to HTML
+  templateUrl: './book-form.component.html',
   styleUrls: ['./book-form.component.css']
 })
 export class BookFormComponent implements OnInit {
@@ -19,6 +19,7 @@ export class BookFormComponent implements OnInit {
   loading: boolean = false;
   imagePreview: string | null = null;
   selectedFile: File | null = null;
+
   categories: string[] = [
     'Fiction', 'Non-Fiction', 'Science Fiction', 'Fantasy',
     'Mystery', 'Thriller', 'Romance', 'Biography', 'History',
@@ -59,12 +60,11 @@ export class BookFormComponent implements OnInit {
   }
 
   loadBookDetails(id: string | null): void {
-    if (!id) return; // Early return if id is null
+    if (!id) return;
 
     this.loading = true;
     this.adminService.getAllBooks().subscribe({
       next: (response) => {
-        // Access the books array from the data property
         const books = response.data;
         const book = books.find((b: Book) => b._id === id);
         if (book) {
@@ -103,7 +103,6 @@ export class BookFormComponent implements OnInit {
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
 
-      // Create preview
       const reader = new FileReader();
       reader.onload = () => {
         this.imagePreview = reader.result as string;
@@ -112,44 +111,6 @@ export class BookFormComponent implements OnInit {
     }
   }
 
-  // Add these properties to the class
-  ocrText: string = '';
-  ocrLoading: boolean = false;
-  cloudinaryImageUrl: string | null = null;
-
-  // Add this new method for OCR processing
-  extractTextFromImage(): void {
-    if (!this.selectedFile) {
-      alert('Please select an image first');
-      return;
-    }
-
-    this.ocrLoading = true;
-    const formData = new FormData();
-    formData.append('image', this.selectedFile);
-
-    this.adminService.createBook(formData).subscribe({
-      next: (response) => {
-        if (response.status === 'partial' && response.ocrText) {
-          console.log('OCR text extracted:', response.ocrText);
-          this.ocrText = response.ocrText;
-          this.cloudinaryImageUrl = response.image;
-          this.fillFormFromOcr(response.ocrText);
-        } else {
-          console.error('Unexpected response:', response);
-          alert('Failed to extract text from image');
-        }
-        this.ocrLoading = false;
-      },
-      error: (err) => {
-        console.error('Error extracting text:', err);
-        alert('Failed to extract text: ' + (err.error?.message || 'Unknown error'));
-        this.ocrLoading = false;
-      }
-    });
-  }
-
-  // Update the onSubmit method to use the cloudinaryImageUrl if available
   onSubmit(): void {
     if (this.bookForm.invalid) {
       return;
@@ -158,7 +119,6 @@ export class BookFormComponent implements OnInit {
     this.loading = true;
     const formData = new FormData();
 
-    // Add form values to FormData
     formData.append('title', this.bookForm.value.title);
     formData.append('author', this.bookForm.value.author || '');
     formData.append('category', this.bookForm.value.category || '');
@@ -169,12 +129,7 @@ export class BookFormComponent implements OnInit {
     formData.append('stockAr', this.bookForm.value.stockAr.toString());
     formData.append('stockFr', this.bookForm.value.stockFr.toString());
 
-    // If we already have a cloudinary URL from OCR, use it
-    if (this.cloudinaryImageUrl) {
-      formData.append('image', this.cloudinaryImageUrl);
-    }
-    // Otherwise, add the image file if selected
-    else if (this.selectedFile) {
+    if (this.selectedFile) {
       formData.append('image', this.selectedFile);
     }
 
@@ -212,20 +167,4 @@ export class BookFormComponent implements OnInit {
       });
     }
   }
-  fillFormFromOcr(ocrText: string): void {
-    if (!ocrText) return;
-
-    const lines = ocrText.split('\n');
-    const title = lines[0]; // naive assumption: first line = title
-    const authorLine = lines.find(line => /by|author/i.test(line));
-    const descriptionStartIndex = lines.findIndex(line => line.length > 30);
-    const description = lines.slice(descriptionStartIndex).join(' ');
-
-    this.bookForm.patchValue({
-      title: title?.trim(),
-      author: authorLine?.replace(/by|author/i, '').trim(),
-      description: description.trim()
-    });
-  }
-
 }
