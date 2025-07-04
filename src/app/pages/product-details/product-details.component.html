@@ -5,12 +5,8 @@
 
       <div class="thumbnail-row" *ngIf="product.thumbnails?.length">
         <!-- <img *ngFor="let img of product.thumbnails" [src]="img" class="thumbnail" /> -->
-        <img
-          [src]="product.image"
-          alt="product"
-          class="main-image"
-          style="width: 300px; height: auto"
-        />
+         <img [src]="product.image" alt="product" class="main-image" style="width: 300px; height: auto;" />
+
       </div>
     </div>
 
@@ -20,60 +16,49 @@
 
       <div class="price-box">
         <span class="price">LE {{ product.price }}</span>
-        <span *ngIf="product.originalPrice" class="original-price"
-          >LE {{ product.originalPrice }}</span
-        >
+        <span *ngIf="product.originalPrice" class="original-price">LE {{ product.originalPrice }}</span>
         <span class="sale-badge">sale</span>
       </div>
 
       <div class="info-pair"><strong>Author:</strong> {{ product.author }}</div>
-      <div class="info-pair">
-        <strong>Author Bio:</strong> {{ product.authorDescription }}
-      </div>
-      <div class="info-pair">
-        <strong>Category:</strong> {{ product.category }}
-      </div>
+      <div class="info-pair"><strong>Author Bio:</strong> {{ product.authorDescription }}</div>
+      <div class="info-pair"><strong>Category:</strong> {{ product.category }}</div>
 
       <div class="options" *ngIf="product.languages?.length">
         <p class="option-label">Language:</p>
         <div class="option-group">
-          <span
-            *ngFor="let lang of product.languages"
-            (click)="selectLanguage(lang)"
-            [class.selected]="lang.selected"
-          >
+          <span *ngFor="let lang of product.languages"
+                (click)="selectLanguage(lang)"
+                [class.selected]="lang.selected">
             {{ lang.name }}
           </span>
         </div>
       </div>
 
-      <div class="info-pair">
-        <strong>Publication Date:</strong> {{ product.createdAt | date }}
-      </div>
+      <div class="info-pair"><strong>Publication Date:</strong> {{ product.createdAt | date }}</div>
 
-      <div class="info-pair stars-box" *ngIf="reviewsCount > 0">
-        <strong>Rating:</strong>
-        <span *ngFor="let star of [1, 2, 3, 4, 5]">
-          <i
-            class="star"
-            [ngClass]="{
-              filled: star <= Math.floor(averageRating),
-              'half-filled':
-                star === Math.ceil(averageRating) &&
-                !Number.isInteger(averageRating),
-              unfilled: star > averageRating
-            }"
-          >
-            ★
-          </i>
-        </span>
-        <span class="rating-count">({{ reviewsCount }} reviews)</span>
-      </div>
+    <div class="info-pair stars-box" *ngIf="reviewsCount > 0">
+  <strong>Rating:</strong>
+  <span *ngFor="let star of [1,2,3,4,5]">
+    <i
+      class="star"
+      [ngClass]="{
+        'filled': star <= Math.floor(averageRating),
+        'half-filled': star === Math.ceil(averageRating) && !Number.isInteger(averageRating),
+        'unfilled': star > averageRating
+      }"
+    >
+      ★
+    </i>
+  </span>
+  <span class="rating-count">({{ reviewsCount }} reviews)</span>
+</div>
 
-      <div class="info-pair stars-box" *ngIf="reviewsCount === 0">
-        <strong>Rating:</strong>
-        <span>No reviews yet</span>
-      </div>
+<div class="info-pair stars-box" *ngIf="reviewsCount === 0">
+  <strong>Rating:</strong>
+  <span>No reviews yet</span>
+</div>
+
 
       <div class="quantity-box">
         <strong>Quantity:</strong>
@@ -88,38 +73,32 @@
 
       <div class="info-pair">
         Availability:
-        <strong
-          >{{ getStockForSelectedLang() }} in stock ({{
-            selectedLanguage.toUpperCase()
-          }})</strong
-        >
+        <strong>{{ getStockForSelectedLang() }} in stock ({{ selectedLanguage.toUpperCase() }})</strong>
       </div>
 
-      <div class="info-pair">
-        Sub total:
-        <strong>LE {{ product.price * quantity | number : "1.2-2" }}</strong>
-      </div>
+      <div class="info-pair">Sub total: <strong>LE {{ product.price * quantity | number:'1.2-2' }}</strong></div>
 
-      <div class="actions">
-        <button class="btn add" (click)="addToCart()">Add To Cart</button>
-        <button class="btn wishlist">View Wishlist</button>
-        <button class="btn buy">Buy It Now</button>
-      </div>
+<div class="actions">
+  <button class="btn add" (click)="addToCart()">Add To Cart</button>
+  <button class="btn wishlist">View Wishlist</button>
+  <button class="btn buy" (click)="buyNow()">Buy It Now</button>
+
+</div>
+
+
 
       <p class="meta-info">🚚 Estimated delivery 5-7 days</p>
-      <p class="meta-info">
-        👀 {{ viewsCount }} people are viewing this right now
-      </p>
+      <p class="meta-info">👀 {{ viewsCount }} people are viewing this right now</p>
     </div>
   </div>
 
   <div class="review-section">
     <div class="review-toggle-wrapper">
       <button class="toggle-reviews" (click)="toggleSection('review')">
-        {{ showReviewsSection ? "Hide Reviews" : "View Reviews" }}
+        {{ showReviewsSection ? 'Hide Reviews' : 'View Reviews' }}
       </button>
       <button class="toggle-reviews" (click)="toggleSection('description')">
-        {{ showDescription ? "Hide Description" : "View Full Description" }}
+        {{ showDescription ? 'Hide Description' : 'View Full Description' }}
       </button>
     </div>
 
@@ -129,9 +108,9 @@
     </div>
 
     <app-book-reviews
-      *ngIf="showReviewsSection && slug"
-      [slug]="slug"
-      (ratingStats)="onRatingStatsChange($event)"
-    ></app-book-reviews>
+  *ngIf="showReviewsSection && slug"
+  [slug]="slug"
+  (ratingStats)="onRatingStatsChange($event)"
+></app-book-reviews>
   </div>
 </div>
