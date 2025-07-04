@@ -325,17 +325,20 @@ export class ProductDetailsComponent implements OnInit {
         this.reviewsCount = this.product.reviewsCount || 0;
 
         this.product.languages = (
-          Object.entries(this.product.stock || {}) as [string, number][]
-        )
-          .filter(([_, quantity]) => quantity > 0)
-          .map(([code]) => ({
-            name: this.getLanguageName(code),
-            code,
-            selected: code === 'en',
-          }));
+  Object.entries(this.product.stock || {}) as [string, number][]
+).map(([code, quantity]) => ({
+  name: this.getLanguageName(code),
+  code,
+  selected: code === 'en',
+  stock: quantity
+}));
 
-        this.selectedLanguage =
-          this.product.languages.find((l: any) => l.selected)?.code || 'en';
+        const defaultLang = this.product.languages.find((l: any) => l.stock > 0);
+this.selectedLanguage = defaultLang?.code || this.product.languages[0]?.code || 'en';
+const totalStock = (Object.values(this.product.stock || {}) as number[]).reduce((acc, val) => acc + val, 0);
+
+this.product.isOutOfStock = totalStock === 0;
+
 
         this.bookLoading = false;
       },
@@ -406,7 +409,7 @@ buyNow() {
 
   if (!token) {
     this.toastr.error('You must be logged in to proceed with the purchase.');
-    
+
     return;
   }
 

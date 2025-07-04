@@ -1,3 +1,4 @@
+<div class="product-container" [class.out-of-stock]="product.isOutOfStock">
 <div class="product-details-wrapper">
   <div class="product-container">
     <div class="left-section">
@@ -28,10 +29,13 @@
         <p class="option-label">Language:</p>
         <div class="option-group">
           <span *ngFor="let lang of product.languages"
-                (click)="selectLanguage(lang)"
-                [class.selected]="lang.selected">
-            {{ lang.name }}
-          </span>
+          (click)="lang.stock > 0 && selectLanguage(lang)"
+          [class.selected]="lang.selected"
+          [class.out-of-stock]="lang.stock === 0"
+          [class.disabled]="lang.stock === 0">
+      {{ lang.name }}
+      <small *ngIf="lang.stock === 0">(Out of stock)</small>
+    </span>
         </div>
       </div>
 
@@ -113,4 +117,5 @@
   (ratingStats)="onRatingStatsChange($event)"
 ></app-book-reviews>
   </div>
+</div>
 </div>
