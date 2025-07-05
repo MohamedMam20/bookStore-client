@@ -16,5 +16,5 @@ export interface Book {
   user?: string;
   createdAt?: string;
   updatedAt?: string;
-  slug?: string;
+  slug: string;
 }
