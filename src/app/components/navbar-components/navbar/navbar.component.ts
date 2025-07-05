@@ -5,6 +5,8 @@ import { SearchMenuComponent } from '../search-menu/search-menu.component';
 import { CommonModule } from '@angular/common';
 import { ToggleMenuComponent } from '../toggle-menu/toggle-menu.component';
 import { AuthService } from '../../../services/auth/auth.service';
+import { SearchServiceService } from '../../../services/search/search-service.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -19,7 +21,11 @@ import { AuthService } from '../../../services/auth/auth.service';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private searchService: SearchServiceService,
+    private router: Router
+  ) {}
 
   get loggedIn(): boolean {
     return this.authService.isLoggedIn();
@@ -30,28 +36,6 @@ export class NavbarComponent {
   isCartMenuOpen = false;
   isSearchMenuOpen = false;
   isToggleMenuOpen = false;
-  categories = [
-    {
-      title: 'Adventures',
-      image:
-        'https://marketplace.canva.com/EAFfSnGl7II/2/0/1003w/canva-elegant-dark-woods-fantasy-photo-book-cover-vAt8PH1CmqQ.jpg',
-    },
-    {
-      title: 'Eating & Books for a Cause',
-      image:
-        'https://marketplace.canva.com/EAFfSnGl7II/2/0/1003w/canva-elegant-dark-woods-fantasy-photo-book-cover-vAt8PH1CmqQ.jpg',
-    },
-    {
-      title: 'Fresh Healthy Meats',
-      image:
-        'https://marketplace.canva.com/EAFfSnGl7II/2/0/1003w/canva-elegant-dark-woods-fantasy-photo-book-cover-vAt8PH1CmqQ.jpg',
-    },
-    {
-      title: 'Endless Summer',
-      image:
-        'https://marketplace.canva.com/EAFfSnGl7II/2/0/1003w/canva-elegant-dark-woods-fantasy-photo-book-cover-vAt8PH1CmqQ.jpg',
-    },
-  ];
 
   toggleCartMenu() {
     this.isCartMenuOpen = !this.isCartMenuOpen;

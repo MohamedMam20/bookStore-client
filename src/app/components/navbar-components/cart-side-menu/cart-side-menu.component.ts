@@ -42,6 +42,7 @@ export class CartSideMenuComponent implements OnChanges {
         console.log(res.data);
       },
       error: (err) => {
+        this.toastr.error(err.error?.message || 'Failed to load cart');
         this.cartItems = [];
       },
     });
@@ -70,15 +71,16 @@ export class CartSideMenuComponent implements OnChanges {
   increaseQuantity(item: any): void {
     const newQuantity = item.quantity + 1;
 
-    const maxStock = item.book?.stock?.[item.language];
-    if (maxStock !== undefined && newQuantity > maxStock) {
-      this.toastr.warning(`Only ${maxStock} items in stock.`);
+    if (newQuantity > item.book?.stock?.[item.language]) {
+      this.toastr.warning(
+        `Only ${item.book.stock[item.language]} items in stock.`
+      );
       return;
     }
 
     this.cartService.updateItemQuantity(item.id, newQuantity).subscribe({
       next: () => {
-        this.loadCart();
+        item.quantity = newQuantity;
       },
       error: (err) => {
         this.toastr.error(err.error?.message || 'Failed to update quantity.');
@@ -89,9 +91,14 @@ export class CartSideMenuComponent implements OnChanges {
   decreaseQuantity(item: any): void {
     const newQuantity = item.quantity - 1;
 
+    if (newQuantity <= 0) {
+      this.removeFromCart(item.id);
+      return;
+    }
+
     this.cartService.updateItemQuantity(item.id, newQuantity).subscribe({
       next: () => {
-        this.loadCart();
+        item.quantity = newQuantity;
       },
       error: (err) => {
         this.toastr.error(err.error?.message || 'Failed to update quantity.');
@@ -112,24 +119,23 @@ export class CartSideMenuComponent implements OnChanges {
 
   proceedToPurchase() {
     if (!this.cartItems.length) {
-    this.toastr.warning('Cart is empty!');
-    return;
-  }
+      this.toastr.warning('Cart is empty!');
+      return;
+    }
 
-  // 🛒 خزني البيانات في localStorage علشان صفحة checkout تستخدمها
-  const cartItems = this.cartItems.map((item) => ({
-    productId: item.book?._id || item.productId,
-    name: item.book?.title || item.name,
-    price: item.price,
-    quantity: item.quantity,
-    image: item.book?.image || item.image || '',
-    language: item.language || 'ar'
-  }));
+    const cartItems = this.cartItems.map((item) => ({
+      productId: item.book?._id || item.productId,
+      name: item.book?.title || item.name,
+      price: item.price,
+      quantity: item.quantity,
+      image: item.book?.image || item.image || '',
+      language: item.language || 'ar',
+    }));
 
-  localStorage.setItem('cart', JSON.stringify(cartItems));
+    localStorage.setItem('cart', JSON.stringify(cartItems));
 
-  this.isCartVisible = false;
-  this.router.navigateByUrl('/checkout');
+    this.isCartVisible = false;
+    this.router.navigateByUrl('/checkout');
   }
   getTotalPrice(): number {
     return this.cartItems.reduce((total, item) => {
