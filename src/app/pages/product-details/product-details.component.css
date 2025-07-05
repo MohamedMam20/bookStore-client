@@ -375,6 +375,39 @@ textarea {
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
+.out-stock {
+  color: red;
+  font-weight: bold;
+}
+
+.languages .disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.product-container.out-of-stock {
+  position: relative;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.product-container.out-of-stock::after {
+  content: " Out of Stock in All Languages";
+  position: absolute;
+  top:4rem; 
+  left:5rem;
+  transform: rotate(-45deg);
+  background: #ffc107;
+  color: #000;
+  padding: 0.5rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 2px dashed #000;
+  z-index: 999;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  pointer-events: none;
+}
+
 
 /* .toggle-btn {
   padding: 8px 16px;
