@@ -3,7 +3,12 @@
     <button class="close-btn" (click)="closeSearch()">X</button>
     <div class="search-box">
       <i class="fas fa-search search-icon"></i>
-      <input type="text" placeholder="Search" />
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (keydown)="handleKeyDown($event)"
+        placeholder="Search"
+      />
     </div>
   </div>
 </div>

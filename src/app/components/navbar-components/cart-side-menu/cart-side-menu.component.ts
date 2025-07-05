@@ -119,24 +119,23 @@ export class CartSideMenuComponent implements OnChanges {
 
   proceedToPurchase() {
     if (!this.cartItems.length) {
-    this.toastr.warning('Cart is empty!');
-    return;
-  }
+      this.toastr.warning('Cart is empty!');
+      return;
+    }
 
-  // 🛒 خزني البيانات في localStorage علشان صفحة checkout تستخدمها
-  const cartItems = this.cartItems.map((item) => ({
-    productId: item.book?._id || item.productId,
-    name: item.book?.title || item.name,
-    price: item.price,
-    quantity: item.quantity,
-    image: item.book?.image || item.image || '',
-    language: item.language || 'ar'
-  }));
+    const cartItems = this.cartItems.map((item) => ({
+      productId: item.book?._id || item.productId,
+      name: item.book?.title || item.name,
+      price: item.price,
+      quantity: item.quantity,
+      image: item.book?.image || item.image || '',
+      language: item.language || 'ar',
+    }));
 
-  localStorage.setItem('cart', JSON.stringify(cartItems));
+    localStorage.setItem('cart', JSON.stringify(cartItems));
 
-  this.isCartVisible = false;
-  this.router.navigateByUrl('/checkout');
+    this.isCartVisible = false;
+    this.router.navigateByUrl('/checkout');
   }
   getTotalPrice(): number {
     return this.cartItems.reduce((total, item) => {

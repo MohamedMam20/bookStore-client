@@ -19,13 +19,18 @@ import { UserFormComponent } from './pages/admin/components/user-form/user-form.
 import { MyAccountComponent } from './pages/my-account/my-account.component';
 import { CheckoutFormComponent } from './components/checkout-form/checkout-form.component';
 import { OrderConfirmationComponent } from './components/order-confirmation/order-confirmation.component'; // Add this import
+import { SearchBooksPageComponent } from './pages/search-books-page/search-books-page.component';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'wishlist', component: WishlistComponent },
   { path: 'shop', component: BooksPageComponent },
   { path: 'checkout', component: CheckoutFormComponent, title: 'Payment Form' },
-  { path: 'order-confirmation', component: OrderConfirmationComponent, title: 'Order Confirmation' }, // Added route
+  {
+    path: 'order-confirmation',
+    component: OrderConfirmationComponent,
+    title: 'Order Confirmation',
+  }, // Added route
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
   { path: 'otp-verification', component: OtpVerificationComponent },
@@ -34,6 +39,7 @@ export const routes: Routes = [
   { path: 'password-reset-confirm', component: PasswordResetConfirmComponent },
   { path: 'product-details', component: ProductDetailsComponent },
   { path: 'my-account', component: MyAccountComponent },
+  { path: 'search', component: SearchBooksPageComponent },
   {
     path: 'admin',
     component: AdminComponent,
