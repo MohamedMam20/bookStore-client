@@ -1,3 +1,226 @@
+// import {
+//   Component,
+//   ElementRef,
+//   ViewChild,
+//   OnInit,
+//   inject,
+// } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { FormsModule } from '@angular/forms';
+// import { ActivatedRoute } from '@angular/router';
+// import { ToastrService } from 'ngx-toastr';
+// import { BooksService } from '../../services/books/books.service';
+// import { BookReviewsComponent } from '../book-reviews/book-reviews.component';
+// import { environment } from '../../../environments/environment';
+// import { CartService } from '../../services/cart/cart.service';
+// import { Stripe } from '@stripe/stripe-js';
+
+// import { AuthService } from '../../services/auth/auth.service';
+// import { StripeService } from '../../services/payment/payment.service';
+// import { loadStripe } from '@stripe/stripe-js';
+
+
+// @Component({
+//   selector: 'app-product-details',
+//   standalone: true,
+//   templateUrl: './product-details.component.html',
+//   styleUrls: ['./product-details.component.css'],
+//   imports: [CommonModule, FormsModule, BookReviewsComponent],
+// })
+// export class ProductDetailsComponent implements OnInit {
+//   // constructor(private cartService: CartService) {}
+// constructor(
+//   private cartService: CartService,
+//   private authService: AuthService,
+//   private stripeService: StripeService
+// ) {}
+
+
+//   imageBaseUrl = environment.imageBaseUrl;
+//   private route = inject(ActivatedRoute);
+//   private toastr = inject(ToastrService);
+//   private booksService = inject(BooksService);
+//   Math = Math;
+//   Number = Number;
+//   averageRating = 0;
+//   reviewsCount = 0;
+//   selectedLanguage: 'ar' | 'en' | 'fr' = 'en';
+//   slug: string = '';
+//   quantity = 1;
+//   viewsCount = 0;
+//   showDescription = false;
+//   showReviewsSection = false;
+//   showSection: 'review' | 'description' | '' = '';
+//   bookLoading = false;
+//   bookError: string | null = null;
+//   clientSecret!: string;
+//   orderId!: string;
+//   elements: any;
+//   cardElement: any;
+//   stripe!: Stripe;
+//   isPaymentReady = false;
+
+//   product: any = {};
+//   @ViewChild('reviewSection') reviewSection!: ElementRef;
+
+//   ngOnInit() {
+//     this.viewsCount = Math.floor(Math.random() * 200) + 50;
+
+//     this.route.paramMap.subscribe((params) => {
+//       const id = params.get('id');
+//       if (id) {
+//         this.slug = id;
+//         this.fetchProduct(id);
+//       }
+//     });
+//   }
+
+//   onRatingStatsChange(data: { average: number; count: number }) {
+//     this.averageRating = data.average;
+//     this.reviewsCount = data.count;
+//   }
+
+//   getLanguageName(code: string): string {
+//     const names: any = {
+//       en: 'English',
+//       ar: 'Arabic',
+//       fr: 'French',
+//     };
+//     return names[code] || code;
+//   }
+
+//   fetchProduct(id: string) {
+//     this.bookLoading = true;
+//     this.bookError = null;
+
+//     this.booksService.getBookById(id).subscribe({
+//       next: (res: any) => {
+//         this.product = res.data || res;
+
+//         this.slug = this.product.slug;
+
+//         this.averageRating = this.product.averageRating || 0;
+//         this.reviewsCount = this.product.reviewsCount || 0;
+
+//         this.product.languages = (
+//           Object.entries(this.product.stock || {}) as [string, number][]
+//         )
+//           .filter(([_, quantity]) => quantity > 0)
+//           .map(([code]) => ({
+//             name: this.getLanguageName(code),
+//             code,
+//             selected: code === 'en',
+//           }));
+
+//         this.selectedLanguage =
+//           this.product.languages.find((l: any) => l.selected)?.code || 'en';
+
+//         this.bookLoading = false;
+//       },
+//       error: (err: any) => {
+//         this.bookError = err?.error?.message || 'Error fetching book details.';
+//         this.toastr.error(this.bookError || 'Error fetching book details.');
+//         this.bookLoading = false;
+//       },
+//     });
+//   }
+
+//   increment() {
+//     const maxStock = this.getStockForSelectedLang();
+//     if (this.quantity < maxStock) this.quantity++;
+//   }
+
+//   decrement() {
+//     if (this.quantity > 1) this.quantity--;
+//   }
+
+//   selectLanguage(lang: any) {
+//     this.product.languages?.forEach((l: any) => (l.selected = false));
+//     lang.selected = true;
+//     this.selectedLanguage = lang.code;
+//   }
+
+//   getStockForSelectedLang(): number {
+//     return this.product.stock?.[this.selectedLanguage] || 0;
+//   }
+
+//   toggleSection(section: 'review' | 'description') {
+//     this.showSection = section;
+//     this.showReviewsSection = section === 'review';
+//     this.showDescription = section === 'description';
+//   }
+
+//   scrollToReview() {
+//     this.showSection = 'review';
+//     this.showReviewsSection = true;
+//     setTimeout(() => {
+//       this.reviewSection?.nativeElement.scrollIntoView({
+//         behavior: 'smooth',
+//         block: 'start',
+//       });
+//     }, 0);
+//   }
+//   addToCart() {
+//     const bookId = this.product._id;
+//     const quantity = this.quantity;
+//     const language = this.selectedLanguage;
+
+//     this.cartService.addToCart({ bookId, quantity, language }).subscribe({
+//       next: (res) => {
+//         this.toastr.success(res.message);
+//         console.log(res);
+//       },
+//       error: (err) => {
+//         this.toastr.error(err.error.message || 'Error adding to cart');
+//         console.error(err);
+//       },
+//     });
+//   }
+//  buyNow() {
+//   const body = {
+//     productId: this.product._id,
+//     quantity: this.quantity || 1,
+//     amount: this.product.price * (this.quantity || 1),
+//     userId: this.authService.user._id,
+//     email: this.authService.user.email
+//   };
+// this.stripeService.createCheckout(body).subscribe(async (res: any) => {
+
+//     const stripe = await loadStripe('pk_test_51RgZk44D7v1sBWtpYknNweFjXqV492N65jOnP17tW0Ae8axsePHPZ1cjHQrFZ5miDChrGyKuVf6th5PV1UESoVjJ00rq5z7L6q'); // عدلي المفتاح هنا
+//     const elements = stripe!.elements({ clientSecret: res.clientSecret });
+//     const paymentElement = elements.create('payment');
+//     paymentElement.mount('#payment-element');
+
+//     this.clientSecret = res.clientSecret;
+//     this.orderId = res.orderId;
+//     this.elements = elements;
+//     this.stripe = stripe!;
+//     this.cardElement = paymentElement;
+
+//     this.isPaymentReady = true;
+//   });
+// }
+// confirmBuyNow() {
+//   this.stripe.confirmPayment({
+//     elements: this.elements,
+//     confirmParams: { return_url: window.location.href },
+//     redirect: 'if_required'
+//   }).then(result => {
+//     if (result.error) {
+//       alert(result.error.message);
+//     } else if (result.paymentIntent?.status === 'succeeded') {
+//       this.stripeService.confirmPayment({
+//         paymentIntentId: result.paymentIntent.id,
+//         orderId: this.orderId
+//       }).subscribe(() => {
+//         alert('Payment successful!');
+//       });
+//     }
+//   });
+// }
+
+// }
+
 import {
   Component,
   ElementRef,
@@ -7,12 +230,17 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BooksService } from '../../services/books/books.service';
 import { BookReviewsComponent } from '../book-reviews/book-reviews.component';
 import { environment } from '../../../environments/environment';
 import { CartService } from '../../services/cart/cart.service';
+import { Stripe } from '@stripe/stripe-js';
+import { AuthService } from '../../services/auth/auth.service';
+import { StripeService } from '../../services/payment/payment.service';
+
+
 
 @Component({
   selector: 'app-product-details',
@@ -22,9 +250,15 @@ import { CartService } from '../../services/cart/cart.service';
   imports: [CommonModule, FormsModule, BookReviewsComponent],
 })
 export class ProductDetailsComponent implements OnInit {
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private authService: AuthService,
+    private StripeService: StripeService,
+    private route: ActivatedRoute,
+  private router: Router) {}
+
   imageBaseUrl = environment.imageBaseUrl;
-  private route = inject(ActivatedRoute);
+
   private toastr = inject(ToastrService);
   private booksService = inject(BooksService);
   Math = Math;
@@ -40,6 +274,13 @@ export class ProductDetailsComponent implements OnInit {
   showSection: 'review' | 'description' | '' = '';
   bookLoading = false;
   bookError: string | null = null;
+  clientSecret!: string;
+  orderId!: string;
+  elements: any;
+  cardElement: any;
+  stripe: Stripe | null = null;
+  isPaymentReady = false;
+
 
   product: any = {};
   @ViewChild('reviewSection') reviewSection!: ElementRef;
@@ -141,6 +382,7 @@ export class ProductDetailsComponent implements OnInit {
       });
     }, 0);
   }
+
   addToCart() {
     const bookId = this.product._id;
     const quantity = this.quantity;
@@ -157,4 +399,27 @@ export class ProductDetailsComponent implements OnInit {
       },
     });
   }
+
+
+buyNow() {
+  const token = localStorage.getItem('authToken');
+
+  if (!token) {
+    this.toastr.error('You must be logged in to proceed with the purchase.');
+    
+    return;
+  }
+
+  const cartItems = [{
+    productId: this.product._id,
+    name: this.product.title,
+    price: this.product.price,
+    quantity: this.quantity,
+    image: this.product.images?.[0] || this.product.image || '',
+    language: this.selectedLanguage
+  }];
+
+  localStorage.setItem('cart', JSON.stringify(cartItems));
+  this.router.navigateByUrl('/checkout');
+}
 }
