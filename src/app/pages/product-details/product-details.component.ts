@@ -289,10 +289,10 @@ export class ProductDetailsComponent implements OnInit {
     this.viewsCount = Math.floor(Math.random() * 200) + 50;
 
     this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      if (id) {
-        this.slug = id;
-        this.fetchProduct(id);
+      const slug = params.get('slug');
+      if (slug) {
+        this.slug = slug;
+        this.fetchProduct(slug);
       }
     });
   }
