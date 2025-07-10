@@ -11,7 +11,7 @@
       class="p-3 d-none d-lg-block flex-shrink-0"
       style="width: 300px; min-height: 100vh"
     >
-      <app-filter></app-filter>
+      <app-filter (sortedBooks)="onSortedBooks($event)"></app-filter>
     </div>
 
     <div class="flex-grow-1 p-3">

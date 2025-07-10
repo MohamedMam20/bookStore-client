@@ -52,4 +52,10 @@ export class BooksPageComponent implements OnInit {
       this.loadBooks(page);
     }
   }
+
+  onSortedBooks(sortedList: Book[]): void {
+    this.products = sortedList;
+    this.totalPages = 1;
+    this.currentPage = 1;
+  }
 }
