@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { NgIf, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -6,6 +12,7 @@ import {
   Filter,
   FilterService,
 } from '../../services/filter/filter-state.service';
+import { SortService } from '../../services/sort/sort.service';
 
 @Component({
   selector: 'app-filter',
@@ -16,7 +23,10 @@ import {
 })
 export class FilterComponent implements OnInit, OnDestroy {
   activeFilters: Filter[] = [];
+  selectedSort: string = '';
   subscription!: Subscription;
+
+  @Output() sortedBooks = new EventEmitter<any[]>(); // optional, emit to parent
 
   filters = {
     genre: [
@@ -37,7 +47,10 @@ export class FilterComponent implements OnInit, OnDestroy {
     language: ['English', 'French', 'Arabic'],
   };
 
-  constructor(private filterService: FilterService) {}
+  constructor(
+    private filterService: FilterService,
+    private sortService: SortService
+  ) {}
 
   ngOnInit() {
     this.subscription = this.filterService.filters$.subscribe((filters) => {
@@ -57,11 +70,9 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   toggleFilter(label: string, value: string, event: Event) {
     const checked = (event.target as HTMLInputElement).checked;
-    if (checked) {
-      this.filterService.addFilter({ label, value });
-    } else {
-      this.filterService.removeFilter({ label, value });
-    }
+    checked
+      ? this.filterService.addFilter({ label, value })
+      : this.filterService.removeFilter({ label, value });
   }
 
   removeFilter(filter: Filter) {
@@ -70,5 +81,32 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   clearAllFilters() {
     this.filterService.clearFilters();
+  }
+
+  onSortChange(event: Event) {
+    const sortValue = (event.target as HTMLSelectElement).value;
+    this.selectedSort = sortValue;
+    this.sortService.setSortOption(sortValue);
+
+    this.sortService.getSortedBooks(sortValue).subscribe({
+      next: (res) => {
+        this.sortedBooks.emit(res.data); // use this only if needed in parent
+      },
+      error: (err) => {
+        console.error('Failed to sort books:', err);
+      },
+    });
+  }
+
+  // Add this method to parse price ranges
+  getPriceRange(priceRange: string): { min: number, max: number } | null {
+    const matches = priceRange.match(/LE (\d+) - LE (\d+)/);
+    if (matches && matches.length === 3) {
+      return {
+        min: parseInt(matches[1]),
+        max: parseInt(matches[2])
+      };
+    }
+    return null;
   }
 }

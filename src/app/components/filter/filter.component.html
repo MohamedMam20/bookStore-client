@@ -1,4 +1,22 @@
 <div class="p-3" style="width: 100%">
+  <!-- Sort Section -->
+  <div class="mb-3 border-top pt-3">
+    <h5 class="fw-bold mb-0 text-dark">Sort by</h5>
+    <select
+      class="form-select mt-2"
+      [(ngModel)]="selectedSort"
+      (change)="onSortChange($event)"
+    >
+      <option value="" disabled>Select an option</option>
+      <option value="title_asc">Title: A to Z</option>
+      <option value="title_desc">Title: Z to A</option>
+      <option value="price_asc">Price: Low to High</option>
+      <option value="price_desc">Price: High to Low</option>
+      <option value="rating_asc">Rating: Low to High</option>
+      <option value="rating_desc">Rating: High to Low</option>
+    </select>
+  </div>
+
   <div class="d-flex justify-content-between align-items-center mb-2">
     <h5 class="fw-bold mb-0">Filter:</h5>
     <button
@@ -34,13 +52,11 @@
         <input
           class="form-check-input"
           type="checkbox"
-          [checked]="isChecked('Genre', item)"
-          (change)="toggleFilter('Genre', item, $event)"
+          [checked]="isChecked('genre', item)"
+          (change)="toggleFilter('genre', item, $event)"
           [id]="'genre-' + item"
         />
-        <label class="form-check-label" [for]="'genre-' + item">{{
-          item
-        }}</label>
+        <label class="form-check-label" [for]="'genre-' + item">{{ item }}</label>
       </div>
     </div>
   </div>
@@ -60,13 +76,11 @@
         <input
           class="form-check-input"
           type="checkbox"
-          [checked]="isChecked('Price', item)"
-          (change)="toggleFilter('Price', item, $event)"
+          [checked]="isChecked('price', item)"
+          (change)="toggleFilter('price', item, $event)"
           [id]="'price-' + item"
         />
-        <label class="form-check-label" [for]="'price-' + item">{{
-          item
-        }}</label>
+        <label class="form-check-label" [for]="'price-' + item">{{ item }}</label>
       </div>
     </div>
   </div>
@@ -86,14 +100,15 @@
         <input
           class="form-check-input"
           type="checkbox"
-          [checked]="isChecked('Language', item)"
-          (change)="toggleFilter('Language', item, $event)"
+          [checked]="isChecked('language', item)"
+          (change)="toggleFilter('language', item, $event)"
           [id]="'lang-' + item"
         />
-        <label class="form-check-label" [for]="'lang-' + item">{{
-          item
-        }}</label>
+        <label class="form-check-label" [for]="'lang-' + item">{{ item }}</label>
       </div>
     </div>
   </div>
 </div>
+
+<!--</select>  [(ngModel)]="selectedSort"
+      (change)="onSortChange($event)"-->
