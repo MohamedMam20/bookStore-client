@@ -57,7 +57,7 @@ export class StripeService {
   loadStripe(): Promise<{ stripe: any; elements: any }> {
   return new Promise((resolve, reject) => {
     if ((window as any).Stripe) {
-      const stripe = (window as any).Stripe(environment.STRIPE_PUBLIC_KEY); // حطي مفتاحك هنا
+      const stripe = (window as any).Stripe(environment.STRIPE_PUBLIC_KEY); 
       const elements = stripe.elements();
       resolve({ stripe, elements });
     } else {

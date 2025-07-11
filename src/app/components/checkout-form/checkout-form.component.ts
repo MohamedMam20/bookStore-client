@@ -1,143 +1,3 @@
-// import { Component, OnInit } from '@angular/core';
-// import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-// import { CommonModule } from '@angular/common'; // ✅ مهم جداً
-// import { StripeService } from '../../services/payment/payment.service';
-// import { CartService } from '../../services/cart/cart.service';
-// import { firstValueFrom } from 'rxjs';
-// import { Router } from '@angular/router';
-// import { ToastrService } from 'ngx-toastr';
-
-
-// @Component({
-//   selector: 'app-checkout-form',
-//   standalone: true,
-//   imports: [CommonModule, ReactiveFormsModule], // ✅ زودي هنا
-//   templateUrl: './checkout-form.component.html',
-//   styleUrls: ['./checkout-form.component.css']
-// })
-// export class CheckoutFormComponent implements OnInit {
-//   checkoutForm!: FormGroup;
-//   clientSecret!: string;
-//   cardElement: any;
-//   stripe: any;
-//   card: any;
-
-//   cartItems: any[] = [];
-//   subtotal = 0;
-
-//   total = 0;
-//   errorMessage = '';
-//   isLoading = false;
-//  selectedShipping: 'free' | 'paid' = 'free';
-
-//   // حساب قيمة الشحن بناءً على الاختيار
-//   get shipping(): number {
-//     return this.selectedShipping === 'free' ? 0 : 200;
-//   }
-//   constructor(
-//     private fb: FormBuilder,
-//     private stripeService: StripeService,
-//     private cartService: CartService,
-//      private router: Router,
-//   private toastr: ToastrService
-//   ) {}
-
-// ngOnInit(): void {
-//   this.checkoutForm = this.fb.group({
-//     name: ['', Validators.required],
-//     email: ['', [Validators.required, Validators.email]]
-//   });
-
-//   const nav = this.router.getCurrentNavigation();
-//   const state = nav?.extras?.state as any;
-
-//   if (state?.mode === 'cart') {
-//     // 🛒 من cart → fetch from backend
-//     this.cartService.viewCart().subscribe({
-//       next: (res) => {
-//         this.cartItems = res.data;
-//         this.subtotal = this.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-//         this.total = this.subtotal + this.shipping;
-//       },
-//       error: (err) => {
-//         console.error("❌ Failed to fetch cart:", err);
-//       }
-//     });
-//   } else {
-//     // 🛍 من buyNow → read from localStorage
-//     const cartData = localStorage.getItem('cart');
-//     if (cartData) {
-//       this.cartItems = JSON.parse(cartData);
-//       this.subtotal = this.cartItems.reduce((acc: number, item: any) => acc + item.price * item.quantity, 0);
-//       this.total = this.subtotal + this.shipping;
-//     } else {
-//       this.cartItems = [];
-//     }
-//   }
-
-//   this.stripeService.loadStripe().then(({ stripe, elements }) => {
-//     this.stripe = stripe;
-//     this.card = elements.create('card');
-//     this.card.mount('#card-element');
-//   });
-// }
-
-
-//  selectShipping(shipping: 'free' | 'paid'): void {
-//     this.selectedShipping = shipping;
-//   }
-//  async onSubmit() {
-//   if (this.checkoutForm.invalid) return;
-
-//   this.isLoading = true;
-//   const { name, email } = this.checkoutForm.value;
-
-//   try {
-//     const response = await firstValueFrom(
-//       this.stripeService.createCheckout({
-//         cartItems: this.cartItems,
-//         amount: this.total
-//       })
-//     );
-
-//     const result = await this.stripe.confirmCardPayment(response.clientSecret, {
-//       payment_method: {
-//         card: this.card,
-//         billing_details: { name, email }
-//       }
-//     });
-
-//     if (result.error) {
-//       this.errorMessage = result.error.message;
-//     } else if (result.paymentIntent.status === 'succeeded') {
-//       // ✅ هنا مكان الـ console.log الصح
-//       console.log("🧾 Confirming payment with:", {
-//         paymentIntentId: result.paymentIntent.id,
-//         orderId: response.orderId
-//       });
-
-//       await firstValueFrom(
-//         this.stripeService.confirmPayment({
-//           paymentIntentId: result.paymentIntent.id,
-//           orderId: response.orderId
-//         })
-//       );
-
-//        this.toastr.success('payment successful ✅');
-//       localStorage.removeItem('cart');
-//        this.router.navigateByUrl('/order-confirmation');
-//     }
-//   } catch (error: any) {
-//     console.error('Error during payment:', error);
-//     this.errorMessage = 'not validation';
-//     this.toastr.error(this.errorMessage, 'Failed to process payment');
-//   } finally {
-//     this.isLoading = false;
-//   }
-// }
-
-
-// }import { Component, OnInit } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -209,10 +69,10 @@ export class CheckoutFormComponent implements OnInit {
   const queryOrderId = this.route.snapshot.queryParams['orderId'];
 
   this.paymentMode = state?.mode || queryMode || 'cart';
-  console.log('📥 Router state:', state, 'Query params:', { mode: queryMode, orderId: queryOrderId });
+
 
   if (this.paymentMode === 'buyNow') {
-    // Try router state first
+
     if (state?.cartItems && state?.clientSecret && state?.orderId) {
       this.cartItems = state.cartItems;
       this.clientSecret = state.clientSecret;
@@ -220,7 +80,7 @@ export class CheckoutFormComponent implements OnInit {
       this.subtotal = this.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
       this.total = this.subtotal + this.shipping;
     } else {
-      // Fallback to localStorage
+
       const buyNowData = localStorage.getItem('buyNowData');
       if (buyNowData) {
         const data = JSON.parse(buyNowData);
@@ -236,7 +96,7 @@ export class CheckoutFormComponent implements OnInit {
           return;
         }
       } else if (queryOrderId) {
-        // Fallback to fetching order
+
         this.isLoading = true;
         this.fetchOrderDetails(queryOrderId);
         return;
@@ -279,7 +139,7 @@ export class CheckoutFormComponent implements OnInit {
     console.error('❌ Stripe load error:', err);
   });
 
-  // Clear temporary localStorage data
+
   localStorage.removeItem('buyNowData');
 }
 
@@ -334,7 +194,7 @@ async onSubmit() {
     let clientSecret = this.clientSecret;
     let orderId = this.orderId;
 
-    // Cart mode: Initiate checkout from backend
+
     if (this.paymentMode === 'cart') {
       if (!this.cartItems.length) {
         this.toastr.warning('Your cart is empty');
@@ -358,7 +218,7 @@ async onSubmit() {
 
 
 
-    // Process payment with Stripe
+
     const result = await this.stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: this.card,
@@ -372,7 +232,7 @@ async onSubmit() {
       return;
     }
 
-    // Confirm payment on backend
+
     if (result.paymentIntent.status === 'succeeded') {
   await firstValueFrom(
     this.stripeService.confirmPayment({
@@ -383,7 +243,7 @@ async onSubmit() {
   );
 
   this.toastr.success('✅ Payment successful');
-  localStorage.removeItem('buyNowData'); // Clear in case it wasn't cleared
+  localStorage.removeItem('buyNowData');
   this.router.navigateByUrl('/order-confirmation', { state: { orderId } });
 }
 if (result.paymentIntent.status === 'succeeded') {
@@ -395,9 +255,9 @@ if (result.paymentIntent.status === 'succeeded') {
     })
   );
 
-  this.toastr.success('✅ Payment successful');
+  
 
-  // 🟢 احفظي معلومات الطلب في localStorage
+
   localStorage.setItem('orderData', JSON.stringify({
     orderId,
     cartItems: this.cartItems,
@@ -407,33 +267,10 @@ if (result.paymentIntent.status === 'succeeded') {
     orderDate: new Date().toISOString()
   }));
 
-  // 🔁 التوجيه إلى صفحة التأكيد
+
   this.router.navigateByUrl('/order-confirmation');
 }
-    if (result.paymentIntent.status === 'succeeded') {
-  await firstValueFrom(
-    this.stripeService.confirmPayment({
-      paymentIntentId: result.paymentIntent.id,
-      orderId,
-      mode: this.paymentMode
-    })
-  );
 
-  this.toastr.success('✅ Payment successful');
-
-  // 🟢 احفظي معلومات الطلب في localStorage
-  localStorage.setItem('orderData', JSON.stringify({
-    orderId,
-    cartItems: this.cartItems,
-    totalAmount: this.total,
-    customerName: name,
-    customerEmail: email,
-    orderDate: new Date().toISOString()
-  }));
-
-  // 🔁 التوجيه إلى صفحة التأكيد
-  this.router.navigateByUrl('/order-confirmation');
-}
 
   } catch (err: any) {
     console.error('❌ Error during payment:', err);
@@ -444,106 +281,3 @@ if (result.paymentIntent.status === 'succeeded') {
 }
 
 }
-// export class CheckoutFormComponent implements OnInit {
-//   checkoutForm!: FormGroup;
-//   clientSecret!: string;
-//   cardElement: any;
-//   stripe: any;
-//   card: any;
-
-//   errorMessage = '';
-//   isLoading = false;
-
-//   cartItems: any[] = [];
-//   subtotal = 0;
-//   shipping = 50;
-//   total = 0;
-
-//   constructor(
-//     private fb: FormBuilder,
-//     private stripeService: StripeService,
-//     private cartService: CartService
-//   ) {}
-
-//   ngOnInit(): void {
-//   this.checkoutForm = this.fb.group({
-//     name: ['', Validators.required],
-//     email: ['', [Validators.required, Validators.email]]
-//   });
-
-//   // ✅ جلب البيانات من localStorage
-//   const localCart = localStorage.getItem('cart');
-//   if (localCart) {
-//     this.cartItems = JSON.parse(localCart);
-//     this.subtotal = this.cartItems.reduce((acc: number, item: any) => acc + item.price * item.quantity, 0);
-//     this.total = this.subtotal + this.shipping;
-//   } else {
-//     // fallback لو فيه سلة حقيقية
-//     this.cartService.viewCart().subscribe((res) => {
-//       this.cartItems = res.items;
-//       this.subtotal = res.items.reduce((acc: number, item: any) => acc + item.price * item.quantity, 0);
-//       this.total = this.subtotal + this.shipping;
-//     });
-//   }
-
-//   this.stripeService.loadStripe().then(({ stripe, elements }) => {
-//     this.stripe = stripe;
-//     this.card = elements.create('card');
-//     this.card.mount('#card-element');
-//   });
-// }
-
-//   async onSubmit() {
-//     if (this.checkoutForm.invalid) return;
-
-//     this.isLoading = true;
-//     const { name, email } = this.checkoutForm.value;
-
-//     try {
-//       const response = await firstValueFrom(
-//         this.stripeService.createCheckout({
-//           cartItems: this.cartItems,
-//           amount: this.total
-//         })
-//       );
-
-//       const result = await this.stripe.confirmCardPayment(response.clientSecret, {
-//         payment_method: {
-//           card: this.card,
-//           billing_details: { name, email }
-//         }
-//       });
-
-//       if (result.error) {
-//         this.errorMessage = result.error.message;
-//       } else if (result.paymentIntent.status === 'succeeded') {
-//         await firstValueFrom(
-//           this.stripeService.confirmPayment({
-//             paymentIntentId: result.paymentIntent.id,
-//             orderId: response.orderId
-//           })
-//         );
-//         alert('تم الدفع بنجاح ✅');
-//       }
-//     } catch (error: any) {
-//       console.error('Error during payment:', error);
-//       this.errorMessage = 'حدث خطأ أثناء عملية الدفع';
-//     } finally {
-//       this.isLoading = false;
-//     }
-//   }
-
-//   get stripeForm() {
-//     return this.checkoutForm.get('payment.stripe') as FormGroup;
-//   }
-//   get paypalForm() {
-//     return this.checkoutForm.get('payment.paypal') as FormGroup;
-//   }
-//   get paymobForm() {
-//     return this.checkoutForm.get('payment.paymob') as FormGroup;
-//   }
-
-//   get paymentMethod() {
-//     return this.checkoutForm.get('payment.method')?.value;
-//   }
-// }
