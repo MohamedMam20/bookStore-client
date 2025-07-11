@@ -1,48 +1,61 @@
-<div class="container mt-4">
-  <div class="card p-4 text-center mb-4">
-    <h2>✅ Order Confirmed!</h2>
-    <p class="text-success">Payment was successful and your order is being prepared.</p>
-    <p>Thank you for shopping with us!</p>
-    <a routerLink="/shop" class="btn btn-primary">Continue Shopping</a>
-  </div>
-
-  <!-- ✅ Invoice -->
-  <div class="card p-4" #invoice>
-    <h3 class="mb-3 text-center">📄 Order Invoice</h3>
-    <div><strong>Customer Name:</strong> {{ customerName }}</div>
-    <div><strong>Email:</strong> {{ customerEmail }}</div>
-    <div><strong>Order ID:</strong> {{ orderId }}</div>
-    <div><strong>Order Date:</strong> {{ orderDate | date:'medium' }}</div>
-
-    <hr />
-
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Product</th>
-          <th>Language</th>
-          <th>Quantity</th>
-          <th>Price</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of cartItems">
-          <td>{{ item.name }}</td>
-          <td>{{ item.language }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>{{ item.price }} EGP</td>
-          <td>{{ item.price * item.quantity }} EGP</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="text-end mt-3">
-      <strong>Grand Total:</strong> {{ totalAmount }} EGP
+<div class="container">
+  <div class="card p-4">
+    <h2 class="text-success text-center mb-4">✅ Order Confirmed!</h2>
+    <p class="text-center">Payment was successful and your order is being prepared.</p>
+    <p class="text-center">Thank you for shopping with us!</p>
+    <div class="text-center mt-3">
+      <a routerLink="/" class="btn btn-primary">Continue Shopping</a>
     </div>
-  </div>
 
-  <div class="text-center mt-4">
-    <button class="btn btn-outline-dark" (click)="downloadInvoiceAsPDF()">📥 Download Invoice as PDF</button>
+    <!-- Refund Status Alerts -->
+    <div *ngIf="orderStatus === 'cancelled'" class="alert" [ngClass]="{
+        'alert-pending': refundStatus === 'pending',
+        'alert-completed': refundStatus === 'completed'
+      }">
+      <p *ngIf="refundStatus === 'pending'">Your order has been cancelled. Refund is pending.</p>
+      <p *ngIf="refundStatus === 'completed'">Your order has been cancelled and refund has been completed.</p>
+    </div>
+
+    <!-- Cancel Button -->
+    <div class="text-center mt-3" *ngIf="canCancel">
+      <button class="btn btn-outline-dark" (click)="cancelOrder()">Cancel Order</button>
+    </div>
+
+    <hr>
+
+    <div #invoice>
+      <h3 class="text-center">📄 Order Invoice</h3>
+      <p><strong>Customer Name:</strong> {{ customerName }}</p>
+      <p><strong>Email:</strong> {{ customerEmail }}</p>
+      <p><strong>Order ID:</strong> {{ orderId }}</p>
+      <p><strong>Order Date:</strong> {{ orderDate | date:'medium' }}</p>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Language</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cartItems">
+            <td>{{ item.name }}</td>
+            <td>{{ item.language }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price }} EGP</td>
+            <td>{{ item.price * item.quantity }} EGP</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="text-end mt-3"><strong>Grand Total:</strong> {{ totalAmount }} EGP</p>
+    </div>
+
+    <div class="text-center mt-4">
+      <button class="btn btn-outline-dark" (click)="downloadInvoiceAsPDF()">📥 Download Invoice as PDF</button>
+    </div>
   </div>
 </div>

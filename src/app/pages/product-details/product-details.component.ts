@@ -403,26 +403,64 @@ this.product.isOutOfStock = totalStock === 0;
     });
   }
 
-
 buyNow() {
+  this.bookLoading = true;
   const token = localStorage.getItem('authToken');
-
   if (!token) {
     this.toastr.error('You must be logged in to proceed with the purchase.');
+    this.bookLoading = false;
+    this.router.navigateByUrl('/login', { state: { returnUrl: this.router.url } });
+    return;
+  }
 
+  if (!this.product || !this.selectedLanguage || !this.quantity) {
+    this.toastr.warning('Please select a language and quantity');
+    this.bookLoading = false;
+    return;
+  }
+
+  const stock = this.getStockForSelectedLang();
+  if (this.quantity > stock) {
+    this.toastr.warning(`Only ${stock} items available in ${this.getLanguageName(this.selectedLanguage)}`);
+    this.bookLoading = false;
     return;
   }
 
   const cartItems = [{
     productId: this.product._id,
-    name: this.product.title,
+    title: this.product.title,
     price: this.product.price,
     quantity: this.quantity,
-    image: this.product.images?.[0] || this.product.image || '',
+    image: this.product.image || '',
     language: this.selectedLanguage
   }];
 
-  localStorage.setItem('cart', JSON.stringify(cartItems));
-  this.router.navigateByUrl('/checkout');
-}
-}
+  const amount = this.product.price * this.quantity;
+
+  console.log('📤 Sending to createCheckout:', { cartItems, amount });
+
+  this.StripeService.createCheckout({
+    cartItems,
+    amount
+  }).subscribe({
+    next: (res) => {
+      console.log('📥 createCheckout response:', res);
+      this.bookLoading = false;
+      // Store temporarily in localStorage
+      localStorage.setItem('buyNowData', JSON.stringify({
+        mode: 'buyNow',
+        cartItems,
+        clientSecret: res.clientSecret,
+        orderId: res.orderId
+      }));
+      this.router.navigate(['/checkout'], {
+        queryParams: { mode: 'buyNow', orderId: res.orderId }
+      });
+    },
+    error: (err) => {
+      this.bookLoading = false;
+      console.error('❌ Buy Now error:', err);
+      this.toastr.error(err.error?.message || 'Failed to initiate Buy Now checkout');
+    }
+  });
+}}
