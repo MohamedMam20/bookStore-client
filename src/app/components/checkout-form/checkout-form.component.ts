@@ -246,30 +246,7 @@ async onSubmit() {
   localStorage.removeItem('buyNowData');
   this.router.navigateByUrl('/order-confirmation', { state: { orderId } });
 }
-if (result.paymentIntent.status === 'succeeded') {
-  await firstValueFrom(
-    this.stripeService.confirmPayment({
-      paymentIntentId: result.paymentIntent.id,
-      orderId,
-      mode: this.paymentMode
-    })
-  );
 
-  
-
-
-  localStorage.setItem('orderData', JSON.stringify({
-    orderId,
-    cartItems: this.cartItems,
-    totalAmount: this.total,
-    customerName: name,
-    customerEmail: email,
-    orderDate: new Date().toISOString()
-  }));
-
-
-  this.router.navigateByUrl('/order-confirmation');
-}
 
 
   } catch (err: any) {
