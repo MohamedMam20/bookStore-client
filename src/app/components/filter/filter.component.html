@@ -52,13 +52,11 @@
         <input
           class="form-check-input"
           type="checkbox"
-          [checked]="isChecked('Genre', item)"
-          (change)="toggleFilter('Genre', item, $event)"
+          [checked]="isChecked('genre', item)"
+          (change)="toggleFilter('genre', item, $event)"
           [id]="'genre-' + item"
         />
-        <label class="form-check-label" [for]="'genre-' + item">{{
-          item
-        }}</label>
+        <label class="form-check-label" [for]="'genre-' + item">{{ item }}</label>
       </div>
     </div>
   </div>
@@ -78,13 +76,11 @@
         <input
           class="form-check-input"
           type="checkbox"
-          [checked]="isChecked('Price', item)"
-          (change)="toggleFilter('Price', item, $event)"
+          [checked]="isChecked('price', item)"
+          (change)="toggleFilter('price', item, $event)"
           [id]="'price-' + item"
         />
-        <label class="form-check-label" [for]="'price-' + item">{{
-          item
-        }}</label>
+        <label class="form-check-label" [for]="'price-' + item">{{ item }}</label>
       </div>
     </div>
   </div>
@@ -104,13 +100,11 @@
         <input
           class="form-check-input"
           type="checkbox"
-          [checked]="isChecked('Language', item)"
-          (change)="toggleFilter('Language', item, $event)"
+          [checked]="isChecked('language', item)"
+          (change)="toggleFilter('language', item, $event)"
           [id]="'lang-' + item"
         />
-        <label class="form-check-label" [for]="'lang-' + item">{{
-          item
-        }}</label>
+        <label class="form-check-label" [for]="'lang-' + item">{{ item }}</label>
       </div>
     </div>
   </div>

@@ -97,4 +97,16 @@ export class FilterComponent implements OnInit, OnDestroy {
       },
     });
   }
+
+  // Add this method to parse price ranges
+  getPriceRange(priceRange: string): { min: number, max: number } | null {
+    const matches = priceRange.match(/LE (\d+) - LE (\d+)/);
+    if (matches && matches.length === 3) {
+      return {
+        min: parseInt(matches[1]),
+        max: parseInt(matches[2])
+      };
+    }
+    return null;
+  }
 }
