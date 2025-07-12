@@ -117,26 +117,46 @@ export class CartSideMenuComponent implements OnChanges {
     });
   }
 
-  proceedToPurchase() {
-    if (!this.cartItems.length) {
-      this.toastr.warning('Cart is empty!');
-      return;
-    }
+// proceedToPurchase() {
+//   if (!this.cartItems.length) {
+//     this.toastr.warning('Cart is empty!');
+//     return;
+//   }
 
-    const cartItems = this.cartItems.map((item) => ({
-      productId: item.book?._id || item.productId,
-      name: item.book?.title || item.name,
-      price: item.price,
-      quantity: item.quantity,
-      image: item.book?.image || item.image || '',
-      language: item.language || 'ar',
-    }));
+//   const cartItems = this.cartItems.map((item) => ({
+//     productId: item.book?._id || item.productId,
+//     title: item.book?.title || item.title,
+//     price: item.price,
+//     quantity: item.quantity,
+//     image: item.book?.image || item.image || '',
+//     language: item.language || 'ar',
+//   }));
 
-    localStorage.setItem('cart', JSON.stringify(cartItems));
-
-    this.isCartVisible = false;
-    this.router.navigateByUrl('/checkout');
+//   this.router.navigate(['/checkout'], {
+//     state: {
+//       mode: 'cart',
+//       cartItems
+//     }
+//   });
+// }
+proceedToPurchase() {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    this.toastr.error('Please log in to proceed with checkout');
+    this.router.navigateByUrl('/login', { state: { returnUrl: '/cart' } });
+    return;
   }
+
+  if (!this.cartItems.length) {
+    this.toastr.warning('Cart is empty!');
+    return;
+  }
+
+  this.router.navigate(['/checkout'], {
+    queryParams: { mode: 'cart' },
+    state: { mode: 'cart' }
+  });
+}
   getTotalPrice(): number {
     return this.cartItems.reduce((total, item) => {
       const price = parseFloat(item.price);

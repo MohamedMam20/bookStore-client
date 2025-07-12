@@ -85,10 +85,9 @@
 <div class="actions">
   <button class="btn add" (click)="addToCart()">Add To Cart</button>
   <button class="btn wishlist">View Wishlist</button>
-  <button class="btn buy" (click)="buyNow()">Buy It Now</button>
+  <button class="btn buy"   [disabled]="bookLoading" (click)="buyNow()">Buy It Now</button>
 
 </div>
-
 
 
       <p class="meta-info">🚚 Estimated delivery 5-7 days</p>
