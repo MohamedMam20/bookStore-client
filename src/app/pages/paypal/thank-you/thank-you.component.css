@@ -2,29 +2,60 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 80vh;
-  background-color: #f8f9fa;
+  min-height: 85vh;
+  background-color: #f1f3f5;
+  padding: 2rem;
 }
 
 .thank-you-box {
-  background: white;
-  padding: 2rem 3rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: #fff;
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
+  max-width: 600px;
+  width: 100%;
 }
 
-.view-orders-btn, .back-home-btn {
-  margin-top: 1rem;
-  margin-right: 0.5rem;
-  padding: 0.75rem 1.5rem;
+.thank-you-box h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #c43618;
+}
+
+.thank-you-box p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.btn-custom {
+  border-radius: 50px;
+  padding: 12px 28px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.btn-orders {
+  background-color: #c43618;
+  color: #fff;
   border: none;
-  border-radius: 8px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
 }
 
-.back-home-btn {
-  background-color: #6c757d;
+.btn-orders:hover {
+  background-color: #a82d14;
+}
+
+.btn-home {
+  border: 2px solid #adb5bd;
+  color: #6c757d;
+  background-color: transparent;
+}
+
+.btn-home:hover {
+  background-color: #e9ecef;
+  color: #343a40;
+  border-color: #6c757d;
 }
