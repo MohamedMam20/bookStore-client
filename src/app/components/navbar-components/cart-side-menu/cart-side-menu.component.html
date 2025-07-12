@@ -55,6 +55,12 @@
       <button class="purchase-btn" (click)="proceedToPurchase()">
         Proceed to Purchase
       </button>
+      <BR>
+<button class="purchase-btn" (click)="startPaypal()" [disabled]="paypalLoading">
+  {{ paypalLoading ? 'Processing…' : 'Pay with PayPal' }}
+</button>
+
+
     </div>
   </div>
 </div>

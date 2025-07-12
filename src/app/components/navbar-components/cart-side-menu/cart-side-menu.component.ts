@@ -7,13 +7,14 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CartService } from '../../../services/cart/cart.service';
+import { OrderService } from '../../../services/paypal/order.service';
 @Component({
   selector: 'app-cart-side-menu',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule ],
   templateUrl: './cart-side-menu.component.html',
   styleUrl: './cart-side-menu.component.css',
 })
@@ -26,8 +27,11 @@ export class CartSideMenuComponent implements OnChanges {
   constructor(
     private router: Router,
     private cartService: CartService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private orderService: OrderService
   ) {}
+  paypalLoading = false;
+
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['isCartVisible']?.currentValue === true) {
@@ -164,4 +168,25 @@ proceedToPurchase() {
       return total + price * quantity;
     }, 0);
   }
+startPaypal() {
+  this.paypalLoading = true;
+
+  this.orderService.placeOrder().subscribe({
+    next: (order) => {
+      this.orderService.createPaypal(order.data._id).subscribe({
+        next: (res) => {
+          window.location.href = res.approvalUrl; // redirect to PayPal
+        },
+        error: (err) => {
+          this.toastr.error('Failed to create PayPal order');
+          this.paypalLoading = false;
+        }
+      });
+    },
+    error: (err) => {
+      this.toastr.error('Failed to place order');
+      this.paypalLoading = false;
+    }
+  });
+}
 }
