@@ -13,6 +13,18 @@ export interface PlaceOrderResponse {
     status:     'pending' | 'delivered' | string;
   };
 }
+export interface OrderHistoryItem {
+  id:         string;
+  createdAt:  string;
+  status:     string;
+  totalPrice: number;
+  books: {
+    title:    string;
+    image:    string;
+    price:    number;
+    quantity: number;
+  }[];
+}
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
@@ -38,6 +50,15 @@ createPaypal(orderId: string) {
   capturePaypal(token: string) {
     return this.http.get<any>(`${API}/paypal/capture?token=${token}`);
   }
+
+    getHistory(): Observable<{ data: OrderHistoryItem[] }> {
+    return this.http.get<{ data: OrderHistoryItem[] }>(
+      `${API}/orders/history`,
+      { headers: this.auth() }
+    );
+  }
+
+
 
 private auth() {
   const token = localStorage.getItem('authToken') || '';

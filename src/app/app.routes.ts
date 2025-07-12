@@ -21,6 +21,7 @@ import { CheckoutFormComponent } from './components/checkout-form/checkout-form.
 import { OrderConfirmationComponent } from './components/order-confirmation/order-confirmation.component'; // Add this import
 import { SearchBooksPageComponent } from './pages/search-books-page/search-books-page.component';
 import { PaypalComponent } from './pages/paypal/paypal.component';
+import { OrderHistoryComponent } from './pages/order-history/order-history.component';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -30,6 +31,7 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./pages/paypal/thank-you/thank-you.component').then(m => m.ThankYouComponent)
 },
+  { path: 'orders', component: OrderHistoryComponent, title: 'My Orders' },
 
 
   { path: 'wishlist', component: WishlistComponent },
