@@ -20,9 +20,18 @@ import { MyAccountComponent } from './pages/my-account/my-account.component';
 import { CheckoutFormComponent } from './components/checkout-form/checkout-form.component';
 import { OrderConfirmationComponent } from './components/order-confirmation/order-confirmation.component'; // Add this import
 import { SearchBooksPageComponent } from './pages/search-books-page/search-books-page.component';
+import { PaypalComponent } from './pages/paypal/paypal.component';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
+  { path: 'paypal', component: PaypalComponent ,title: 'paypal'},
+  {
+  path: 'thank-you',
+  loadComponent: () =>
+    import('./pages/paypal/thank-you/thank-you.component').then(m => m.ThankYouComponent)
+},
+
+
   { path: 'wishlist', component: WishlistComponent },
   { path: 'shop', component: BooksPageComponent },
   { path: 'checkout', component: CheckoutFormComponent, title: 'Payment Form' },
@@ -52,6 +61,7 @@ export const routes: Routes = [
       { path: 'users', component: UserListComponent },
       { path: 'users/new', component: UserFormComponent },
       { path: 'users/edit/:id', component: UserFormComponent },
+
     ],
   },
   {

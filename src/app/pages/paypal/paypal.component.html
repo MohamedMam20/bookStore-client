@@ -1,0 +1,9 @@
+<div class="d-flex flex-column align-items-center mt-5">
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border text-primary mb-3" role="status"></div>
+    <p>{{ message }}</p>
+  </div>
+
+  <p class="text-danger" *ngIf="error">{{ error }}</p>
+  <p class="text-success fw-bold" *ngIf="!loading && !error">{{ message }}</p>
+</div>
