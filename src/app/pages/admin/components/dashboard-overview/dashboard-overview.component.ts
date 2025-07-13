@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../../../services/admin/admin.service';
+import { SocketService } from '../../../../services/Sockets/socket.service';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-dashboard-overview',
@@ -9,7 +12,7 @@ import { AdminService } from '../../../../services/admin/admin.service';
   templateUrl: './dashboard-overview.component.html',
   styleUrls: ['./dashboard-overview.component.css']
 })
-export class DashboardOverviewComponent implements OnInit {
+export class DashboardOverviewComponent implements OnInit ,OnDestroy   {
   dashboardStats = {
     totalBooks: 0,
     totalOrders: 0,
@@ -26,12 +29,23 @@ export class DashboardOverviewComponent implements OnInit {
   loading = true;
   error: string | null = null;
 
-  constructor(private adminService: AdminService) {}
-
+  constructor(private adminService: AdminService , private socketService: SocketService  ) {}
+  socketSubscription!: Subscription;
   ngOnInit(): void {
     this.loadDashboardData();
+    //socket
+    this.socketSubscription = this.socketService.listenToNewOrders().subscribe((data: any) => {
+    console.log("New order arrived from server!", data);
+
+    });
+  }
+  //socket
+  ngOnDestroy(): void {
+  if (this.socketSubscription) {
+    this.socketSubscription.unsubscribe();
   }
 
+  }
   loadDashboardData(): void {
     this.loading = true;
 
@@ -94,4 +108,6 @@ export class DashboardOverviewComponent implements OnInit {
       }
     });
   }
+
+
 }

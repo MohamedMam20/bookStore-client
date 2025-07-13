@@ -100,7 +100,7 @@ export class OrderConfirmationComponent implements OnInit, OnDestroy {
 
   private startCountdown(): void {
     const orderDate = new Date(this.orderDate);
-    const expiryTime = new Date(orderDate.getTime() + (24 * 60 * 60 * 1000)); 
+    const expiryTime = new Date(orderDate.getTime() + (24 * 60 * 60 * 1000));
     this.updateTimeRemaining();
 
     this.countdownInterval = setInterval(() => {
