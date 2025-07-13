@@ -1,0 +1,52 @@
+.card-header {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.btn {
+  border-radius: 50px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+input.form-control {
+  border-radius: 8px;
+}
+.head-update{
+    background-color: #c43618;
+}
+
+
+
+
+.profile-form input:hover,
+.profile-form input:focus {
+  border-color: #c43618;      
+  box-shadow: 0 0 4px #c43618 ;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.profile-header h2 {
+  color: #c43618;
+  font-weight: bolder;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.profile-header p {
+  color: #6c757d;
+  font-size: 1rem;
+  font-size: 1.1rem;
+}
+
+
+

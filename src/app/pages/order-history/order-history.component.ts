@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderService, OrderHistoryItem } from '../../services/paypal/order.service';
 import { RouterModule } from '@angular/router';
@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
 export class OrderHistoryComponent implements OnInit {
   loading = true;
   error   = '';
-  orders: OrderHistoryItem[] = [];
+ // orders: OrderHistoryItem[] = [];
 
   constructor(private orderSrv: OrderService) {}
 
@@ -29,4 +29,6 @@ export class OrderHistoryComponent implements OnInit {
       }
     });
   }
+    @Input() orders: OrderHistoryItem[] = [];
+
 }

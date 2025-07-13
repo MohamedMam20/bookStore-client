@@ -1,0 +1,61 @@
+<ng-container *ngIf="isLoading; else profileTpl">
+  <div class="d-flex justify-content-center align-items-center" style="min-height: 60vh">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading…</span>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #profileTpl>
+  <section class="container py-4">
+    <div class="row g-4">
+        <div class="profile-header">
+  <h2>Hello, {{ userName }} 👋</h2>
+  <p>Manage your account details below</p>
+</div>
+
+      <div class="col-lg-7">
+        <app-order-history></app-order-history>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="card shadow-sm">
+          <div class="card-header head-update text-white">
+            <h5 class="mb-0">Profile Update</h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="profile-form">
+              <div class="mb-3">
+                <label class="form-label">First Name</label>
+                <input type="text" class="form-control" formControlName="firstName" />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Last Name</label>
+                <input type="text" class="form-control" formControlName="lastName" />
+              </div>
+
+              <hr />
+
+              <div class="mb-3">
+                <label class="form-label">Old Password</label>
+                <input type="password" class="form-control" formControlName="oldPassword" />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">New Password</label>
+                <input type="password" class="form-control" formControlName="newPassword" />
+              </div>
+
+              <button class="btn btn-success w-100 mt-3" [disabled]="form.invalid">
+                Update 
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+</ng-template>
