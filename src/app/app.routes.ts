@@ -32,6 +32,13 @@ export const routes: Routes = [
     import('./pages/paypal/thank-you/thank-you.component').then(m => m.ThankYouComponent)
 },
   { path: 'orders', component: OrderHistoryComponent, title: 'My Orders' },
+  {
+  path: 'user-profile',
+  loadComponent: () =>
+    import('./pages/user-profile/user-profile.component').then(m => m.UserProfileComponent),
+  title: 'My Profile'
+},
+
 
 
   { path: 'wishlist', component: WishlistComponent },
