@@ -8,6 +8,9 @@ import { User } from '../../models/user.model';
   providedIn: 'root'
 })
 export class UserService {
+  updateMyProfile(value: any) {
+    throw new Error('Method not implemented.');
+  }
   private baseUrl = `${environment.apiUrl}/v1`;
 
   constructor(private http: HttpClient) {}
