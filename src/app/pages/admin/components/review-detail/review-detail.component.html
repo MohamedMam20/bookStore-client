@@ -1,0 +1,72 @@
+<div class="review-detail-container">
+  <div class="review-detail-header">
+    <h2>Review Details</h2>
+    <div class="review-actions">
+      <a [routerLink]="['/admin/reviews']" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Reviews
+      </a>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger my-3">
+    {{error}}
+    <button *ngIf="reviewId" class="btn btn-sm btn-outline-danger ms-2" (click)="loadReviewDetails(reviewId)">Retry</button>
+  </div>
+
+  <div *ngIf="!loading && !error && review" class="review-detail-content">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+          <span class="badge" [ngClass]="{
+            'bg-success': review.status === 'approved',
+            'bg-danger': review.status === 'rejected',
+            'bg-warning': review.status === 'pending' || !review.status
+          }">
+            {{ review.status || 'pending' | titlecase }}
+          </span>
+          <span class="rating ms-3" [title]="review.rating + ' stars'">{{getStarRating(review.rating)}}</span>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="reviewStatusDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Change Status
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="reviewStatusDropdown">
+            <li><button class="dropdown-item" (click)="updateStatus('approved')">Approve</button></li>
+            <li><button class="dropdown-item" (click)="updateStatus('rejected')">Reject</button></li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <h5 class="card-title">User Information</h5>
+            <p class="card-text"><strong>Name:</strong> {{review.user}}</p>
+            <p class="card-text"><strong>Email:</strong> {{review.email}}</p>
+          </div>
+          <div class="col-md-6">
+            <h5 class="card-title">Book Information</h5>
+            <p class="card-text"><strong>Title:</strong> {{review.book}}</p>
+            <p class="card-text"><strong>Date Posted:</strong> {{review.date | date:'medium'}}</p>
+          </div>
+        </div>
+
+        <div class="review-text-section">
+          <h5 class="card-title">Review</h5>
+          <p class="review-text">{{review.review}}</p>
+        </div>
+
+        <div class="mt-4 text-end">
+          <button class="btn btn-danger" (click)="deleteReview()">
+            <i class="fas fa-trash me-1"></i> Delete Review
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

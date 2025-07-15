@@ -83,6 +83,21 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.filterService.clearFilters();
   }
 
+  resetSort() {
+    this.selectedSort = '';
+    this.sortService.setSortOption('');
+    
+    // Reload books without sorting
+    this.sortService.getSortedBooks('').subscribe({
+      next: (res) => {
+        this.sortedBooks.emit(res.data);
+      },
+      error: (err) => {
+        console.error('Failed to reset sorting:', err);
+      }
+    });
+  }
+
   onSortChange(event: Event) {
     const sortValue = (event.target as HTMLSelectElement).value;
     this.selectedSort = sortValue;

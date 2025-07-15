@@ -136,10 +136,10 @@
               <i class="fas fa-box"></i>
             </div>
             <div class="activity-content">
-              <h4>Order #{{ order.id }}</h4>
-              <p>{{ order.status }} • {{ order.date }} • ${{ order.total }}</p>
+              <h4>Order #{{ order._id }}</h4>
+              <p>{{ order.status }} • {{ order.orderDate | date:'mediumDate' }} • ${{ order.totalAmount }}</p>
             </div>
-            <button class="btn-link" (click)="viewOrderDetails(order.id)">View Details</button>
+            <button class="btn-link" (click)="viewOrderDetails(order._id)">View Details</button>
           </div>
         </div>
       </div>
@@ -213,25 +213,51 @@
     <!-- Orders Section -->
     <section *ngIf="selectedSection === 'orders'" class="section-card">
       <header class="section-header">
-        <h2><i class="fas fa-box"></i> Order History</h2>
+        <h2><i class="fas fa-box"></i> My Orders</h2>
         <p>Track and manage your orders</p>
       </header>
 
-      <div class="orders-grid">
-        <div *ngFor="let order of orders" class="order-card" (click)="viewOrderDetails(order.id)">
+      <div class="orders-list">
+        <div *ngIf="orders.length === 0" class="empty-state">
+          <i class="fas fa-box-open"></i>
+          <h3>No Orders Yet</h3>
+          <p>You haven't placed any orders yet.</p>
+          <button class="primary-btn" routerLink="/books">Shop Now</button>
+        </div>
+
+        <div *ngFor="let order of orders" class="order-card">
           <div class="order-header">
-            <div class="order-id">Order #{{ order.id }}</div>
-            <div class="order-status" [ngClass]="'status-' + order.status.toLowerCase()">
+            <div class="order-info">
+              <h3>Order #{{ order._id }}</h3>
+              <p class="order-date">{{ order.orderDate | date:'mediumDate' }}</p>
+            </div>
+            <div class="order-status" [ngClass]="order.status.toLowerCase() || ''">
               {{ order.status }}
             </div>
           </div>
-          <div class="order-info">
-            <p><i class="fas fa-calendar"></i> {{ order.date }}</p>
-            <p><i class="fas fa-dollar-sign"></i> ${{ order.total }}</p>
-            <p><i class="fas fa-box"></i> {{ order.items.length }} item(s)</p>
+          <div class="order-details">
+            <div class="order-items">
+              <div *ngFor="let item of order.items.slice(0, 2)" class="order-item">
+                <div class="item-image">
+                  <img [src]="item.book.image || '/assets/shelfes.jpg'" [alt]="item.book.title">
+                </div>
+                <div class="item-info">
+                  <h4>{{ item.book.title }}</h4>
+                  <p>{{ item.quantity }} × ${{ item.price }}</p>
+                </div>
+              </div>
+              <div *ngIf="order.items.length > 2" class="more-items">
+                + {{ order.items.length - 2 }} more items
+              </div>
+            </div>
+            <div class="order-total">
+              <p>Total: <strong>${{ order.totalAmount }}</strong></p>
+            </div>
           </div>
           <div class="order-actions">
-            <button class="btn-outline">View Details</button>
+            <button class="secondary-btn" (click)="viewOrderDetails(order._id)">
+              <i class="fas fa-eye"></i> View Details
+            </button>
           </div>
         </div>
       </div>
@@ -243,45 +269,66 @@
         <button class="back-btn" (click)="selectSection('orders')">
           <i class="fas fa-arrow-left"></i> Back to Orders
         </button>
-        <h2>Order #{{ selectedOrderId }}</h2>
+        <h2>Order Details</h2>
       </header>
 
-      <div *ngIf="getSelectedOrder() as order" class="order-details">
-        <div class="order-summary">
-          <div class="summary-item">
-            <strong>Status:</strong>
-            <span class="status-badge" [ngClass]="'status-' + order.status.toLowerCase()">
-              {{ order.status }}
-            </span>
+      <div class="order-details-container" *ngIf="getSelectedOrder()">
+        <div class="order-details-header">
+          <div class="order-details-info">
+            <h3>Order #{{ getSelectedOrder()?._id }}</h3>
+            <p class="order-date">{{ getSelectedOrder()?.orderDate | date:'medium' }}</p>
           </div>
-          <div class="summary-item">
-            <strong>Order Date:</strong> {{ order.date }}
-          </div>
-          <div class="summary-item">
-            <strong>Total:</strong> ${{ order.total }}
-          </div>
-          <div class="summary-item">
-            <strong>Payment Method:</strong> {{ order.paymentMethod }}
-          </div>
-          <div class="summary-item">
-            <strong>Shipping Address:</strong> {{ order.shippingAddress }}
+          <div class="order-status" [ngClass]="getSelectedOrder()?.status?.toLowerCase() || ''">
+            {{ getSelectedOrder()?.status }}
           </div>
         </div>
 
-        <div class="order-items">
-          <h3>Items Ordered</h3>
-          <div class="items-list">
-            <div *ngFor="let item of order.items" class="item-card">
-              <div class="item-image">
-                <i class="fas fa-book"></i>
-              </div>
-              <div class="item-details">
-                <h4>{{ item.name }}</h4>
-                <p>Quantity: {{ item.quantity }}</p>
-                <p class="item-price">${{ item.price }}</p>
-              </div>
+        <div class="order-items-list">
+          <h3>Items</h3>
+          <div class="order-item-detail" *ngFor="let item of getSelectedOrder()?.items">
+            <div class="item-image">
+              <img [src]="item.book.image || '/assets/shelfes.jpg'" [alt]="item.book.title">
+            </div>
+            <div class="item-details">
+              <h4>{{ item.book.title }}</h4>
+              <p class="item-author">by {{ item.book.author }}</p>
+              <p class="item-price">${{ item.price }} × {{ item.quantity }}</p>
+            </div>
+            <div class="item-total">
+              ${{ item.price * item.quantity }}
             </div>
           </div>
+        </div>
+
+        <div class="order-summary">
+          <h3>Order Summary</h3>
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>${{ getSelectedOrder()?.totalAmount }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span>Free</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span>${{ getSelectedOrder()?.totalAmount }}</span>
+          </div>
+        </div>
+
+        <div class="order-shipping">
+          <h3>Shipping Information</h3>
+          <div class="shipping-address">
+            <p>{{ getSelectedOrder()?.shippingAddress?.fullName }}</p>
+            <p>{{ getSelectedOrder()?.shippingAddress?.street }}</p>
+            <p>{{ getSelectedOrder()?.shippingAddress?.city }}, {{ getSelectedOrder()?.shippingAddress?.state }} {{ getSelectedOrder()?.shippingAddress?.zipCode }}</p>
+            <p>{{ getSelectedOrder()?.shippingAddress?.country }}</p>
+          </div>
+        </div>
+
+        <div class="order-payment">
+          <h3>Payment Information</h3>
+          <p>{{ getSelectedOrder()?.paymentMethod }}</p>
         </div>
       </div>
     </section>
@@ -289,53 +336,58 @@
     <!-- Cart Section -->
     <section *ngIf="selectedSection === 'cart'" class="section-card">
       <header class="section-header">
-        <h2><i class="fas fa-shopping-cart"></i> Shopping Cart</h2>
-        <p>Review your items before checkout</p>
+        <h2><i class="fas fa-shopping-cart"></i> My Cart</h2>
+        <p>Review and checkout your items</p>
       </header>
 
-      <div *ngIf="cartItems.length === 0" class="empty-state">
-        <i class="fas fa-shopping-cart"></i>
-        <h3>Your cart is empty</h3>
-        <p>Add some books to get started!</p>
-      </div>
+      <div class="cart-list">
+        <div *ngIf="cartItems.length === 0" class="empty-state">
+          <i class="fas fa-shopping-cart"></i>
+          <h3>Your Cart is Empty</h3>
+          <p>Add some books to your cart!</p>
+          <button class="primary-btn" routerLink="/books">Shop Now</button>
+        </div>
 
-      <div *ngIf="cartItems.length > 0">
-        <div class="cart-items">
-          <div *ngFor="let item of cartItems" class="cart-item">
-            <div class="item-image">
-              <i class="fas fa-book"></i>
-            </div>
-            <div class="item-details">
-              <h4>{{ item.name }}</h4>
-              <p class="item-author">by {{ item.author }}</p>
-              <div class="item-controls">
-                <span class="quantity">Qty: {{ item.quantity }}</span>
-                <span class="price">${{ item.price }}</span>
-              </div>
-            </div>
-            <button class="remove-btn" (click)="removeFromCart(item.id)">
+        <div *ngFor="let item of cartItems" class="cart-card">
+          <div class="cart-image">
+            <img [src]="item.book.image || '/assets/shelfes.jpg'" [alt]="item.book.title">
+          </div>
+          <div class="cart-content">
+            <h3>{{ item.book.title }}</h3>
+            <p class="author">by {{ item.book.author }}</p>
+            <p class="price">${{ item.price }}</p>
+          </div>
+          <div class="cart-quantity">
+            <button class="qty-btn">-</button>
+            <span>{{ item.quantity }}</span>
+            <button class="qty-btn">+</button>
+          </div>
+          <div class="cart-total">
+            ${{ item.price * item.quantity }}
+          </div>
+          <div class="cart-actions">
+            <button class="action-btn remove" (click)="removeFromCart(item._id)">
               <i class="fas fa-trash"></i>
             </button>
           </div>
         </div>
 
-        <div class="cart-summary">
+        <div *ngIf="cartItems.length > 0" class="cart-summary">
           <div class="summary-row">
-            <span>Subtotal:</span>
+            <span>Subtotal</span>
             <span>${{ getCartTotal() }}</span>
           </div>
           <div class="summary-row">
-            <span>Shipping:</span>
+            <span>Shipping</span>
             <span>Free</span>
           </div>
           <div class="summary-row total">
-            <span>Total:</span>
+            <span>Total</span>
             <span>${{ getCartTotal() }}</span>
           </div>
           <button class="primary-btn checkout-btn" (click)="placeOrder()">
-            <i class="fas fa-credit-card"></i> Proceed to Checkout
+            <i class="fas fa-credit-card"></i> Checkout
           </button>
-          
         </div>
       </div>
     </section>
@@ -344,31 +396,31 @@
     <section *ngIf="selectedSection === 'wishlist'" class="section-card">
       <header class="section-header">
         <h2><i class="fas fa-heart"></i> My Wishlist</h2>
-        <p>Save your favorite books for later</p>
+        <p>Books you've saved for later</p>
       </header>
 
-      <div *ngIf="wishlist.length === 0" class="empty-state">
-        <i class="fas fa-heart"></i>
-        <h3>Your wishlist is empty</h3>
-        <p>Start adding books you'd like to read!</p>
-      </div>
+      <div class="wishlist-list">
+        <div *ngIf="wishlist.length === 0" class="empty-state">
+          <i class="fas fa-heart-broken"></i>
+          <h3>Your Wishlist is Empty</h3>
+          <p>Start adding books you love to your wishlist!</p>
+          <button class="primary-btn" routerLink="/books">Browse Books</button>
+        </div>
 
-      <div *ngIf="wishlist.length > 0" class="wishlist-grid">
-        <div *ngFor="let item of wishlist" class="wishlist-item">
-          <div class="item-image">
-            <i class="fas fa-book"></i>
+        <div *ngFor="let item of wishlist" class="wishlist-card">
+          <div class="wishlist-image">
+            <img [src]="item.image || '/assets/shelfes.jpg'" [alt]="item.title">
           </div>
-          <div class="item-details">
-            <h4>{{ item.name }}</h4>
-            <p class="item-author">by {{ item.author }}</p>
-            <p class="item-price">${{ item.price }}</p>
+          <div class="wishlist-content">
+            <h3>{{ item.title }}</h3>
+            <p class="price">${{ item.price }}</p>
           </div>
-          <div class="item-actions">
-            <button class="primary-btn" (click)="moveToCart(item.id)">
-              <i class="fas fa-cart-plus"></i> Add to Cart
+          <div class="wishlist-actions">
+            <button class="action-btn move-to-cart" (click)="moveToCart(item.bookId)">
+              <i class="fas fa-shopping-cart"></i> Add to Cart
             </button>
-            <button class="remove-btn" (click)="removeFromWishlist(item.id)">
-              <i class="fas fa-trash"></i>
+            <button class="action-btn remove" (click)="removeFromWishlist(item.bookId)">
+              <i class="fas fa-trash"></i> Remove
             </button>
           </div>
         </div>
@@ -379,32 +431,45 @@
     <section *ngIf="selectedSection === 'reviews'" class="section-card">
       <header class="section-header">
         <h2><i class="fas fa-star"></i> My Reviews</h2>
-        <p>Your reviews and ratings for purchased books</p>
+        <p>Reviews you've written</p>
       </header>
 
-      <div *ngIf="reviews.length === 0" class="empty-state">
-        <i class="fas fa-star"></i>
-        <h3>No reviews yet</h3>
-        <p>Purchase some books and share your thoughts!</p>
-      </div>
+      <div class="reviews-list">
+        <div *ngIf="reviews.length === 0" class="empty-state">
+          <i class="fas fa-comment-slash"></i>
+          <h3>No Reviews Yet</h3>
+          <p>You haven't written any reviews yet.</p>
+          <button class="primary-btn" routerLink="/books">Browse Books</button>
+        </div>
 
-      <div *ngIf="reviews.length > 0" class="reviews-list">
         <div *ngFor="let review of reviews" class="review-card">
           <div class="review-header">
-            <h4>{{ review.product }}</h4>
-            <div class="rating">
-              <span *ngFor="let star of getStarsArray(review.rating)"
-                    class="star" [class.filled]="star.filled">
-                ★
-              </span>
+            <div class="review-product">
+              <img [src]="review.book.image || '/assets/shelfes.jpg'" [alt]="review.book.title">
+              <h3>{{ review.book.title }}</h3>
+            </div>
+            <div class="review-date">
+              {{ review.createdAt | date:'mediumDate' }}
             </div>
           </div>
-          <p class="review-comment">{{ review.comment }}</p>
-          <div class="review-footer">
-            <span class="review-date">{{ review.date }}</span>
-            <span class="review-helpful">
-              <i class="fas fa-thumbs-up"></i> {{ review.helpful }} helpful
-            </span>
+          <div class="review-rating">
+            <div class="stars">
+              <span *ngFor="let star of getStarsArray(review.rating)" class="star" [class.filled]="star.filled">
+                <i class="fas fa-star"></i>
+              </span>
+            </div>
+            <span class="rating-value">{{ review.rating }}/5</span>
+          </div>
+          <div class="review-content">
+            <p>{{ review.comment }}</p>
+          </div>
+          <div class="review-actions">
+            <button class="action-btn edit">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="action-btn remove" (click)="deleteReview(review._id)">
+              <i class="fas fa-trash"></i> Delete
+            </button>
           </div>
         </div>
       </div>
@@ -448,7 +513,7 @@
             <div class="address-card">
               <div class="address-header">
                 <h4><i class="fas fa-truck"></i> Shipping Address</h4>
-                <button class="btn-link">Edit</button>
+                <button class="btn-link" (click)="editingShippingAddress = true">Edit</button>
               </div>
               <div class="address-content">
                 <p>{{ shippingAddress.fullName }}</p>
@@ -506,6 +571,51 @@
         </form>
       </div>
 
+      <!-- Shipping Address Form -->
+      <div *ngIf="editingShippingAddress" class="tab-content">
+        <form (ngSubmit)="updateShippingAddress()" class="address-form">
+          <h3>Edit Shipping Address</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="shipFullName">Full Name</label>
+              <input type="text" id="shipFullName" [(ngModel)]="shippingAddress.fullName" name="shipFullName" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="shipStreet">Street Address</label>
+            <input type="text" id="shipStreet" [(ngModel)]="shippingAddress.street" name="shipStreet" required />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="shipCity">City</label>
+              <input type="text" id="shipCity" [(ngModel)]="shippingAddress.city" name="shipCity" required />
+            </div>
+            <div class="form-group">
+              <label for="shipState">State</label>
+              <input type="text" id="shipState" [(ngModel)]="shippingAddress.state" name="shipState" required />
+            </div>
+            <div class="form-group">
+              <label for="shipZipCode">ZIP Code</label>
+              <input type="text" id="shipZipCode" [(ngModel)]="shippingAddress.zipCode" name="shipZipCode" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="shipCountry">Country</label>
+            <select id="shipCountry" [(ngModel)]="shippingAddress.country" name="shipCountry">
+              <option value="United States">United States</option>
+              <option value="Canada">Canada</option>
+              <option value="United Kingdom">United Kingdom</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-outline" (click)="editingShippingAddress = false">Cancel</button>
+            <button type="submit" class="primary-btn">
+              <i class="fas fa-save"></i> Save Address
+            </button>
+          </div>
+        </form>
+      </div>
+
       <!-- Payment Methods Tab -->
       <div *ngIf="showPaymentForm && !showAddressForm" class="tab-content">
         <div class="payment-methods-section">
@@ -516,16 +626,16 @@
                   <i class="fab" [ngClass]="method.type === 'Visa' ? 'fa-cc-visa' : 'fa-cc-mastercard'"></i>
                 </div>
                 <div class="card-details">
-                  <h4>{{ method.type }} •••• {{ method.last4 }}</h4>
+                  <h4>{{ method.type }} •••• {{ method.cardNumber.slice(-4) }}</h4>
                   <p>Expires {{ method.expiryDate }}</p>
                   <span *ngIf="method.isDefault" class="default-badge">Default</span>
                 </div>
               </div>
               <div class="payment-actions">
-                <button *ngIf="!method.isDefault" class="btn-link" (click)="setDefaultPaymentMethod(method.id)">
+                <button *ngIf="!method.isDefault" class="btn-link" (click)="setDefaultPaymentMethod(method._id)">
                   Set as Default
                 </button>
-                <button class="remove-btn" (click)="removePaymentMethod(method.id)">
+                <button class="remove-btn" (click)="removePaymentMethod(method._id)">
                   <i class="fas fa-trash"></i>
                 </button>
               </div>

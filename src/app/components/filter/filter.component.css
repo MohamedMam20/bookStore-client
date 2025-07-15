@@ -1,27 +1,87 @@
-/* Buttons used for toggling collapse */
-button {
-  font-family: serif;
-  border: none;
-  font-size: 1.5rem;
+.filter-container {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
 }
 
-/* Section toggle buttons (Genre, Price, Language) */
-.btn {
-  font-size: 1.5rem;
+/* Sort section */
+.sort-section {
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 1.5rem;
+}
+
+.form-select {
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  transition: border-color 0.2s;
+  background-color: #f9f9f9;
+}
+
+.form-select:focus {
+  border-color: #c43618;
+  box-shadow: 0 0 0 0.2rem rgba(196, 54, 24, 0.25);
+}
+
+/* Filter section headers */
+.filter-section {
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 1rem;
+}
+
+.filter-section:last-child {
+  border-bottom: none;
+}
+
+.filter-toggle-btn {
+  font-size: 1.1rem;
   font-weight: 600;
-  transition: color 0.5s ease;
+  transition: color 0.3s ease;
   background-color: transparent;
   border: none;
-  padding: 0;
+  padding: 0.75rem 0;
+  color: #333;
 }
-.btn:hover {
+
+.filter-toggle-btn:hover {
   color: #c43618;
 }
 
-/* Section header (Filter:) */
+.filter-toggle-btn i {
+  transition: transform 0.3s ease;
+}
+
+.filter-toggle-btn[aria-expanded="true"] i {
+  transform: rotate(180deg);
+}
+
+.filter-content {
+  padding: 0.75rem 0 0.5rem 0.5rem;
+}
+
+/* Section header */
 h5 {
-  font-size: 1.3rem;
-  font-family: serif;
+  font-size: 1.1rem;
+  font-family: sans-serif;
+  color: #333;
+}
+
+/* Reset buttons */
+.reset-btn {
+  font-size: 0.85rem;
+  color: #666;
+  background: transparent;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.reset-btn:hover {
+  color: #c43618;
+  background-color: transparent;
 }
 
 /* Checkbox styling */
@@ -30,11 +90,11 @@ h5 {
   appearance: none;
   width: 18px;
   height: 18px;
-  border: 1px solid black;
-  border-radius: 0;
+  border: 1px solid #aaa;
+  border-radius: 3px;
   cursor: pointer;
   position: relative;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
 .form-check-input:hover {
@@ -42,7 +102,8 @@ h5 {
 }
 
 .form-check-input:checked {
-  background-color: transparent;
+  background-color: #c43618;
+  border-color: #c43618;
 }
 
 .form-check-input:checked::before {
@@ -52,54 +113,61 @@ h5 {
   left: 6px;
   width: 4px;
   height: 9px;
-  border: solid black;
+  border: solid white;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
   display: block;
-  transition: border-color 0.3s ease;
-}
-
-.form-check-input:checked:hover::before {
-  border-color: #c43618;
 }
 
 .form-check-input:focus {
   outline: none;
-  box-shadow: none;
+  box-shadow: 0 0 0 0.2rem rgba(196, 54, 24, 0.25);
 }
 
 /* Label next to checkbox */
 .form-check-label {
   font-family: sans-serif;
+  font-size: 0.95rem;
+  color: #444;
   margin-left: 8px;
 }
 
 /* Active filter badges */
-.active-filter-badge {
-  background-color: transparent;
-  border: 1px solid black;
-  border-radius: 9999px;
+.active-filters-container {
+  background-color: #f8f9fa;
+  padding: 0.75rem;
+  border-radius: 4px;
+}
 
-  color: black;
-  font-size: 0.8rem;
-  font-family: serif;
-  padding: 0.6em;
-  cursor: pointer;
-  display: inline-flex; /* Inline-flex makes them wrap horizontally */
+.active-filter-badge {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  color: #333;
+  font-size: 0.85rem;
+  font-family: sans-serif;
+  padding: 0.3rem 0.8rem;
+  display: inline-flex;
   align-items: center;
-  transition: color 0.4s ease, border-color 0.4s ease;
+  transition: all 0.3s ease;
 }
 
 .active-filter-badge:hover {
-  color: #c43618;
   border-color: #c43618;
 }
 
-/* "Remove all" link */
-.remove-btn {
+.filter-remove-icon {
   font-size: 1.2rem;
-  transition: color 0.3s ease;
+  margin-left: 0.3rem;
+  cursor: pointer;
+  line-height: 0.8;
 }
-.remove-btn:hover {
-  color: #c43618 !important;
+
+.filter-remove-icon:hover {
+  color: #c43618;
+}
+
+/* Filter header */
+.filter-header {
+  margin-top: 1.5rem;
 }
