@@ -1,0 +1,65 @@
+<div class="category-form-container">
+  <div class="category-form-header">
+    <h2>{{ isEditMode ? 'Edit' : 'Add New' }} Category</h2>
+  </div>
+
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading" class="category-form-content">
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name *</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          formControlName="name"
+          [class.is-invalid]="nameControl?.invalid && nameControl?.touched"
+        >
+        <div class="invalid-feedback" *ngIf="nameControl?.errors?.['required'] && nameControl?.touched">
+          Name is required
+        </div>
+        <div class="invalid-feedback" *ngIf="nameControl?.errors?.['minlength'] && nameControl?.touched">
+          Name must be at least 2 characters
+        </div>
+        <div class="invalid-feedback" *ngIf="nameControl?.errors?.['maxlength'] && nameControl?.touched">
+          Name must be less than 50 characters
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          class="form-control"
+          id="description"
+          rows="3"
+          formControlName="description"
+          [class.is-invalid]="descriptionControl?.invalid && descriptionControl?.touched"
+        ></textarea>
+        <div class="invalid-feedback" *ngIf="descriptionControl?.errors?.['maxlength'] && descriptionControl?.touched">
+          Description must be less than 500 characters
+        </div>
+      </div>
+
+     
+
+      <div class="d-flex mt-4">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="categoryForm.invalid || submitting"
+        >
+          <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
+          {{ isEditMode ? 'Update' : 'Create' }} Category
+        </button>
+        <a [routerLink]="['/admin/categories']" class="btn btn-outline-secondary ms-2">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>

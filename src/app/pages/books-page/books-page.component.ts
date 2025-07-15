@@ -79,6 +79,16 @@ export class BooksPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  resetAllFilters(): void {
+    // Reset both filters and sorting
+    this.filterService.clearFilters();
+    this.sortService.setSortOption('');
+    
+    // Reset to first page and reload books
+    this.currentPage = 1;
+    this.loadBooks(1);
+  }
+
   onSortedBooks(sortedList: Book[]): void {
     this.products = sortedList;
     this.totalPages = 1;

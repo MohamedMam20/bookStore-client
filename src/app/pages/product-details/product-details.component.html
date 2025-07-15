@@ -23,7 +23,7 @@
 
       <div class="info-pair"><strong>Author:</strong> {{ product.author }}</div>
       <div class="info-pair"><strong>Author Bio:</strong> {{ product.authorDescription }}</div>
-      <div class="info-pair"><strong>Category:</strong> {{ product.category }}</div>
+      <div class="info-pair"><strong>Category:</strong> {{ product.category?.name || 'Uncategorized' }}</div>
 
       <div class="options" *ngIf="product.languages?.length">
         <p class="option-label">Language:</p>

@@ -2,58 +2,44 @@
 
 <app-toggle-filter-menu></app-toggle-filter-menu>
 
-<div
-  class="container-fluid"
-  style="font-family: 'Segoe UI'; background-color: #fbf6f0"
->
+<div class="container-fluid" style="font-family: 'Segoe UI'; background-color: #fbf6f0">
   <div class="d-flex">
-    <div
-      class="p-3 d-none d-lg-block flex-shrink-0"
-      style="width: 300px; min-height: 100vh"
-    >
+    <!-- Sidebar filters - visible on desktop -->
+    <div class="p-3 d-none d-lg-block flex-shrink-0" style="width: 300px; min-height: 100vh">
       <app-filter (sortedBooks)="onSortedBooks($event)"></app-filter>
     </div>
 
+    <!-- Main content area -->
     <div class="flex-grow-1 p-3">
       <div class="container-fluid">
+        <!-- Loading indicator -->
         <div class="text-center my-5" *ngIf="isLoading">
           <div class="spinner-border text-primary" role="status"></div>
           <div class="mt-2">Loading products...</div>
         </div>
 
-        <div
-          class="text-center mt-4 text-muted"
-          *ngIf="!isLoading && products.length === 0"
-        >
-          No products found.
+        <!-- No products message -->
+        <div class="text-center mt-4 text-muted" *ngIf="!isLoading && products.length === 0">
+          <p>No products found matching your criteria.</p>
+          <button class="btn btn-outline-primary mt-2" (click)="resetAllFilters()">
+            <i class="fas fa-undo-alt"></i> Reset All Filters
+          </button>
         </div>
 
+        <!-- Product grid -->
         <div class="row g-4" *ngIf="!isLoading && products.length > 0">
-          <div
-            class="col-12 col-md-6 col-lg-6 col-xl-4"
-            *ngFor="let product of products"
-          >
+          <div class="col-12 col-md-6 col-lg-6 col-xl-4" *ngFor="let product of products">
             <app-product-card [product]="product"></app-product-card>
           </div>
         </div>
 
-        <div
-          class="d-flex justify-content-center align-items-center my-4"
-          *ngIf="!isLoading && totalPages > 1"
-        >
-          <button
-            class="btn btn-primary mx-1"
-            (click)="goToPage(currentPage - 1)"
-            [disabled]="currentPage === 1"
-          >
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center align-items-center my-4" *ngIf="!isLoading && totalPages > 1">
+          <button class="btn btn-primary mx-1" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
             Previous
           </button>
           <span class="mx-2">Page {{ currentPage }} of {{ totalPages }}</span>
-          <button
-            class="btn btn-primary mx-1"
-            (click)="goToPage(currentPage + 1)"
-            [disabled]="currentPage === totalPages"
-          >
+          <button class="btn btn-primary mx-1" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
             Next
           </button>
         </div>

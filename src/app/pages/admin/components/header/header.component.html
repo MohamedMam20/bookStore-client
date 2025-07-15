@@ -1,19 +1,44 @@
 <header class="admin-header">
-  <div class="header-title">
-    <h1>Admin Dashboard</h1>
+  <div class="header-left">
+    <button class="sidebar-toggle" (click)="onToggleSidebar()" [class.mobile]="isMobile">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="breadcrumb">
+      <span>Admin</span>
+      <i class="fas fa-chevron-right"></i>
+      <span>Dashboard</span>
+    </div>
   </div>
 
   <div class="header-actions">
+    <button class="btn theme-toggle" (click)="onToggleTheme()" [title]="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+      <i class="fas" [ngClass]="isDarkMode ? 'fa-sun' : 'fa-moon'"></i>
+    </button>
+
+    <a href="/" class="btn btn-outline-primary view-site-btn">
+      <i class="fas fa-external-link-alt"></i>
+      <span class="btn-text">View Site</span>
+    </a>
+
+    <button class="btn notification-btn" type="button">
+      <i class="fas fa-bell"></i>
+      <span class="notification-badge">3</span>
+    </button>
+
     <div class="dropdown">
-      <button class="btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="fas fa-user-circle"></i>
-        <span>Admin</span>
+      <button class="btn dropdown-toggle user-dropdown" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <span class="user-name">Admin</span>
+        <i class="fas fa-chevron-down"></i>
       </button>
-      <ul class="dropdown-menu" aria-labelledby="userDropdown">
-        <li><a class="dropdown-item" href="#">Profile</a></li>
-        <li><a class="dropdown-item" href="#">Settings</a></li>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+        <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Profile</a></li>
+        <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Settings</a></li>
         <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+        <li><a class="dropdown-item" (click)="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
       </ul>
     </div>
   </div>
