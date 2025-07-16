@@ -1,5 +1,5 @@
 /* Start Header */
-header .header-text{
+header .header-text {
   margin: 10px;
   padding: 5px;
   text-align: center;
@@ -39,13 +39,13 @@ header .header-text p {
 }
 
 header .main-btn {
-    padding: 15px;
-    background-color: var(--main-color);
-    color: #fff;
-    border: 1px solid transparent;
-    border-radius: 20px;
-    font-size: 20px;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  padding: 15px;
+  background-color: var(--main-color);
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  font-size: 20px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .main-btn:hover {
@@ -53,14 +53,14 @@ header .main-btn {
   box-shadow: 0 8px 20px rgba(183, 54, 29, 0.6);
 }
 
-
 header .header-image img {
   position: relative;
-  animation: up-and-down 5s linear infinite ;
+  animation: up-and-down 5s linear infinite;
 }
 /*Animation*/
 @keyframes up-and-down {
-  0%, 100% {
+  0%,
+  100% {
     top: 0;
   }
   50% {
@@ -80,30 +80,28 @@ header .header-image img {
     align-items: center;
   }
 
- .header-text h1 {
+  .header-text h1 {
     font-size: 10px;
     padding: 5px;
     margin: 10px;
     text-align: center;
   }
-  .header-text p{
+  .header-text p {
     font-size: 10px;
     padding: 2px;
     margin: 2px;
   }
   .header-text .main-btn {
-      padding: 8px;
-      font-size: 16px;
+    padding: 8px;
+    font-size: 16px;
   }
-
 }
-
 
 /* About us*/
 .main-header {
- font-size: 50px;
- margin-bottom: 20px;
- position: relative;
+  font-size: 50px;
+  margin-bottom: 20px;
+  position: relative;
 }
 
 .main-header::before {
@@ -134,9 +132,9 @@ header .header-image img {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
-.offer .card img{
- background-color: #dbd8c9;
- border-radius: 10px;
+.offer .card img {
+  background-color: #dbd8c9;
+  border-radius: 10px;
 }
 
 /*Servives*/
@@ -156,7 +154,7 @@ header .header-image img {
   margin-bottom: 20px;
   border-radius: 10px;
   font-size: 25px;
-  box-shadow: 1px -3px 15px rgba(0, 0, 0, 0.3);;
+  box-shadow: 1px -3px 15px rgba(0, 0, 0, 0.3);
 }
 
 /*Subscribe*/
@@ -188,8 +186,6 @@ header .header-image img {
   padding: 15px;
 }
 
-
-
 /*==================================*/
 /*books*/
 .popular {
@@ -206,5 +202,9 @@ header .header-image img {
 
 .best-seller {
   background-color: var(--secondary-color);
-   height: 350px;
+  height: 350px;
+}
+.best-seller {
+  padding: 20px 0;
+  min-height: 700px;
 }

@@ -5,7 +5,10 @@ import { FilterComponent } from '../../components/filter/filter.component';
 import { Book } from '../../models/book.model';
 import { BooksService } from '../../services/books/books.service';
 import { ToggleFilterMenuComponent } from '../../components/toggle-filter-menu/toggle-filter-menu.component';
-import { FilterService, Filter } from '../../services/filter/filter-state.service';
+import {
+  FilterService,
+  Filter,
+} from '../../services/filter/filter-state.service';
 import { SortService } from '../../services/sort/sort.service';
 import { Subscription, combineLatest } from 'rxjs';
 
@@ -41,7 +44,7 @@ export class BooksPageComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       combineLatest([
         this.filterService.filters$,
-        this.sortService.selectedSort$
+        this.sortService.selectedSort$,
       ]).subscribe(([filters, sort]) => {
         this.currentFilters = filters;
         this.currentSort = sort;

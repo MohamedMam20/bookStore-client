@@ -9,8 +9,9 @@ import { Filter } from '../filter/filter-state.service';
   providedIn: 'root',
 })
 export class BooksService {
-  private apiUrl = 'http://localhost:3000/api/v1/book';
-
+  private baseUrl = 'http://localhost:3000/api/v1';
+  private apiUrl = `${this.baseUrl}/book`;
+  private bestSellerUrl = `${this.baseUrl}/bestsellers`;
   constructor(private http: HttpClient) {}
 
   getBooks(
@@ -39,9 +40,15 @@ export class BooksService {
       console.log('Processing filters:', filters); // Debug log
 
       // Group filters by label (case-insensitive comparison)
-      const genreFilters = filters.filter(f => f.label.toLowerCase() === 'genre').map(f => f.value);
-      const languageFilters = filters.filter(f => f.label.toLowerCase() === 'language').map(f => f.value);
-      const priceFilters = filters.filter(f => f.label.toLowerCase() === 'price');
+      const genreFilters = filters
+        .filter((f) => f.label.toLowerCase() === 'genre')
+        .map((f) => f.value);
+      const languageFilters = filters
+        .filter((f) => f.label.toLowerCase() === 'language')
+        .map((f) => f.value);
+      const priceFilters = filters.filter(
+        (f) => f.label.toLowerCase() === 'price'
+      );
 
       console.log('Genre filters:', genreFilters); // Debug log
       console.log('Language filters:', languageFilters); // Debug log
@@ -49,14 +56,14 @@ export class BooksService {
 
       // Add genre filters
       if (genreFilters.length > 0) {
-        genreFilters.forEach(genre => {
+        genreFilters.forEach((genre) => {
           params = params.append('genre', genre);
         });
       }
 
       // Add language filters
       if (languageFilters.length > 0) {
-        languageFilters.forEach(language => {
+        languageFilters.forEach((language) => {
           params = params.append('language', language);
         });
       }
@@ -67,7 +74,7 @@ export class BooksService {
         let minPrice = Number.MAX_SAFE_INTEGER;
         let maxPrice = 0;
 
-        priceFilters.forEach(filter => {
+        priceFilters.forEach((filter) => {
           const priceRange = filter.value;
           const matches = priceRange.match(/LE (\d+) - LE (\d+)/);
 
@@ -113,5 +120,11 @@ export class BooksService {
   getBookById(slug: string): Observable<Book> {
     return this.http.get<Book>(`${this.apiUrl}/${slug}`);
   }
-}
 
+  //=============== best sellers ================
+  getBestSellers(): Observable<Book[]> {
+    return this.http
+      .get<{ status: string; data: Book[] }>(this.bestSellerUrl)
+      .pipe(map((res) => res.data));
+  }
+}
