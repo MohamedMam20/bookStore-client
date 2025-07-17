@@ -1,19 +1,142 @@
-<aside class="admin-sidebar">
+<aside class="admin-sidebar" [class.collapsed]="collapsed" [class.mobile]="isMobile">
+  <!-- Mobile header with close button -->
+  <div class="mobile-header" *ngIf="isMobile">
+    <button class="close-btn" (click)="onToggleSidebar()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
   <div class="sidebar-header">
-    <div class="logo d-flex justify-content-center align-items-center">
-      <i class="fa-solid fa-paintbrush gradient-icon me-2"></i>
-      <h4>BookShelf</h4>
+    <div class="logo" [class.collapsed]="collapsed">
+      <img src="assets/logo2-transparent.png" alt="BookShelf Logo" class="logo-image" [class.collapsed]="collapsed">
     </div>
   </div>
-  
+
+  <div class="sidebar-search" *ngIf="!collapsed">
+    <div class="search-input">
+      <i class="fas fa-search"></i>
+      <input
+        type="text"
+        placeholder="Search..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()" />
+    </div>
+  </div>
+
   <nav class="sidebar-nav">
-    <ul>
-      <li *ngFor="let item of menuItems">
-        <a [routerLink]="item.route" routerLinkActive="active">
-          <i class="fas {{item.icon}}"></i>
-          <span>{{item.label}}</span>
+    <!-- Dashboard -->
+    <div class="nav-section">
+      <a [routerLink]="'/admin/dashboard'" routerLinkActive="active" [title]="collapsed ? 'Dashboard' : ''">
+        <i class="fas fa-tachometer-alt"></i>
+        <span *ngIf="!collapsed" @fadeAnimation>Dashboard</span>
+      </a>
+    </div>
+
+    <!-- Content Management -->
+    <div class="nav-section" *ngIf="!collapsed">
+      <div class="nav-section-header" (click)="toggleSection('content')">
+        <span>Content Management</span>
+        <i class="fas" [ngClass]="{'fa-chevron-down': !collapsedSections['content'], 'fa-chevron-right': collapsedSections['content']}"></i>
+      </div>
+      <div class="nav-section-content" [ngClass]="{'collapsed': collapsedSections['content']}" @expandCollapse>
+        <a [routerLink]="'/admin/books'" routerLinkActive="active">
+          <i class="fas fa-book"></i>
+          <span>Books</span>
         </a>
-      </li>
-    </ul>
+        <a [routerLink]="'/admin/categories'" routerLinkActive="active">
+          <i class="fas fa-tags"></i>
+          <span>Categories</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Collapsed content items -->
+    <div class="nav-section collapsed-icons" *ngIf="collapsed">
+      <a [routerLink]="'/admin/books'" routerLinkActive="active" title="Books">
+        <i class="fas fa-book"></i>
+      </a>
+      <a [routerLink]="'/admin/categories'" routerLinkActive="active" title="Categories">
+        <i class="fas fa-tags"></i>
+      </a>
+    </div>
+
+    <!-- Order Management -->
+    <div class="nav-section" *ngIf="!collapsed">
+      <div class="nav-section-header" (click)="toggleSection('orders')">
+        <span>Order Management</span>
+        <i class="fas" [ngClass]="{'fa-chevron-down': !collapsedSections['orders'], 'fa-chevron-right': collapsedSections['orders']}"></i>
+      </div>
+      <div class="nav-section-content" [ngClass]="{'collapsed': collapsedSections['orders']}" @expandCollapse>
+        <a [routerLink]="'/admin/orders'" routerLinkActive="active">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Orders</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Collapsed order items -->
+    <div class="nav-section collapsed-icons" *ngIf="collapsed">
+      <a [routerLink]="'/admin/orders'" routerLinkActive="active" title="Orders">
+        <i class="fas fa-shopping-cart"></i>
+      </a>
+    </div>
+
+    <!-- User Management -->
+    <div class="nav-section" *ngIf="!collapsed">
+      <div class="nav-section-header" (click)="toggleSection('users')">
+        <span>User Management</span>
+        <i class="fas" [ngClass]="{'fa-chevron-down': !collapsedSections['users'], 'fa-chevron-right': collapsedSections['users']}"></i>
+      </div>
+      <div class="nav-section-content" [ngClass]="{'collapsed': collapsedSections['users']}" @expandCollapse>
+        <a [routerLink]="'/admin/users'" routerLinkActive="active">
+          <i class="fas fa-users"></i>
+          <span>Customers</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Collapsed user items -->
+    <div class="nav-section collapsed-icons" *ngIf="collapsed">
+      <a [routerLink]="'/admin/users'" routerLinkActive="active" title="Users">
+        <i class="fas fa-users"></i>
+      </a>
+    </div>
+
+    <!-- Reviews -->
+    <div class="nav-section">
+      <a [routerLink]="'/admin/reviews'" routerLinkActive="active" [title]="collapsed ? 'Reviews' : ''">
+        <i class="fas fa-star"></i>
+        <span *ngIf="!collapsed" @fadeAnimation>Reviews</span>
+      </a>
+    </div>
+
+    <!-- Settings -->
+    <div class="nav-section" *ngIf="!collapsed">
+      <div class="nav-section-header" (click)="toggleSection('settings')">
+        <span>Settings</span>
+        <i class="fas" [ngClass]="{'fa-chevron-down': !collapsedSections['settings'], 'fa-chevron-right': collapsedSections['settings']}"></i>
+      </div>
+      <div class="nav-section-content" [ngClass]="{'collapsed': collapsedSections['settings']}" @expandCollapse>
+        <a [routerLink]="'/admin/settings'" routerLinkActive="active">
+          <i class="fas fa-cog"></i>
+          <span>General Settings</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Collapsed settings item -->
+    <div class="nav-section collapsed-icons" *ngIf="collapsed">
+      <a [routerLink]="'/admin/settings'" routerLinkActive="active" title="Settings">
+        <i class="fas fa-cog"></i>
+      </a>
+    </div>
+
+    <!-- Collapse/Expand toggle -->
+    <div class="sidebar-toggle">
+      <button (click)="onToggleSidebar()" class="collapse-button" [title]="collapsed ? 'Expand' : 'Collapse'">
+        <i class="fas" [ngClass]="collapsed ? 'fa-angle-right' : 'fa-angle-left'"></i>
+      </button>
+    </div>
   </nav>
 </aside>
+

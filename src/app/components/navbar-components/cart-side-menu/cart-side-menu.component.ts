@@ -11,7 +11,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CartService } from '../../../services/cart/cart.service';
 import { OrderService } from '../../../services/paypal/order.service';
-
+import { AuthService } from '../../../services/auth/auth.service';
 @Component({
   selector: 'app-cart-side-menu',
   standalone: true,
@@ -30,7 +30,8 @@ export class CartSideMenuComponent implements OnChanges {
     private router: Router,
     private cartService: CartService,
     private toastr: ToastrService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private authService: AuthService
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -105,7 +106,9 @@ export class CartSideMenuComponent implements OnChanges {
       },
     });
   }
-
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
   proceedToPurchase() {
     const token = localStorage.getItem('authToken');
     if (!token) {

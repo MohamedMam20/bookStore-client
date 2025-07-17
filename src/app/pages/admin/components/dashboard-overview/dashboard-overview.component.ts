@@ -37,11 +37,11 @@ export class DashboardOverviewComponent implements OnInit {
 
     // Try to get dashboard stats
     this.adminService.getDashboardStats().subscribe({
-      next: (data) => {
+      next: (data: any) => {
         this.dashboardStats = data;
         this.loading = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error loading dashboard stats:', err);
         // Fallback to mock data
         this.dashboardStats = {
@@ -60,10 +60,10 @@ export class DashboardOverviewComponent implements OnInit {
 
     // Try to get bestsellers
     this.adminService.getBestsellers().subscribe({
-      next: (data) => {
+      next: (data: any) => {
         this.bestsellers = data;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error loading bestsellers:', err);
         // Fallback to mock data
         this.bestsellers = [
@@ -78,10 +78,10 @@ export class DashboardOverviewComponent implements OnInit {
 
     // Try to get recent orders
     this.adminService.getRecentOrders().subscribe({
-      next: (data) => {
+      next: (data: any) => {
         this.recentOrders = data;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error loading recent orders:', err);
         // Fallback to mock data
         this.recentOrders = [

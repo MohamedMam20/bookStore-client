@@ -111,7 +111,9 @@ export class CheckoutFormComponent implements OnInit {
     this.isLoading = true;
     this.cartService.viewCart().subscribe({
       next: (res) => {
-        this.cartItems = res.data || [];
+        // The server returns the cart items directly in res.data as an array,
+        // not inside a nested 'items' property
+        this.cartItems = Array.isArray(res.data) ? res.data : [];
         this.subtotal = this.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
         this.total = this.subtotal + this.shipping;
         this.isLoading = false;

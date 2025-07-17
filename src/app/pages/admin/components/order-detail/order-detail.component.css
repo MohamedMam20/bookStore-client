@@ -1,0 +1,64 @@
+.order-detail-container {
+  padding: 20px;
+}
+
+.order-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.order-detail-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.order-detail-content {
+  margin-top: 20px;
+}
+
+.badge {
+  padding: 0.5rem 0.75rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.order-item-image {
+  width: 60px;
+  height: 60px;
+  margin-right: 15px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.order-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+hr {
+  margin: 1rem 0;
+  color: #dee2e6;
+  opacity: 1;
+} 

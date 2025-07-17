@@ -1,48 +1,46 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UserService } from '../../services/user/user.service'; // adjust path
+import { UserService } from '../../services/user/user.service';
 
 interface Order {
-  id: number;
-  date: string;
-  total: number;
+  _id: string;
+  orderDate: string;
+  totalAmount: number;
   status: string;
   items: OrderItem[];
-  shippingAddress: string;
+  shippingAddress: any;
   paymentMethod: string;
 }
 
 interface OrderItem {
-  name: string;
+  book: any;
   quantity: number;
   price: number;
-  image?: string;
 }
 
 interface CartItem {
-  id: number;
-  name: string;
+  _id: string;
+  book: any;
   quantity: number;
   price: number;
-  image?: string;
-  author: string;
 }
 
 interface WishlistItem {
-  id: number;
-  name: string;
+  _id: string;
+  bookId: string;
+  title: string;
   price: number;
-  author: string;
   image?: string;
+  language: string;
 }
 
 interface Review {
-  id: number;
-  product: string;
+  _id: string;
+  book: any;
   rating: number;
   comment: string;
-  date: string;
+  createdAt: string;
   helpful: number;
 }
 
@@ -56,10 +54,11 @@ interface BillingAddress {
 }
 
 interface PaymentMethod {
-  id: number;
+  _id: string;
   type: string;
-  last4: string;
+  cardNumber: string;
   expiryDate: string;
+  cardHolder: string;
   isDefault: boolean;
 }
 
@@ -74,10 +73,11 @@ export class MyAccountComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   selectedSection: string = 'dashboard';
-  selectedOrderId: number | null = null;
+  selectedOrderId: string | null = null;
   showPasswordChange: boolean = false;
   showAddressForm: boolean = false;
   showPaymentForm: boolean = false;
+  editingShippingAddress: boolean = false;
 
   isLoading: boolean = false;
   notifications: string[] = [];
@@ -89,6 +89,8 @@ export class MyAccountComponent implements OnInit {
   reviews: Review[] = [];
 
   userInfo = {
+    firstName: '',
+    lastName: '',
     name: '',
     email: '',
     phone: '',
@@ -121,8 +123,8 @@ export class MyAccountComponent implements OnInit {
     type: 'Visa',
     cardNumber: '',
     expiryDate: '',
-    cvv: '',
-    cardHolder: ''
+    cardHolder: '',
+    cvv: ''
   };
 
   userInfoMessage = '';
@@ -137,7 +139,11 @@ export class MyAccountComponent implements OnInit {
     this.isLoading = true;
     this.userService.getUserDashboardData().subscribe({
       next: (data) => {
-        this.userInfo = { ...this.userInfo, ...data.userInfo };
+        this.userInfo = {
+          ...this.userInfo,
+          ...data.userInfo,
+          name: `${data.userInfo.firstName || ''} ${data.userInfo.lastName || ''}`.trim()
+        };
         this.orders = data.orders;
         this.cartItems = data.cartItems;
         this.wishlist = data.wishlist;
@@ -161,19 +167,29 @@ export class MyAccountComponent implements OnInit {
     this.showPasswordChange = false;
     this.showAddressForm = false;
     this.showPaymentForm = false;
+    this.editingShippingAddress = false;
   }
 
-  viewOrderDetails(orderId: number) {
+  viewOrderDetails(orderId: string) {
     this.selectedOrderId = orderId;
     this.selectedSection = 'order-details';
   }
 
   updateUserInfo() {
     this.isLoading = true;
-    this.userService.updateUserProfile(this.userInfo).subscribe({
+
+    const userData = {
+      firstName: this.userInfo.firstName,
+      lastName: this.userInfo.lastName,
+      phone: this.userInfo.phone
+    };
+
+    this.userService.updateUserProfile(userData).subscribe({
       next: (response) => {
         this.userInfoMessage = 'Profile updated successfully!';
         this.isLoading = false;
+        // Update the display name
+        this.userInfo.name = `${this.userInfo.firstName || ''} ${this.userInfo.lastName || ''}`.trim();
         this.addNotification(this.userInfoMessage);
         setTimeout(() => this.userInfoMessage = '', 3000);
       },
@@ -241,6 +257,26 @@ export class MyAccountComponent implements OnInit {
     });
   }
 
+  updateShippingAddress() {
+    this.isLoading = true;
+    this.userService.updateShippingAddress(this.shippingAddress).subscribe({
+      next: (response) => {
+        this.billingMessage = 'Shipping address updated successfully!';
+        this.isLoading = false;
+        this.editingShippingAddress = false;
+        this.addNotification(this.billingMessage);
+        setTimeout(() => this.billingMessage = '', 3000);
+      },
+      error: (err) => {
+        console.error(err);
+        this.billingMessage = 'Failed to update shipping address';
+        this.isLoading = false;
+        this.addNotification(this.billingMessage);
+        setTimeout(() => this.billingMessage = '', 3000);
+      }
+    });
+  }
+
   addPaymentMethod() {
     this.isLoading = true;
     this.userService.addPaymentMethod(this.newPaymentMethod).subscribe({
@@ -263,10 +299,10 @@ export class MyAccountComponent implements OnInit {
     });
   }
 
-  removePaymentMethod(id: number) {
-    this.userService.removePaymentMethod(id.toString()).subscribe({
+  removePaymentMethod(id: string) {
+    this.userService.removePaymentMethod(id).subscribe({
       next: (response) => {
-        this.paymentMethods = this.paymentMethods.filter(pm => pm.id !== id);
+        this.paymentMethods = this.paymentMethods.filter(pm => pm._id !== id);
         this.addNotification('Payment method removed!');
       },
       error: (err) => {
@@ -276,10 +312,10 @@ export class MyAccountComponent implements OnInit {
     });
   }
 
-  setDefaultPaymentMethod(id: number) {
-    this.userService.setDefaultPaymentMethod(id.toString()).subscribe({
+  setDefaultPaymentMethod(id: string) {
+    this.userService.setDefaultPaymentMethod(id).subscribe({
       next: (response) => {
-        this.paymentMethods.forEach(pm => pm.isDefault = pm.id === id);
+        this.paymentMethods.forEach(pm => pm.isDefault = pm._id === id);
         this.addNotification('Default payment method updated!');
       },
       error: (err) => {
@@ -289,10 +325,10 @@ export class MyAccountComponent implements OnInit {
     });
   }
 
-  removeFromCart(id: number) {
-    this.userService.removeFromCart(id.toString()).subscribe({
+  removeFromCart(id: string) {
+    this.userService.removeFromCart(id).subscribe({
       next: (response) => {
-        this.cartItems = this.cartItems.filter(item => item.id !== id);
+        this.cartItems = this.cartItems.filter(item => item._id !== id);
         this.addNotification('Item removed from cart!');
       },
       error: (err) => {
@@ -302,10 +338,10 @@ export class MyAccountComponent implements OnInit {
     });
   }
 
-  removeFromWishlist(id: number) {
-    this.userService.removeFromWishlist(id.toString()).subscribe({
+  removeFromWishlist(id: string) {
+    this.userService.removeFromWishlist(id).subscribe({
       next: (response) => {
-        this.wishlist = this.wishlist.filter(item => item.id !== id);
+        this.wishlist = this.wishlist.filter(item => item.bookId !== id);
         this.addNotification('Item removed from wishlist!');
       },
       error: (err) => {
@@ -315,13 +351,13 @@ export class MyAccountComponent implements OnInit {
     });
   }
 
-  moveToCart(id: number) {
-    const item = this.wishlist.find(w => w.id === id);
+  moveToCart(id: string) {
+    const item = this.wishlist.find(w => w.bookId === id);
     if (item) {
       this.userService.addToCart({
-        bookId: id.toString(),
+        bookId: id,
         quantity: 1,
-        language: 'English' // Default language, adjust as needed
+        language: item.language || 'English'
       }).subscribe({
         next: (response) => {
           this.removeFromWishlist(id);
@@ -341,11 +377,11 @@ export class MyAccountComponent implements OnInit {
 
     const orderData = {
       items: this.cartItems.map(item => ({
-        bookId: item.id.toString(),
+        bookId: item.book._id,
         quantity: item.quantity
       })),
       shippingAddress: this.shippingAddress,
-      paymentMethodId: this.paymentMethods.find(pm => pm.isDefault)?.id.toString()
+      paymentMethodId: this.paymentMethods.find(pm => pm.isDefault)?._id
     };
 
     this.userService.placeOrder(orderData).subscribe({
@@ -364,8 +400,25 @@ export class MyAccountComponent implements OnInit {
     });
   }
 
+  deleteReview(reviewId: string) {
+    this.isLoading = true;
+    this.userService.deleteReview(reviewId).subscribe({
+      next: (response) => {
+        this.reviews = this.reviews.filter(review => review._id !== reviewId);
+        this.isLoading = false;
+        this.addNotification('Review deleted successfully!');
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading = false;
+        this.addNotification('Failed to delete review');
+      }
+    });
+  }
+
   getSelectedOrder(): Order | null {
-    return this.orders.find(order => order.id === this.selectedOrderId) || null;
+    if (!this.selectedOrderId) return null;
+    return this.orders.find(order => order._id === this.selectedOrderId) || null;
   }
 
   getCartTotal(): number {

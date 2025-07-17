@@ -8,10 +8,11 @@
       <button class="continue-btn" (click)="continueShopping()">
         Continue Shopping
       </button>
-      <div class="login-section">
+      <div class="login-section" *ngIf="!isLoggedIn()">
         <p class="account-question">Have an account?</p>
         <p class="login-text">
-          <a href="#" (click)="login()">Log in</a> to check out faster.
+          <a routerLink="/login" (click)="login()">Log in</a> to check out
+          faster.
         </p>
       </div>
     </div>

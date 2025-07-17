@@ -39,6 +39,14 @@ export class CartService {
     });
   }
 
+  updateItemQuantity(itemId: string, quantity: number): Observable<any> {
+    return this.http.patch(
+      `${this.baseUrl}/update-quantity`,
+      { id: itemId, quantity },
+      { headers: this.getHeaders() }
+    );
+  }
+
   clearCart(): Observable<any> {
     return this.http.delete(`${this.baseUrl}/clear`, {
       headers: this.getHeaders(),
