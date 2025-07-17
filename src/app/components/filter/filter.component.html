@@ -1,16 +1,7 @@
 <div class="p-3" style="width: 100%">
   <!-- Sort Section -->
   <div class="mb-3 border-top pt-3">
-    <div class="d-flex justify-content-between align-items-center">
-      <h5 class="fw-bold mb-0 text-dark">Sort by</h5>
-      <button
-        *ngIf="selectedSort"
-        class="btn btn-sm btn-outline-secondary"
-        (click)="resetSort()"
-      >
-        Reset
-      </button>
-    </div>
+    <h5 class="fw-bold mb-0 text-dark">Sort by</h5>
     <select
       class="form-select mt-2"
       [(ngModel)]="selectedSort"
@@ -22,12 +13,6 @@
       <option value="price_asc">Price: Low to High</option>
       <option value="price_desc">Price: High to Low</option>
     </select>
-  </div>
-
-  <!-- Loading indicator -->
-  <div *ngIf="isLoading" class="text-center my-3">
-    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-    <small class="ms-2">Loading filters...</small>
   </div>
 
   <div class="d-flex justify-content-between align-items-center mb-2">
@@ -43,38 +28,34 @@
 
   <div class="active-filters d-flex flex-wrap gap-2 mb-3">
     <span *ngFor="let filter of activeFilters" class="active-filter-badge">
-      {{ filter.label === 'genre' ? 'Category' : filter.label }}: {{ filter.value }}
+      {{ filter.label }}: {{ filter.value }}
       <span class="ms-1" style="cursor: pointer" (click)="removeFilter(filter)"
         >×</span
       >
     </span>
   </div>
 
-  <!-- Categories Section -->
+  <!-- Genre Section -->
   <div class="mb-3">
     <button
       class="btn w-100 text-start p-0 d-flex justify-content-between align-items-center"
       type="button"
       data-bs-toggle="collapse"
-      data-bs-target="#categoriesCollapse"
+      data-bs-target="#genreCollapse"
     >
-      Categories <span>&#9662;</span>
+      Genre <span>&#9662;</span>
     </button>
-    <div class="collapse show pt-2 text-secondary" id="categoriesCollapse">
-      <div *ngIf="filters.categories.length === 0 && !isLoading" class="text-muted small">
-        No categories available
-      </div>
-      
-      <div class="form-check mb-1" *ngFor="let category of filters.categories">
+    <div class="collapse show pt-2 text-secondary" id="genreCollapse">
+      <div class="form-check mb-1" *ngFor="let item of filters.genre">
         <input
           class="form-check-input"
           type="checkbox"
-          [checked]="isChecked('Category', category)"
-          (change)="toggleFilter('Category', category, $event)"
-          [id]="'category-' + category"
+          [checked]="isChecked('genre', item)"
+          (change)="toggleFilter('genre', item, $event)"
+          [id]="'genre-' + item"
         />
-        <label class="form-check-label" [for]="'category-' + category">{{
-          category
+        <label class="form-check-label" [for]="'genre-' + item">{{
+          item
         }}</label>
       </div>
     </div>
@@ -95,8 +76,8 @@
         <input
           class="form-check-input"
           type="checkbox"
-          [checked]="isChecked('Price', item)"
-          (change)="toggleFilter('Price', item, $event)"
+          [checked]="isChecked('price', item)"
+          (change)="toggleFilter('price', item, $event)"
           [id]="'price-' + item"
         />
         <label class="form-check-label" [for]="'price-' + item">{{
@@ -121,8 +102,8 @@
         <input
           class="form-check-input"
           type="checkbox"
-          [checked]="isChecked('Language', item)"
-          (change)="toggleFilter('Language', item, $event)"
+          [checked]="isChecked('language', item)"
+          (change)="toggleFilter('language', item, $event)"
           [id]="'lang-' + item"
         />
         <label class="form-check-label" [for]="'lang-' + item">{{
@@ -132,3 +113,6 @@
     </div>
   </div>
 </div>
+
+<!--</select>  [(ngModel)]="selectedSort"
+      (change)="onSortChange($event)"-->

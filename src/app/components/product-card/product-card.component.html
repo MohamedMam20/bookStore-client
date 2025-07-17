@@ -18,7 +18,7 @@
 
         <button
           class="btn btn-sm shadow"
-          (click)="addToCart(product._id, 'en', $event)"
+          (click)="addToCart(product._id, $event)"
         >
           <i class="fa-solid fa-cart-plus"></i>
         </button>
@@ -42,7 +42,6 @@
       <h5 class="card-title mb-1">{{ product.title }}</h5>
       <span class="card-text card-price text-secondary">
         LE {{ product.price }}
-
       </span>
     </div>
   </div>

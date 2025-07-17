@@ -36,7 +36,7 @@ export class SearchServiceService {
         totalItems: number;
         results: number;
         data: Book[];
-      }>(`${environment.apiUrl}/v1/books`, { params })
+      }>(`${environment.apiUrl}/search/books`, { params })
       .pipe(
         map((response) => ({
           books: response.data,

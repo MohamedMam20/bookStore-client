@@ -83,30 +83,29 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     }
   }
 
-  addToCart(bookId: string, language: string = 'en', event: MouseEvent) {
+  addToCart(bookId: string, event: MouseEvent, language: string = '') {
     event.stopPropagation();
     event.preventDefault();
-    
+
     // Check authentication
     const token = localStorage.getItem('authToken');
     if (!token) {
       this.toastr.error('Please log in to add items to your cart');
       return;
     }
-    
+
     console.log('Adding to cart:', { bookId, quantity: 1, language });
-    
+
     this.cartService.addToCart({ bookId, quantity: 1, language }).subscribe({
       next: (res) => {
-        console.log('Add to cart success:', res);
-        this.toastr.success(res.message || 'Added to cart');
+        this.toastr.success(res.message);
         // Refresh cart data in navbar
         this.refreshCartCount();
       },
       error: (err) => {
         console.error('Add to cart error:', err);
         this.toastr.error(err.error?.message || 'Error adding to cart');
-      }
+      },
     });
   }
 
