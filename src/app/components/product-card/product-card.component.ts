@@ -83,7 +83,9 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     event.preventDefault();
     this.cartService.addToCart({ bookId, quantity: 1, language }).subscribe({
-      next: (res) => this.toastr.success(res.message),
+      next: (res) => {
+        this.toastr.success(res.message);
+      },
       error: (err) =>
         this.toastr.error(err.error.message || 'Error adding to cart'),
     });
