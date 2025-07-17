@@ -246,6 +246,33 @@
   background-color: var(--primary-color);
 }
 
+.navbar-left-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+.item-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #e94b3cff;
+  color: white;
+  border-radius: 50%;
+  min-width: 18px;
+  height: 18px;
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2px;
+}
+
 @media (max-width: 768px) {
   .navbar-top-bar {
     padding: 1rem;

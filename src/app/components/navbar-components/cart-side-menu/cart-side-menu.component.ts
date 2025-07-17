@@ -42,8 +42,10 @@ export class CartSideMenuComponent implements OnChanges {
   loadCart() {
     this.cartService.viewCart().subscribe({
       next: (res) => {
-        this.cartItems = res.data || [];
-        console.log(res.data);
+        // The server returns the cart items directly in res.data as an array,
+        // not inside a nested 'items' property
+        this.cartItems = Array.isArray(res.data) ? res.data : [];
+        console.log('Cart items loaded:', this.cartItems);
       },
       error: (err) => {
         this.toastr.error(err.error?.message || 'Failed to load cart');
