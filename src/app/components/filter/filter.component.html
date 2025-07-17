@@ -1,17 +1,18 @@
-<div class="filter-container">
+<div class="p-3" style="width: 100%">
   <!-- Sort Section -->
-  <div class="sort-section mb-4">
-    <div class="d-flex justify-content-between align-items-center mb-2">
+  <div class="mb-3 border-top pt-3">
+    <div class="d-flex justify-content-between align-items-center">
       <h5 class="fw-bold mb-0 text-dark">Sort by</h5>
-      <button 
-        *ngIf="selectedSort" 
-        class="btn reset-btn" 
-        (click)="resetSort()">
-        <i class="fas fa-undo-alt"></i> Reset
+      <button
+        *ngIf="selectedSort"
+        class="btn btn-sm btn-outline-secondary"
+        (click)="resetSort()"
+      >
+        Reset
       </button>
     </div>
     <select
-      class="form-select"
+      class="form-select mt-2"
       [(ngModel)]="selectedSort"
       (change)="onSortChange($event)"
     >
@@ -20,104 +21,113 @@
       <option value="title_desc">Title: Z to A</option>
       <option value="price_asc">Price: Low to High</option>
       <option value="price_desc">Price: High to Low</option>
-      <option value="rating_asc">Rating: Low to High</option>
-      <option value="rating_desc">Rating: High to Low</option>
     </select>
   </div>
 
-  <!-- Filter Header -->
-  <div class="filter-header d-flex justify-content-between align-items-center mb-3">
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="text-center my-3">
+    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+    <small class="ms-2">Loading filters...</small>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mb-2">
     <h5 class="fw-bold mb-0">Filter:</h5>
     <button
       *ngIf="activeFilters.length > 0"
-      class="btn reset-btn"
+      class="btn remove-btn p-0 text-decoration-none text-dark"
       (click)="clearAllFilters()"
     >
-      <i class="fas fa-times"></i> Clear all
+      Remove all
     </button>
   </div>
 
-  <!-- Active Filters Display -->
-  <div class="active-filters-container mb-4" *ngIf="activeFilters.length > 0">
-    <div class="active-filters d-flex flex-wrap gap-2">
-      <span *ngFor="let filter of activeFilters" class="active-filter-badge">
-        {{ filter.label }}: {{ filter.value }}
-        <span class="ms-1 filter-remove-icon" (click)="removeFilter(filter)">×</span>
-      </span>
-    </div>
+  <div class="active-filters d-flex flex-wrap gap-2 mb-3">
+    <span *ngFor="let filter of activeFilters" class="active-filter-badge">
+      {{ filter.label === 'genre' ? 'Category' : filter.label }}: {{ filter.value }}
+      <span class="ms-1" style="cursor: pointer" (click)="removeFilter(filter)"
+        >×</span
+      >
+    </span>
   </div>
 
-  <!-- Genre Section -->
-  <div class="filter-section mb-4">
+  <!-- Categories Section -->
+  <div class="mb-3">
     <button
-      class="filter-toggle-btn w-100 text-start d-flex justify-content-between align-items-center"
+      class="btn w-100 text-start p-0 d-flex justify-content-between align-items-center"
       type="button"
       data-bs-toggle="collapse"
-      data-bs-target="#genreCollapse"
-      aria-expanded="true"
+      data-bs-target="#categoriesCollapse"
     >
-      <span>Genre</span> <i class="fas fa-chevron-down"></i>
+      Categories <span>&#9662;</span>
     </button>
-    <div class="collapse show filter-content" id="genreCollapse">
-      <div class="form-check mb-2" *ngFor="let item of filters.genre">
+    <div class="collapse show pt-2 text-secondary" id="categoriesCollapse">
+      <div *ngIf="filters.categories.length === 0 && !isLoading" class="text-muted small">
+        No categories available
+      </div>
+      
+      <div class="form-check mb-1" *ngFor="let category of filters.categories">
         <input
           class="form-check-input"
           type="checkbox"
-          [checked]="isChecked('genre', item)"
-          (change)="toggleFilter('genre', item, $event)"
-          [id]="'genre-' + item"
+          [checked]="isChecked('Category', category)"
+          (change)="toggleFilter('Category', category, $event)"
+          [id]="'category-' + category"
         />
-        <label class="form-check-label" [for]="'genre-' + item">{{ item }}</label>
+        <label class="form-check-label" [for]="'category-' + category">{{
+          category
+        }}</label>
       </div>
     </div>
   </div>
 
   <!-- Price Section -->
-  <div class="filter-section mb-4">
+  <div class="mb-3 border-top pt-3 text-secondary">
     <button
-      class="filter-toggle-btn w-100 text-start d-flex justify-content-between align-items-center"
+      class="btn w-100 text-start p-0 d-flex justify-content-between align-items-center"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#priceCollapse"
-      aria-expanded="true"
     >
-      <span>Price</span> <i class="fas fa-chevron-down"></i>
+      Price <span>&#9662;</span>
     </button>
-    <div class="collapse show filter-content" id="priceCollapse">
-      <div class="form-check mb-2" *ngFor="let item of filters.price">
+    <div class="collapse show pt-2" id="priceCollapse">
+      <div class="form-check mb-1" *ngFor="let item of filters.price">
         <input
           class="form-check-input"
           type="checkbox"
-          [checked]="isChecked('price', item)"
-          (change)="toggleFilter('price', item, $event)"
+          [checked]="isChecked('Price', item)"
+          (change)="toggleFilter('Price', item, $event)"
           [id]="'price-' + item"
         />
-        <label class="form-check-label" [for]="'price-' + item">{{ item }}</label>
+        <label class="form-check-label" [for]="'price-' + item">{{
+          item
+        }}</label>
       </div>
     </div>
   </div>
 
   <!-- Language Section -->
-  <div class="filter-section mb-4">
+  <div class="mb-3 border-top pt-3 text-secondary">
     <button
-      class="filter-toggle-btn w-100 text-start d-flex justify-content-between align-items-center"
+      class="btn w-100 text-start p-0 d-flex justify-content-between align-items-center"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#languageCollapse"
-      aria-expanded="true"
     >
-      <span>Language</span> <i class="fas fa-chevron-down"></i>
+      Language <span>&#9662;</span>
     </button>
-    <div class="collapse show filter-content" id="languageCollapse">
-      <div class="form-check mb-2" *ngFor="let item of filters.language">
+    <div class="collapse show pt-2" id="languageCollapse">
+      <div class="form-check mb-1" *ngFor="let item of filters.language">
         <input
           class="form-check-input"
           type="checkbox"
-          [checked]="isChecked('language', item)"
-          (change)="toggleFilter('language', item, $event)"
+          [checked]="isChecked('Language', item)"
+          (change)="toggleFilter('Language', item, $event)"
           [id]="'lang-' + item"
         />
-        <label class="form-check-label" [for]="'lang-' + item">{{ item }}</label>
+        <label class="form-check-label" [for]="'lang-' + item">{{
+          item
+        }}</label>
       </div>
     </div>
   </div>

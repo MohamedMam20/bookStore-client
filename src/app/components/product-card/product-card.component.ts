@@ -60,6 +60,8 @@ export class ProductCardComponent implements OnInit, OnDestroy {
         next: () => {
           this.toastr.info('Removed from wishlist');
           this.wishlistChanged.emit();
+          // Refresh wishlist data in navbar
+          this.refreshWishlistCount();
         },
         error: (err) => {
           this.toastr.error(
@@ -71,6 +73,8 @@ export class ProductCardComponent implements OnInit, OnDestroy {
       this.wishlistService.addToWishlist({ bookId, language: 'en' }).subscribe({
         next: () => {
           this.toastr.success('Added to wishlist');
+          // Refresh wishlist data in navbar
+          this.refreshWishlistCount();
         },
         error: (err) => {
           this.toastr.error(err.error.message || 'Error adding to wishlist');
@@ -82,15 +86,41 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   addToCart(bookId: string, language: string = 'en', event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
+    
+    // Check authentication
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      this.toastr.error('Please log in to add items to your cart');
+      return;
+    }
+    
+    console.log('Adding to cart:', { bookId, quantity: 1, language });
+    
     this.cartService.addToCart({ bookId, quantity: 1, language }).subscribe({
-      next: (res) => this.toastr.success(res.message),
-      error: (err) =>
-        this.toastr.error(err.error.message || 'Error adding to cart'),
+      next: (res) => {
+        console.log('Add to cart success:', res);
+        this.toastr.success(res.message || 'Added to cart');
+        // Refresh cart data in navbar
+        this.refreshCartCount();
+      },
+      error: (err) => {
+        console.error('Add to cart error:', err);
+        this.toastr.error(err.error?.message || 'Error adding to cart');
+      }
     });
   }
 
   onBoltClick(event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
+  }
+
+  // Helper methods to refresh navbar counts
+  private refreshWishlistCount(): void {
+    this.wishlistService.viewWishlist().subscribe();
+  }
+
+  private refreshCartCount(): void {
+    this.cartService.viewCart().subscribe();
   }
 }
