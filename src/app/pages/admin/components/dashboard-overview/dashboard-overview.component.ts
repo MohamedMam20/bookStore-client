@@ -1,8 +1,6 @@
 import { Component, OnInit , OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../../../services/admin/admin.service';
-import { SocketService } from '../../../../services/Sockets/socket.service';
-import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -12,7 +10,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './dashboard-overview.component.html',
   styleUrls: ['./dashboard-overview.component.css']
 })
-export class DashboardOverviewComponent implements OnInit ,OnDestroy   {
+export class DashboardOverviewComponent implements OnInit   {
   dashboardStats = {
     totalBooks: 0,
     totalOrders: 0,
@@ -29,23 +27,12 @@ export class DashboardOverviewComponent implements OnInit ,OnDestroy   {
   loading = true;
   error: string | null = null;
 
-  constructor(private adminService: AdminService , private socketService: SocketService  ) {}
-  socketSubscription!: Subscription;
+  constructor(private adminService: AdminService  ) {}
+
   ngOnInit(): void {
     this.loadDashboardData();
-    //socket
-    this.socketSubscription = this.socketService.listenToNewOrders().subscribe((data: any) => {
-    console.log("New order arrived from server!", data);
-
-    });
-  }
-  //socket
-  ngOnDestroy(): void {
-  if (this.socketSubscription) {
-    this.socketSubscription.unsubscribe();
   }
 
-  }
   loadDashboardData(): void {
     this.loading = true;
 
