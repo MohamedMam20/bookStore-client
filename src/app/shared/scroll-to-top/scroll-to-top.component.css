@@ -1,13 +1,14 @@
 /* scroll btn */
 .up {
   position: fixed;
-  bottom: 10px;
+  bottom: 80px;
   right: -60px;
-  background-color:var(--main-color);
-  color: white;
+  background-color: #fff;
+  color: var(--main-color);
+  border-color: var(--main-color);
   font-weight: bold;
-  font-size: 25px;
-  padding: 10px 17px;
+  font-size: 35px;
+  padding: 20px 25px;
   border-radius: 50%;
   font-family: Arial, Tahoma;
   cursor: pointer;

@@ -2,19 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScrollToTopComponent } from '../../shared/scroll-to-top/scroll-to-top.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
-import { ProductCardComponent } from '../product-card/product-card.component';
-import { Book } from '../../models/book.model';
-import { BooksService } from '../../services/books/books.service';
+import { ChatbotComponent } from "../chatbot/chatbot.component";
+
+
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [
-    CommonModule,
-    ScrollToTopComponent,
-    FooterComponent,
-    ProductCardComponent,
-  ],
+  imports: [ScrollToTopComponent, FooterComponent, ChatbotComponent],
+
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css',
 })
