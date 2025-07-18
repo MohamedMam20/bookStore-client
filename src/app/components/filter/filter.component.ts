@@ -91,7 +91,6 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.sortService.getSortedBooks(sortValue).subscribe({
       next: (res) => {
         this.sortedBooks.emit(res.data);
-        console.log(res.data);
       },
       error: (err) => {
         console.error('Failed to sort books:', err);
