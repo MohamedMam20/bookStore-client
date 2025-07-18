@@ -90,7 +90,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
     this.sortService.getSortedBooks(sortValue).subscribe({
       next: (res) => {
-        this.sortedBooks.emit(res.data); // use this only if needed in parent
+        this.sortedBooks.emit(res.data);
       },
       error: (err) => {
         console.error('Failed to sort books:', err);
@@ -98,13 +98,12 @@ export class FilterComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Add this method to parse price ranges
-  getPriceRange(priceRange: string): { min: number, max: number } | null {
+  getPriceRange(priceRange: string): { min: number; max: number } | null {
     const matches = priceRange.match(/LE (\d+) - LE (\d+)/);
     if (matches && matches.length === 3) {
       return {
         min: parseInt(matches[1]),
-        max: parseInt(matches[2])
+        max: parseInt(matches[2]),
       };
     }
     return null;

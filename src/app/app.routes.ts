@@ -23,6 +23,7 @@ import { SearchBooksPageComponent } from './pages/search-books-page/search-books
 import { PaypalComponent } from './pages/paypal/paypal.component';
 import { OrderHistoryComponent } from './pages/order-history/order-history.component';
 import { ContactUsComponent } from './pages/contact-us/contact-us.component';
+import { AdminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -65,15 +66,70 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    canActivate: [AdminGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardOverviewComponent },
+      // Books routes
       { path: 'books', component: BookListComponent },
       { path: 'books/new', component: BookFormComponent },
       { path: 'books/edit/:id', component: BookFormComponent },
+      // Users routes
       { path: 'users', component: UserListComponent },
       { path: 'users/new', component: UserFormComponent },
       { path: 'users/edit/:id', component: UserFormComponent },
+      // Categories routes
+      {
+        path: 'categories',
+        loadComponent: () =>
+          import(
+            './pages/admin/components/category-list/category-list.component'
+          ).then((m) => m.CategoryListComponent),
+      },
+      {
+        path: 'categories/new',
+        loadComponent: () =>
+          import(
+            './pages/admin/components/category-form/category-form.component'
+          ).then((m) => m.CategoryFormComponent),
+      },
+      {
+        path: 'categories/edit/:id',
+        loadComponent: () =>
+          import(
+            './pages/admin/components/category-form/category-form.component'
+          ).then((m) => m.CategoryFormComponent),
+      },
+      // Reviews routes
+      {
+        path: 'reviews',
+        loadComponent: () =>
+          import(
+            './pages/admin/components/review-list/review-list.component'
+          ).then((m) => m.ReviewListComponent),
+      },
+      {
+        path: 'reviews/:id',
+        loadComponent: () =>
+          import(
+            './pages/admin/components/review-detail/review-detail.component'
+          ).then((m) => m.ReviewDetailComponent),
+      },
+      // Orders routes
+      {
+        path: 'orders',
+        loadComponent: () =>
+          import(
+            './pages/admin/components/order-list/order-list.component'
+          ).then((m) => m.OrderListComponent),
+      },
+      {
+        path: 'orders/:id',
+        loadComponent: () =>
+          import(
+            './pages/admin/components/order-detail/order-detail.component'
+          ).then((m) => m.OrderDetailComponent),
+      },
     ],
   },
   {

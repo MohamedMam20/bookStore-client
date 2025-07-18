@@ -5,7 +5,10 @@ export interface Book {
   price?: number;
   description?: string;
   authorDescription?: string;
-  category?: string;
+  category?: {
+    _id: string;
+    name: string;
+  };
   stock?: {
     ar?: number;
     en?: number;

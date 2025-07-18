@@ -12,8 +12,6 @@
       <option value="title_desc">Title: Z to A</option>
       <option value="price_asc">Price: Low to High</option>
       <option value="price_desc">Price: High to Low</option>
-      <option value="rating_asc">Rating: Low to High</option>
-      <option value="rating_desc">Rating: High to Low</option>
     </select>
   </div>
 
@@ -56,7 +54,9 @@
           (change)="toggleFilter('genre', item, $event)"
           [id]="'genre-' + item"
         />
-        <label class="form-check-label" [for]="'genre-' + item">{{ item }}</label>
+        <label class="form-check-label" [for]="'genre-' + item">{{
+          item
+        }}</label>
       </div>
     </div>
   </div>
@@ -80,7 +80,9 @@
           (change)="toggleFilter('price', item, $event)"
           [id]="'price-' + item"
         />
-        <label class="form-check-label" [for]="'price-' + item">{{ item }}</label>
+        <label class="form-check-label" [for]="'price-' + item">{{
+          item
+        }}</label>
       </div>
     </div>
   </div>
@@ -104,7 +106,9 @@
           (change)="toggleFilter('language', item, $event)"
           [id]="'lang-' + item"
         />
-        <label class="form-check-label" [for]="'lang-' + item">{{ item }}</label>
+        <label class="form-check-label" [for]="'lang-' + item">{{
+          item
+        }}</label>
       </div>
     </div>
   </div>

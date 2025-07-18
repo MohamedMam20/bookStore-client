@@ -35,6 +35,8 @@ export class SearchMenuComponent {
 
       this.searchService.searchBooks(keyword, this.page, this.limit).subscribe({
         next: (res) => {
+          console.log(res);
+
           this.searchService.setResults(res.books);
           this.searchTerm = '';
           this.closeSearch();
