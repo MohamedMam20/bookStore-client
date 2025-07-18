@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 const API = 'http://localhost:3000/api/v1';
 
 export interface PlaceOrderResponse {
+
   status:  string;
   message: string;
   data: {                 //  ←  this is the field name
@@ -23,6 +24,7 @@ export interface OrderHistoryItem {
     image:    string;
     price:    number;
     quantity: number;
+    
   }[];
 }
 

@@ -1,0 +1,49 @@
+/* Set background color for the entire section */
+.contact-section {
+  background-color: #fbf6f0;
+  padding: 60px 20px;
+  min-height: 100vh;
+}
+
+/* Style for the contact cards */
+.contact-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+}
+
+/* Contact info icons */
+.contact-icon i {
+  font-size: 20px;
+  color: #333;
+  margin-right: 12px;
+}
+
+/* Contact info layout */
+.contact-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* Social icons */
+.social-links a {
+  font-size: 20px;
+  margin-right: 15px;
+  color: #555;
+  transition: 0.3s;
+}
+.social-links a:hover {
+  color: #000;
+}
+
+/* Map placeholder */
+.map-placeholder {
+  background: #eee;
+  padding: 40px;
+  text-align: center;
+  border-radius: 12px;
+}

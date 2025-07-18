@@ -29,6 +29,22 @@ export class OrderHistoryComponent implements OnInit {
       }
     });
   }
+
+  payNow(orderId: string) {
+  this.orderSrv.createPaypal(orderId).subscribe({
+    next: res => {
+      if (res.approvalUrl) {
+        window.location.href = res.approvalUrl; 
+      }
+    },
+    error: err => {
+      console.error('Failed to initiate PayPal payment', err);
+      alert('Failed to initiate PayPal payment. Please try again.');
+    }
+  });
+}
+
+
     @Input() orders: OrderHistoryItem[] = [];
 
 }

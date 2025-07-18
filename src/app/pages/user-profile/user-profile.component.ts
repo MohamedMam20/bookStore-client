@@ -54,7 +54,10 @@ userName: string = '';
   }
 
 onSubmit(): void {
-  if (this.form.invalid) return;
+  if (this.form.invalid) {
+    this.toast.warning('⚠️ Please fill all required fields correctly.');
+    return;
+  }
 
   const payload = { ...this.form.value };
 
@@ -64,17 +67,21 @@ onSubmit(): void {
   }
 
   this.userSrv.updateMyProfile(payload).subscribe({
-    next: ({ data }) => {
-      this.toast.success('Profile updated successfully 🎉');
+    next: (res) => {
+      this.toast.success(res.message || '✅ Profile updated successfully!');
       this.form.patchValue({
-        firstName: data.firstName,
-        lastName : data.lastName ?? ''
+        firstName: res.data?.firstName ?? '',
+        lastName: res.data?.lastName ?? '',
       });
     },
-    error: (e) => {
-      this.toast.error(e.error?.message || 'Update failed');
-    }
+    error: (err) => {
+
+      const backendMsg = err?.error?.message || '❌ Update failed.';
+
+      this.toast.error(backendMsg);
+    },
   });
 }
 
 }
+
