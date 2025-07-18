@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { BookResponse } from '../filter/filter-state.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,21 +8,15 @@ import { BookResponse } from '../filter/filter-state.service';
 export class SortService {
   private selectedSortSubject = new BehaviorSubject<string>('');
   selectedSort$ = this.selectedSortSubject.asObservable();
-  private baseUrl = `${environment.apiUrl}/books`; // Changed from 'book' to 'books'
 
   constructor(private http: HttpClient) {}
 
-  setSortOption(sortValue: string): void {
+  setSortOption(sortValue: string) {
     this.selectedSortSubject.next(sortValue);
   }
 
-  getCurrentSortOption(): string {
-    return this.selectedSortSubject.getValue();
-  }
-
-  getSortedBooks(sortValue: string): Observable<BookResponse> {
-    return this.http.get<BookResponse>(`${this.baseUrl}`, {
-      params: { sort: sortValue },
-    });
+  getSortedBooks(sortValue: string) {
+    const url = `http://localhost:3000/api/v1/book?sort=${sortValue}`;
+    return this.http.get<any>(url);
   }
 }

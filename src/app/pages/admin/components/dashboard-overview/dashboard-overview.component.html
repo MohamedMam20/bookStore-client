@@ -18,10 +18,22 @@
             </div>
             <div class="stat-card-info">
               <h5 class="stat-card-title">Total Books</h5>
-              <h3 class="stat-card-value">{{dashboardStats.totalBooks}}</h3>
-              <div class="stat-card-growth" [ngClass]="{'positive': dashboardStats.bookGrowth >= 0, 'negative': dashboardStats.bookGrowth < 0}">
-                <i class="fas" [ngClass]="{'fa-arrow-up': dashboardStats.bookGrowth >= 0, 'fa-arrow-down': dashboardStats.bookGrowth < 0}"></i>
-                <span>{{dashboardStats.bookGrowth}}%</span>
+              <h3 class="stat-card-value">{{ dashboardStats.totalBooks }}</h3>
+              <div
+                class="stat-card-growth"
+                [ngClass]="{
+                  positive: dashboardStats.bookGrowth >= 0,
+                  negative: dashboardStats.bookGrowth < 0
+                }"
+              >
+                <i
+                  class="fas"
+                  [ngClass]="{
+                    'fa-arrow-up': dashboardStats.bookGrowth >= 0,
+                    'fa-arrow-down': dashboardStats.bookGrowth < 0
+                  }"
+                ></i>
+                <span>{{ dashboardStats.bookGrowth }}%</span>
               </div>
             </div>
           </div>
@@ -36,10 +48,22 @@
             </div>
             <div class="stat-card-info">
               <h5 class="stat-card-title">Total Orders</h5>
-              <h3 class="stat-card-value">{{dashboardStats.totalOrders}}</h3>
-              <div class="stat-card-growth" [ngClass]="{'positive': dashboardStats.orderGrowth >= 0, 'negative': dashboardStats.orderGrowth < 0}">
-                <i class="fas" [ngClass]="{'fa-arrow-up': dashboardStats.orderGrowth >= 0, 'fa-arrow-down': dashboardStats.orderGrowth < 0}"></i>
-                <span>{{dashboardStats.orderGrowth}}%</span>
+              <h3 class="stat-card-value">{{ dashboardStats.totalOrders }}</h3>
+              <div
+                class="stat-card-growth"
+                [ngClass]="{
+                  positive: dashboardStats.orderGrowth >= 0,
+                  negative: dashboardStats.orderGrowth < 0
+                }"
+              >
+                <i
+                  class="fas"
+                  [ngClass]="{
+                    'fa-arrow-up': dashboardStats.orderGrowth >= 0,
+                    'fa-arrow-down': dashboardStats.orderGrowth < 0
+                  }"
+                ></i>
+                <span>{{ dashboardStats.orderGrowth }}%</span>
               </div>
             </div>
           </div>
@@ -54,10 +78,22 @@
             </div>
             <div class="stat-card-info">
               <h5 class="stat-card-title">Total Users</h5>
-              <h3 class="stat-card-value">{{dashboardStats.totalUsers}}</h3>
-              <div class="stat-card-growth" [ngClass]="{'positive': dashboardStats.userGrowth >= 0, 'negative': dashboardStats.userGrowth < 0}">
-                <i class="fas" [ngClass]="{'fa-arrow-up': dashboardStats.userGrowth >= 0, 'fa-arrow-down': dashboardStats.userGrowth < 0}"></i>
-                <span>{{dashboardStats.userGrowth}}%</span>
+              <h3 class="stat-card-value">{{ dashboardStats.totalUsers }}</h3>
+              <div
+                class="stat-card-growth"
+                [ngClass]="{
+                  positive: dashboardStats.userGrowth >= 0,
+                  negative: dashboardStats.userGrowth < 0
+                }"
+              >
+                <i
+                  class="fas"
+                  [ngClass]="{
+                    'fa-arrow-up': dashboardStats.userGrowth >= 0,
+                    'fa-arrow-down': dashboardStats.userGrowth < 0
+                  }"
+                ></i>
+                <span>{{ dashboardStats.userGrowth }}%</span>
               </div>
             </div>
           </div>
@@ -72,10 +108,24 @@
             </div>
             <div class="stat-card-info">
               <h5 class="stat-card-title">Total Revenue</h5>
-              <h3 class="stat-card-value">${{dashboardStats.totalRevenue.toLocaleString()}}</h3>
-              <div class="stat-card-growth" [ngClass]="{'positive': dashboardStats.revenueGrowth >= 0, 'negative': dashboardStats.revenueGrowth < 0}">
-                <i class="fas" [ngClass]="{'fa-arrow-up': dashboardStats.revenueGrowth >= 0, 'fa-arrow-down': dashboardStats.revenueGrowth < 0}"></i>
-                <span>{{dashboardStats.revenueGrowth}}%</span>
+              <h3 class="stat-card-value">
+                ${{ dashboardStats.totalRevenue.toLocaleString() }}
+              </h3>
+              <div
+                class="stat-card-growth"
+                [ngClass]="{
+                  positive: dashboardStats.revenueGrowth >= 0,
+                  negative: dashboardStats.revenueGrowth < 0
+                }"
+              >
+                <i
+                  class="fas"
+                  [ngClass]="{
+                    'fa-arrow-up': dashboardStats.revenueGrowth >= 0,
+                    'fa-arrow-down': dashboardStats.revenueGrowth < 0
+                  }"
+                ></i>
+                <span>{{ dashboardStats.revenueGrowth }}%</span>
               </div>
             </div>
           </div>
@@ -102,9 +152,9 @@
               </thead>
               <tbody>
                 <tr *ngFor="let book of bestsellers">
-                  <td>{{book.title}}</td>
-                  <td>{{book.author}}</td>
-                  <td>{{book.sales}}</td>
+                  <td>{{ book.title }}</td>
+                  <td>{{ book.author }}</td>
+                  <td>{{ book.sales }}</td>
                 </tr>
               </tbody>
             </table>
@@ -131,16 +181,20 @@
               </thead>
               <tbody>
                 <tr *ngFor="let order of recentOrders">
-                  <td>{{order.id}}</td>
-                  <td>{{order.customer}}</td>
-                  <td>{{order.date}}</td>
-                  <td>${{order.total.toFixed(2)}}</td>
+                  <td>{{ order.id }}</td>
+                  <td>{{ order.customer }}</td>
+                  <td>{{ order.date }}</td>
+                  <td>${{ order.total.toFixed(2) }}</td>
                   <td>
-                    <span class="badge" [ngClass]="{
-                      'bg-success': order.status === 'Completed',
-                      'bg-warning': order.status === 'Processing',
-                      'bg-info': order.status === 'Shipped'
-                    }">{{order.status}}</span>
+                    <span
+                      class="badge"
+                      [ngClass]="{
+                        'bg-success': order.status === 'completed',
+                        'bg-warning': order.status === 'pending',
+                        'bg-info': order.status === 'shipped'
+                      }"
+                      >{{ order.status }}</span
+                    >
                   </td>
                 </tr>
               </tbody>
