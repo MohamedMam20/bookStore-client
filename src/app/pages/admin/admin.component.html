@@ -1,13 +1,31 @@
-<div class="admin-container">
-  <app-admin-sidebar></app-admin-sidebar>
+<div class="admin-dashboard">
+  <div class="admin-container" [class.sidebar-collapsed]="sidebarCollapsed" [class.mobile]="isMobile">
+    <app-admin-sidebar
+      [collapsed]="sidebarCollapsed"
+      [isMobile]="isMobile"
+      (toggleSidebar)="toggleSidebar()">
+    </app-admin-sidebar>
 
-  <div class="admin-content">
-    <app-admin-header></app-admin-header>
+    <div class="admin-content">
+      <app-admin-header
+        [isMobile]="isMobile"
+        [isDarkMode]="isDarkMode"
+        (toggleSidebar)="toggleSidebar()"
+        (toggleTheme)="toggleTheme()">
+      </app-admin-header>
 
-    <main class="admin-main">
-      <router-outlet></router-outlet>
-    </main>
+      <main class="admin-main" [@fadeInAnimation]>
+        <router-outlet></router-outlet>
+      </main>
 
-    <app-admin-footer></app-admin-footer>
+      <app-admin-footer></app-admin-footer>
+    </div>
+  </div>
+
+  <!-- Mobile overlay with improved animation -->
+  <div class="mobile-overlay"
+       *ngIf="isMobile && !sidebarCollapsed"
+       (click)="toggleSidebar()"
+       [@fadeInOut]="'in'">
   </div>
 </div>

@@ -39,6 +39,7 @@ export class WishlistComponent implements OnInit {
           price: item.price,
           image: item.image,
           author: item.author,
+          slug: item.slug || item.title.toLowerCase().replace(/\s+/g, '-') // Add slug property
         }));
         this.isLoading = false;
       },

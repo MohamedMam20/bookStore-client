@@ -124,11 +124,11 @@ export class UserFormComponent implements OnInit {
       };
 
       this.adminService.createUser(userData).subscribe({
-        next: (response) => {
+        next: (response: any) => {
           alert('User created successfully');
           this.router.navigate(['/admin/users']);
         },
-        error: (err) => {
+        error: (err: any) => {
           this.error = 'Failed to create user';
           this.loading = false;
           console.error('Error creating user:', err);

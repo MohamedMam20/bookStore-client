@@ -1,8 +1,14 @@
 <nav class="custom-navbar">
   <div class="navbar-top-bar">
     <div class="navbar-left-icons">
-      <i class="fas fa-shopping-cart" (click)="toggleCartMenu()"></i>
-      <a routerLink="/wishlist"><i class="fas fa-heart"></i></a>
+      <div class="icon-container">
+        <i class="fas fa-shopping-cart" (click)="toggleCartMenu()"></i>
+        <!--<span class="item-count">{{ cartCount }}</span>-->
+      </div>
+      <div class="icon-container">
+        <a routerLink="/wishlist"><i class="fas fa-heart"></i></a>
+        <!--<span class="item-count">{{ wishlistCount }}</span>-->
+      </div>
     </div>
 
     <div class="logo d-flex justify-content-between align-content-center">

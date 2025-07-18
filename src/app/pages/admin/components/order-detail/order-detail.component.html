@@ -1,0 +1,167 @@
+<div class="order-detail-container">
+  <div class="order-detail-header">
+    <h2>Order Details</h2>
+    <div class="order-actions">
+      <a [routerLink]="['/admin/orders']" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Orders
+      </a>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger my-3">
+    {{error}}
+    <button *ngIf="orderId" class="btn btn-sm btn-outline-danger ms-2" (click)="loadOrderDetails(orderId)">Retry</button>
+  </div>
+
+  <div *ngIf="!loading && !error && order" class="order-detail-content">
+    <div class="row mb-4">
+      <div class="col-md-8">
+        <div class="card mb-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="mb-0">Order #{{order.orderNumber || getOrderId().substr(-6)}}</h5>
+              <small class="text-muted">Placed on {{order.createdAt | date:'medium'}}</small>
+            </div>
+            <span class="badge" [ngClass]="getStatusBadgeClass(order.status)">
+              {{order.status | titlecase}}
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="mb-4">
+              <h6 class="fw-bold">Status Management</h6>
+              <div class="d-flex gap-2">
+                <button 
+                  *ngFor="let status of statusOptions" 
+                  class="btn" 
+                  [ngClass]="{ 
+                    'btn-primary': order.status === status.value, 
+                    'btn-outline-secondary': order.status !== status.value
+                  }"
+                  [disabled]="order.status === status.value"
+                  (click)="updateOrderStatus(status.value)"
+                >
+                  {{status.label}}
+                </button>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="fw-bold">Customer Information</h6>
+                <p class="mb-1"><strong>Name:</strong> {{order.customer || order.user?.firstName + ' ' + order.user?.lastName}}</p>
+                <p class="mb-1"><strong>Email:</strong> {{order.email || order.user?.email}}</p>
+                <p class="mb-1" *ngIf="order.phone"><strong>Phone:</strong> {{order.phone}}</p>
+              </div>
+              <div class="col-md-6">
+                <h6 class="fw-bold">Shipping Information</h6>
+                <p class="mb-1" *ngIf="order.shippingAddress">
+                  {{order.shippingAddress.line1}}<br>
+                  <span *ngIf="order.shippingAddress.line2">{{order.shippingAddress.line2}}<br></span>
+                  {{order.shippingAddress.city}}, {{order.shippingAddress.state}} {{order.shippingAddress.postalCode}}<br>
+                  {{order.shippingAddress.country}}
+                </p>
+                <p *ngIf="!order.shippingAddress">No shipping address provided</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Order Items</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of order.books || order.items">
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="order-item-image" *ngIf="item.book?.image || item.image">
+                          <img [src]="item.book?.image || item.image" [alt]="item.book?.title || item.title">
+                        </div>
+                        <div>
+                          <p class="mb-0">{{item.book?.title || item.title}}</p>
+                          <small class="text-muted" *ngIf="item.language || item.variant">
+                            {{item.language || item.variant}}
+                          </small>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{formatCurrency(item.price)}}</td>
+                    <td>{{formatCurrency(item.quantity * item.price)}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Order Summary</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+              <span>Subtotal</span>
+              <span>{{formatCurrency(order.subtotal || order.total)}}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2" *ngIf="order.shipping">
+              <span>Shipping</span>
+              <span>{{formatCurrency(order.shipping)}}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2" *ngIf="order.tax">
+              <span>Tax</span>
+              <span>{{formatCurrency(order.tax)}}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2" *ngIf="order.discount">
+              <span>Discount</span>
+              <span>-{{formatCurrency(order.discount)}}</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between fw-bold">
+              <span>Total</span>
+              <span>{{formatCurrency(order.total)}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Payment Information</h5>
+          </div>
+          <div class="card-body">
+            <p class="mb-1"><strong>Payment Method:</strong> {{order.paymentMethod || 'PayPal'}}</p>
+            <p class="mb-1"><strong>Payment ID:</strong> {{order.paymentId || 'N/A'}}</p>
+            <p class="mb-0"><strong>Payment Status:</strong> {{order.paymentStatus || 'Completed'}}</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-body">
+            <button class="btn btn-danger w-100" (click)="deleteOrder()">
+              <i class="fas fa-trash me-2"></i> Delete Order
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -62,5 +63,17 @@ get isAdmin():boolean {
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('authToken');
+  }
+
+  isAdmin(): boolean {
+    const token = localStorage.getItem('authToken');
+    if (!token) return false;
+
+    try {
+      const decodedToken: any = jwtDecode(token);
+      return decodedToken.role === 'admin';
+    } catch {
+      return false;
+    }
   }
 }

@@ -9,7 +9,7 @@ import { Filter } from '../filter/filter-state.service';
   providedIn: 'root',
 })
 export class BooksService {
-  private apiUrl = 'http://localhost:3000/api/v1/book';
+  private apiUrl = 'http://localhost:3000/api/v1/books';
 
   constructor(private http: HttpClient) {}
 

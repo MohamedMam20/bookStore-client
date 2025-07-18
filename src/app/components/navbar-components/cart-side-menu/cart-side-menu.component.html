@@ -8,10 +8,11 @@
       <button class="continue-btn" (click)="continueShopping()">
         Continue Shopping
       </button>
-      <div class="login-section">
+      <div class="login-section" *ngIf="!isLoggedIn()">
         <p class="account-question">Have an account?</p>
         <p class="login-text">
-          <a href="#" (click)="login()">Log in</a> to check out faster.
+          <a routerLink="/login" (click)="login()">Log in</a> to check out
+          faster.
         </p>
       </div>
     </div>
@@ -23,19 +24,28 @@
       <ul>
         <li *ngFor="let item of cartItems" class="cart-item">
           <img
-            [src]="item.image"
+            [src]="item.book?.image || item.image"
             alt="{{ item.book?.title }}"
             class="book-image"
           />
           <div class="cart-details">
-            <h3 class="book-title">{{ item.title }}</h3>
+            <h3 class="book-title">{{ item.book?.title || item.title }}</h3>
             <p><strong>Language:</strong> {{ item.language }}</p>
+            <p>
+              <strong>Stock:</strong> {{ item.book?.stock?.[item.language] }}
+            </p>
             <p><strong>Qty:</strong> {{ item.quantity }}</p>
             <p><strong>Price:</strong> {{ item.price }}</p>
+
             <div class="quantity-container">
               <button (click)="decreaseQuantity(item)">−</button>
               <span>{{ item.quantity }}</span>
-              <button (click)="increaseQuantity(item)">+</button>
+              <button
+                (click)="increaseQuantity(item)"
+                [disabled]="item.quantity >= item.stock"
+              >
+                +
+              </button>
               <i
                 class="fa fa-trash delete-icon"
                 (click)="removeFromCart(item.id)"
@@ -50,17 +60,19 @@
     <div class="cart-footer" *ngIf="cartItems.length > 0">
       <div class="total-section">
         <span>Total:</span>
-        <span class="total-price">{{ getTotalPrice() }}L.E</span>
+        <span class="total-price">{{ getTotalPrice() }} L.E</span>
       </div>
       <button class="purchase-btn" (click)="proceedToPurchase()">
         Proceed to Purchase
       </button>
-      <BR>
-<button class="purchase-btn" (click)="startPaypal()" [disabled]="paypalLoading">
-  {{ paypalLoading ? 'Processing…' : 'Pay with PayPal' }}
-</button>
-
-
+      <br />
+      <button
+        class="purchase-btn"
+        (click)="startPaypal()"
+        [disabled]="paypalLoading"
+      >
+        {{ paypalLoading ? "Processing…" : "Pay with PayPal" }}
+      </button>
     </div>
   </div>
 </div>

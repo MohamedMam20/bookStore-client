@@ -43,13 +43,15 @@ export class AppComponent implements OnInit {
   }
 
   get hideNavbar(): boolean {
-    return [
+    const hiddenRoutes = [
       '/login',
       '/register',
       '/otp-verification',
       '/otp-complete',
       '/password-reset',
       '/password-reset-confirm',
-    ].includes(this.router.url);
+    ];
+
+    return hiddenRoutes.includes(this.router.url) || this.router.url.startsWith('/admin');
   }
 }
