@@ -13,21 +13,20 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   //auth for socket to know that the user is admin
-get currentUser(): any {
-  const token = localStorage.getItem('authToken');
-  if (!token) return null;
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.user || null;
-  }catch (err){
-    return null;
+  get currentUser(): any {
+    const token = localStorage.getItem('authToken');
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.user || null;
+    } catch (err) {
+      return null;
+    }
   }
-}
 
-get isAdmin():boolean {
-  return this.currentUser?.role ==='admin';
-}
-
+  get isAdmin(): boolean {
+    return this.currentUser?.role === 'admin';
+  }
 
   // Registration
   register(userData: any): Observable<any> {
@@ -63,17 +62,5 @@ get isAdmin():boolean {
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('authToken');
-  }
-
-  isAdmin(): boolean {
-    const token = localStorage.getItem('authToken');
-    if (!token) return false;
-
-    try {
-      const decodedToken: any = jwtDecode(token);
-      return decodedToken.role === 'admin';
-    } catch {
-      return false;
-    }
   }
 }
