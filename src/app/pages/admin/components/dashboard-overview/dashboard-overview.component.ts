@@ -1,7 +1,6 @@
-import { Component, OnInit , OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../../../services/admin/admin.service';
-
 
 @Component({
   selector: 'app-dashboard-overview',
@@ -10,7 +9,7 @@ import { AdminService } from '../../../../services/admin/admin.service';
   templateUrl: './dashboard-overview.component.html',
   styleUrls: ['./dashboard-overview.component.css'],
 })
-export class DashboardOverviewComponent implements OnInit   {
+export class DashboardOverviewComponent implements OnInit {
   dashboardStats = {
     totalBooks: 0,
     totalOrders: 0,
@@ -27,7 +26,7 @@ export class DashboardOverviewComponent implements OnInit   {
   loading = true;
   error: string | null = null;
 
-  constructor(private adminService: AdminService  ) {}
+  constructor(private adminService: AdminService) {}
 
   ngOnInit(): void {
     this.loadDashboardData();
@@ -167,6 +166,4 @@ export class DashboardOverviewComponent implements OnInit   {
       },
     });
   }
-
-
 }
