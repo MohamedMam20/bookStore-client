@@ -19,7 +19,15 @@ export class UserProfileService {
     return this.http.get<{ data: UserProfile }>(`${API}/myprofile`, { headers: auth() });
   }
 
-  updateMyProfile(payload: any): Observable<{ data: UserProfile }> {
-    return this.http.patch<{ data: UserProfile }>(`${API}/myprofile`, payload, { headers: auth() });
-  }
+  // updateMyProfile(payload: any): Observable<{ data: UserProfile,  }> {
+  //   return this.http.patch<{ data: UserProfile }>(`${API}/myprofile`, payload, { headers: auth() });
+  // }
+  updateMyProfile(payload: any): Observable<{ message: string; data: UserProfile; status: string }> {
+  return this.http.patch<{ message: string; data: UserProfile; status: string }>(
+    `${API}/myprofile`,
+    payload,
+    { headers: auth() }
+  );
+}
+
 }

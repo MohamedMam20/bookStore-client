@@ -12,6 +12,22 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
+  //auth for socket to know that the user is admin
+  get currentUser(): any {
+    const token = localStorage.getItem('authToken');
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.user || null;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  get isAdmin(): boolean {
+    return this.currentUser?.role === 'admin';
+  }
+
   // Registration
   register(userData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/register`, userData);
@@ -69,5 +85,6 @@ export class AuthService {
       return null;
     }
   }
+
 
 }

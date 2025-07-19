@@ -25,3 +25,34 @@ h2{
        color: rgb(97, 19, 19);
 
 }
+
+.orange-button {
+  background-color: #c43618 ;
+  color: white;
+  border: 1px solid #c43618;
+}
+
+
+
+.orange-pagination {
+  background-color: white;
+  color: #c43618 ;
+  border: none !important;
+  cursor: pointer;
+}
+
+.orange-pagination:hover {
+  background-color: darkorange ;
+  color: white ;
+}
+
+.page-item.active .page-link {
+  background-color: #c43618;
+  color: white !important;
+  border: none !important;
+}
+
+
+
+
+
