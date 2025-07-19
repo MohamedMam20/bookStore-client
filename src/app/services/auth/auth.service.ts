@@ -59,4 +59,15 @@ export class AuthService {
       return false;
     }
   }
+   getCurrentUser(): any | null {
+    const token = localStorage.getItem('authToken');
+    if (!token) return null;
+
+    try {
+      return jwtDecode(token); 
+    } catch {
+      return null;
+    }
+  }
+
 }
