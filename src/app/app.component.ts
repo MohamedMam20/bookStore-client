@@ -9,6 +9,9 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet, Router } from '@angular/router';
 import { NavbarComponent } from './components/navbar-components/navbar/navbar.component';
 
+//footer
+import { FooterComponent } from './shared/footer/footer.component';
+
 //socket
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from './services/auth/auth.service';
@@ -18,7 +21,7 @@ import {io} from 'socket.io-client';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, CommonModule],
+  imports: [RouterOutlet, NavbarComponent, CommonModule , FooterComponent],
 
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
@@ -53,5 +56,19 @@ export class AppComponent implements OnInit {
     ];
 
     return hiddenRoutes.includes(this.router.url) || this.router.url.startsWith('/admin');
+  }
+
+  get hideFooter():boolean {
+    const hiddenRoutes =[
+       '/login',
+      '/register',
+      '/otp-verification',
+      '/otp-complete',
+      '/password-reset',
+      '/password-reset-confirm',
+    ];
+    return (
+      hiddenRoutes.includes(this.router.url) || this.router.url.startsWith('/admin')
+    );
   }
 }

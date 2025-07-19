@@ -12,7 +12,7 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  //auth for socket to know that the user is admin
+//auth for socket to know that the user is admin
 get currentUser(): any {
   const token = localStorage.getItem('authToken');
   if (!token) return null;
@@ -23,10 +23,10 @@ get currentUser(): any {
     return null;
   }
 }
-
-get isAdmin():boolean {
-  return this.currentUser?.role ==='admin';
-}
+//narimannn
+// get isAdminser():boolean {
+//   return this.currentUser?.role ==='admin';
+// }
 
 
   // Registration
