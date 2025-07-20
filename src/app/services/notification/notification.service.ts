@@ -21,6 +21,7 @@ export class NotificationService {
   private setupSocketListeners(): void {
     // Listen for new order notifications
     this.socketService.listenToNewOrders().subscribe((data) => {
+      console.log('📨 Received new order notification:', data); // Add this line
       this.addNotification({
         id: this.generateId(),
         message: `New order placed by ${data.userName}`,
@@ -30,8 +31,6 @@ export class NotificationService {
         data: { orderId: data.orderId }
       });
     });
-
-    // You can add more listeners for different notification types
   }
 
   private loadNotificationsFromStorage(): void {
