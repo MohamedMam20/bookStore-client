@@ -8,18 +8,9 @@
 
   <div class="sidebar-header">
     <div class="logo" [class.collapsed]="collapsed">
-      <img src="assets/logo2-transparent.png" alt="BookShelf Logo" class="logo-image" [class.collapsed]="collapsed">
-    </div>
-  </div>
-
-  <div class="sidebar-search" *ngIf="!collapsed">
-    <div class="search-input">
-      <i class="fas fa-search"></i>
-      <input
-        type="text"
-        placeholder="Search..."
-        [(ngModel)]="searchQuery"
-        (input)="onSearch()" />
+      <a [routerLink]="['/']">
+        <img src="assets/logo2-transparent.png" alt="BookShelf Logo" class="logo-image" [class.collapsed]="collapsed">
+      </a>
     </div>
   </div>
 
@@ -38,6 +29,7 @@
         <span>Content Management</span>
         <i class="fas" [ngClass]="{'fa-chevron-down': !collapsedSections['content'], 'fa-chevron-right': collapsedSections['content']}"></i>
       </div>
+      <!-- Add this inside the Content Management section -->
       <div class="nav-section-content" [ngClass]="{'collapsed': collapsedSections['content']}" @expandCollapse>
         <a [routerLink]="'/admin/books'" routerLinkActive="active">
           <i class="fas fa-book"></i>
@@ -46,6 +38,19 @@
         <a [routerLink]="'/admin/categories'" routerLinkActive="active">
           <i class="fas fa-tags"></i>
           <span>Categories</span>
+        </a>
+      </div>
+
+      <!-- Also add this to the collapsed icons section -->
+      <div class="nav-section collapsed-icons" *ngIf="collapsed">
+        <a [routerLink]="'/admin/books'" routerLinkActive="active" title="Books">
+          <i class="fas fa-book"></i>
+        </a>
+        <a [routerLink]="'/admin/categories'" routerLinkActive="active" title="Categories">
+          <i class="fas fa-tags"></i>
+        </a>
+        <a [routerLink]="'/admin/bestsellers'" routerLinkActive="active" title="Bestsellers">
+          <i class="fas fa-star"></i>
         </a>
       </div>
     </div>
@@ -90,15 +95,22 @@
       <div class="nav-section-content" [ngClass]="{'collapsed': collapsedSections['users']}" @expandCollapse>
         <a [routerLink]="'/admin/users'" routerLinkActive="active">
           <i class="fas fa-users"></i>
-          <span>Customers</span>
+          <span>Regular Users</span>
+        </a>
+        <a [routerLink]="'/admin/admins'" routerLinkActive="active">
+          <i class="fas fa-user-shield"></i>
+          <span>Admins</span>
         </a>
       </div>
     </div>
 
     <!-- Collapsed user items -->
     <div class="nav-section collapsed-icons" *ngIf="collapsed">
-      <a [routerLink]="'/admin/users'" routerLinkActive="active" title="Users">
+      <a [routerLink]="'/admin/users'" routerLinkActive="active" title="Regular Users">
         <i class="fas fa-users"></i>
+      </a>
+      <a [routerLink]="'/admin/admins'" routerLinkActive="active" title="Admins">
+        <i class="fas fa-user-shield"></i>
       </a>
     </div>
 
@@ -110,26 +122,6 @@
       </a>
     </div>
 
-    <!-- Settings -->
-    <div class="nav-section" *ngIf="!collapsed">
-      <div class="nav-section-header" (click)="toggleSection('settings')">
-        <span>Settings</span>
-        <i class="fas" [ngClass]="{'fa-chevron-down': !collapsedSections['settings'], 'fa-chevron-right': collapsedSections['settings']}"></i>
-      </div>
-      <div class="nav-section-content" [ngClass]="{'collapsed': collapsedSections['settings']}" @expandCollapse>
-        <a [routerLink]="'/admin/settings'" routerLinkActive="active">
-          <i class="fas fa-cog"></i>
-          <span>General Settings</span>
-        </a>
-      </div>
-    </div>
-
-    <!-- Collapsed settings item -->
-    <div class="nav-section collapsed-icons" *ngIf="collapsed">
-      <a [routerLink]="'/admin/settings'" routerLinkActive="active" title="Settings">
-        <i class="fas fa-cog"></i>
-      </a>
-    </div>
 
     <!-- Collapse/Expand toggle -->
     <div class="sidebar-toggle">

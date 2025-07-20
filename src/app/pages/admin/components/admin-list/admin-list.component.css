@@ -1,0 +1,103 @@
+.admin-list-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+}
+
+.admin-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admin-list-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.admin-list-header .btn-primary {
+  background-color: var(--main-color);
+  border-color: var(--main-color);
+}
+
+.admin-list-filters {
+  margin-bottom: 20px;
+}
+
+.admin-table {
+  margin-top: 20px;
+}
+
+.action-buttons {
+  white-space: nowrap;
+  display: flex;
+}
+
+.btn-outline-primary {
+  color: var(--main-color);
+  border-color: var(--main-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--main-color);
+  color: white;
+}
+
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Animation styles */
+.animated-list {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pagination styling */
+.pagination {
+  margin-bottom: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.page-item {
+  margin: 0;
+}
+
+.page-link {
+  border: none;
+  color: #333;
+  padding: 8px 12px;
+}
+
+.page-item.active .page-link {
+  background-color: var(--main-color);
+  border-color: var(--main-color);
+}
+
+.page-item:not(.active) .page-link:hover {
+  background-color: #f8f9fa;
+  color: var(--main-color);
+}
+.modal-content {
+  top: 200px;
+}

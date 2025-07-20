@@ -64,6 +64,11 @@ export class AuthService {
     return !!localStorage.getItem('authToken');
   }
 
+  // Google Login
+  googleLogin(token: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/googleLogin`, { token });
+  }
+
   isAdmin(): boolean {
     const token = localStorage.getItem('authToken');
     if (!token) return false;
@@ -85,6 +90,5 @@ export class AuthService {
       return null;
     }
   }
-
 
 }

@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AdminService } from '../../../../services/admin/admin.service';
 import { User } from '../../../../models/user.model';
+import { ToastrService } from 'ngx-toastr'; // Add this import
 
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule ,RouterModule],
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.css']
 })
@@ -23,11 +24,28 @@ export class UserFormComponent implements OnInit {
     private fb: FormBuilder,
     private adminService: AdminService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService // Add this injection
   ) {}
+
+  initForm(): void {
+    this.userForm = this.fb.group({
+      firstName: ['', [Validators.required, Validators.pattern(/^[\w\s'-]+$/)]],
+      lastName: ['', [Validators.pattern(/^[\w\s'-]*$/)]],
+      email: ['', [Validators.required, Validators.email]],
+      role: ['user', [Validators.required]]
+    });
+  }
 
   ngOnInit(): void {
     this.initForm();
+
+    // Check for role parameter in query params
+    this.route.queryParams.subscribe(params => {
+      if (params['role'] === 'admin') {
+        this.userForm.get('role')?.setValue('admin');
+      }
+    });
 
     this.route.params.subscribe(params => {
       if (params['id']) {
@@ -39,20 +57,15 @@ export class UserFormComponent implements OnInit {
         }
       } else {
         this.isEditMode = false;
-        // Enable email field for new users
         this.userForm.get('email')?.enable();
-        // Add password field for new users
-        this.userForm.addControl('password', this.fb.control('', [Validators.required, Validators.minLength(6)]));
+        // Add password field for new users with backend-matching validators
+        this.userForm.addControl('password', this.fb.control('', [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(16),
+          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};':"\\|,.<>\/?]).{8,16}$/)
+        ]));
       }
-    });
-  }
-
-  initForm(): void {
-    this.userForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: [''],
-      email: ['', [Validators.required, Validators.email]],
-      role: ['user', [Validators.required]]
     });
   }
 
@@ -104,13 +117,21 @@ export class UserFormComponent implements OnInit {
 
       this.adminService.updateUser(this.userId!, userData).subscribe({
         next: (response) => {
-          alert('User updated successfully');
-          this.router.navigate(['/admin/users']);
+          // Replace alert with toastr
+          this.toastr.success('User updated successfully');
+          // Redirect based on role
+          if (userData.role === 'admin') {
+            this.router.navigate(['/admin/admins']);
+          } else {
+            this.router.navigate(['/admin/users']);
+          }
         },
         error: (err) => {
           this.error = 'Failed to update user';
           this.loading = false;
           console.error('Error updating user:', err);
+          // Add error toastr
+          this.toastr.error(err.error?.message || 'Failed to update user');
         }
       });
     } else {
@@ -125,13 +146,21 @@ export class UserFormComponent implements OnInit {
 
       this.adminService.createUser(userData).subscribe({
         next: (response: any) => {
-          alert('User created successfully');
-          this.router.navigate(['/admin/users']);
+          // Replace alert with toastr
+          this.toastr.success('User created successfully');
+          // Redirect based on role
+          if (userData.role === 'admin') {
+            this.router.navigate(['/admin/admins']);
+          } else {
+            this.router.navigate(['/admin/users']);
+          }
         },
         error: (err: any) => {
           this.error = 'Failed to create user';
           this.loading = false;
           console.error('Error creating user:', err);
+          // Add error toastr
+          this.toastr.error(err.error?.message || 'Failed to create user');
         }
       });
     }
