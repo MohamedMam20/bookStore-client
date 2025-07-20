@@ -118,6 +118,14 @@ export class OrderListComponent implements OnInit {
   }
 
   updateOrderStatus(orderId: string, newStatus: string): void {
+    // Only allow specific status changes
+    const allowedStatuses = ['shipped', 'delivered', 'cancelled'];
+    
+    if (!allowedStatuses.includes(newStatus)) {
+      this.toastr.error(`Status change to "${newStatus}" is not allowed. Only shipped, delivered, and cancelled statuses can be set.`);
+      return;
+    }
+    
     this.adminService.updateOrderStatus(orderId, newStatus).subscribe({
       next: () => {
         const orderToUpdate = this.orders.find(order => this.getOrderId(order) === orderId);
@@ -254,5 +262,54 @@ export class OrderListComponent implements OnInit {
       this.currentPage++;
       this.loadOrders();
     }
+  }
+  
+  // Get pagination array with limited display
+  getPaginationArray(): number[] {
+    const pages: number[] = [];
+    const maxPagesToShow = 5;
+    
+    if (this.totalPages <= maxPagesToShow) {
+      // Show all pages if there are few
+      for (let i = 1; i <= this.totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Always show first page
+      pages.push(1);
+      
+      let startPage = Math.max(2, this.currentPage - 1);
+      let endPage = Math.min(this.totalPages - 1, this.currentPage + 1);
+      
+      // Adjust if at the beginning
+      if (this.currentPage <= 3) {
+        endPage = Math.min(maxPagesToShow - 1, this.totalPages - 1);
+      }
+      
+      // Adjust if at the end
+      if (this.currentPage >= this.totalPages - 2) {
+        startPage = Math.max(2, this.totalPages - (maxPagesToShow - 2));
+      }
+      
+      // Add ellipsis after first page if needed
+      if (startPage > 2) {
+        pages.push(-1); // -1 represents ellipsis
+      }
+      
+      // Add middle pages
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      
+      // Add ellipsis before last page if needed
+      if (endPage < this.totalPages - 1) {
+        pages.push(-2); // -2 represents ellipsis
+      }
+      
+      // Always show last page
+      pages.push(this.totalPages);
+    }
+    
+    return pages;
   }
 }

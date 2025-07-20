@@ -1,6 +1,3 @@
-<h3>Customer Reviews</h3>
-
-
 
 <div *ngIf="true">
   <div class="stars-input">
@@ -33,6 +30,9 @@
     <span *ngFor="let star of [1,2,3,4,5]" class="star" [class.filled]="star <= review.rating">★</span>
   </div>
   <p>{{ review.review }}</p>
-  <button class="btn" (click)="editReview(i)">Edit</button>
-  <button class="btn" (click)="deleteReview(i)">Delete</button>
+<div *ngIf="isReviewOwner(review)">
+  <button class="btn-link" (click)="editReview(i)">Edit</button>
+  <button class="btn-link" (click)="deleteReview(i)">Delete</button>
+</div>
+
 </div>

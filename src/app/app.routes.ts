@@ -24,7 +24,7 @@ import { PaypalComponent } from './pages/paypal/paypal.component';
 import { OrderHistoryComponent } from './pages/order-history/order-history.component';
 import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 import { AdminGuard } from './guards/admin.guard';
-
+import { AdminListComponent } from './pages/admin/components/admin-list/admin-list.component';
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'paypal', component: PaypalComponent, title: 'paypal' },
@@ -78,6 +78,7 @@ export const routes: Routes = [
       { path: 'users', component: UserListComponent },
       { path: 'users/new', component: UserFormComponent },
       { path: 'users/edit/:id', component: UserFormComponent },
+      { path: 'admins', component: AdminListComponent },
       // Categories routes
       {
         path: 'categories',
@@ -139,5 +140,7 @@ export const routes: Routes = [
         (m) => m.ProductDetailsComponent
       ),
   },
+
+// Remove the standalone bestsellers route that was outside the admin section
   { path: '**', component: NotFoundComponent },
 ];

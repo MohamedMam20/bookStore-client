@@ -3,12 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:3000/api/v1/auth';
+  private baseUrl = `${environment.apiUrl}/auth`;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -22,10 +22,6 @@ export class AuthService {
     } catch (err) {
       return null;
     }
-  }
-
-  get isAdmin(): boolean {
-    return this.currentUser?.role === 'admin';
   }
 
   // Registration
@@ -62,5 +58,32 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('authToken');
+  }
+
+  // Google Login
+  googleLogin(token: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/googleLogin`, { token });
+  }
+
+  isAdmin(): boolean {
+    const token = localStorage.getItem('authToken');
+    if (!token) return false;
+
+    try {
+      const decodedToken: any = jwtDecode(token);
+      return decodedToken.role === 'admin';
+    } catch {
+      return false;
+    }
+  }
+  getCurrentUser(): any | null {
+    const token = localStorage.getItem('authToken');
+    if (!token) return null;
+
+    try {
+      return jwtDecode(token);
+    } catch {
+      return null;
+    }
   }
 }

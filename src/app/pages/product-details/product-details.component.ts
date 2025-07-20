@@ -237,6 +237,7 @@ import { CartService } from '../../services/cart/cart.service';
 import { Stripe } from '@stripe/stripe-js';
 import { AuthService } from '../../services/auth/auth.service';
 import { StripeService } from '../../services/payment/payment.service';
+import { WishlistService } from '../../services/wishlist/wishlist.service';
 
 @Component({
   selector: 'app-product-details',
@@ -251,7 +252,8 @@ export class ProductDetailsComponent implements OnInit {
     private authService: AuthService,
     private StripeService: StripeService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private wishlistService: WishlistService
   ) {}
 
   imageBaseUrl = environment.imageBaseUrl;
@@ -267,7 +269,7 @@ export class ProductDetailsComponent implements OnInit {
   quantity = 1;
   viewsCount = 0;
   showDescription = false;
-  showReviewsSection = false;
+  showReviewsSection = true;
   showSection: 'review' | 'description' | '' = '';
   bookLoading = false;
   bookError: string | null = null;
@@ -394,7 +396,6 @@ export class ProductDetailsComponent implements OnInit {
     this.cartService.addToCart({ bookId, quantity, language }).subscribe({
       next: (res) => {
         this.toastr.success(res.message);
-        console.log(res);
       },
       error: (err) => {
         this.toastr.error(err.error.message || 'Error adding to cart');
@@ -425,5 +426,11 @@ export class ProductDetailsComponent implements OnInit {
 
     localStorage.setItem('cart', JSON.stringify(cartItems));
     this.router.navigateByUrl('/checkout');
+  }
+  addToWishlist() {
+    this.wishlistService.addToWishlist({ bookId: this.product._id }).subscribe({
+      next: (res) => this.toastr.success(res.message),
+      error: (err) => console.error(err),
+    });
   }
 }

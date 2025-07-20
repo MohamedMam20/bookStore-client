@@ -63,6 +63,8 @@ body {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden; /* Prevent horizontal scrollbar */
+  padding-left: 258px !important; /* Force padding to account for fixed sidebar */
+  transition: padding-left var(--transition-speed) var(--transition-function);
 }
 
 .admin-container::before {
@@ -79,6 +81,14 @@ body {
   z-index: 0;
 }
 
+.admin-container.sidebar-collapsed {
+  padding-left: 70px !important;
+}
+
+.admin-container.mobile {
+  padding-left: 0 !important;
+}
+
 .admin-content {
   flex: 1;
   display: flex;
@@ -87,14 +97,13 @@ body {
   background-color: var(--background-color);
   position: relative;
   z-index: 1;
-  /* Remove margin, use flexbox instead */
-  width: calc(100% - var(--sidebar-width));
+  width: 100%; /* Take full width of available space */
   transition: width var(--transition-speed) var(--transition-function);
 }
 
 /* Fix for sidebar-collapsed state */
 .admin-container.sidebar-collapsed .admin-content {
-  width: calc(100% - var(--sidebar-collapsed-width));
+  width: 100%;
 }
 
 /* Fix for mobile state to ensure proper positioning */

@@ -7,7 +7,7 @@
       </div>
       <div class="icon-container">
         <a routerLink="/wishlist"><i class="fas fa-heart"></i></a>
-        <!--<span class="item-count">{{ wishlistCount }}</span>-->
+        <!-- <span class="item-count">{{ wishlistCount }}</span> -->
       </div>
     </div>
 
@@ -26,7 +26,8 @@
           title="Login"
         ></i>
         <div class="user-dropdown-content" *ngIf="loggedIn">
-          <a routerLink="/user-profile">View profile</a>
+          <a routerLink="/my-account">View profile</a>
+          <a routerLink="/admin/dashboard" *ngIf="isAdmin">View dashboard</a>
           <a routerLink="/" (click)="onLogout()">Logout</a>
         </div>
       </div>
