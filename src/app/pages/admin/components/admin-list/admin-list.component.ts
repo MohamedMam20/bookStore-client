@@ -10,19 +10,18 @@ import { ToastrService } from 'ngx-toastr';
 declare var bootstrap: any; // Declare Bootstrap to use it without TypeScript errors
 
 @Component({
-  selector: 'app-user-list',
+  selector: 'app-admin-list',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
-  templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.css']
+  templateUrl: './admin-list.component.html',
+  styleUrls: ['./admin-list.component.css']
 })
-export class UserListComponent implements OnInit {
-  users: User[] = [];
-  filteredUsers: User[] = [];
+export class AdminListComponent implements OnInit {
+  admins: User[] = [];
+  filteredAdmins: User[] = [];
   searchTerm: string = '';
   loading: boolean = true;
   error: string | null = null;
-  selectedRole: string = '';
 
   // Pagination properties
   currentPage: number = 1;
@@ -32,7 +31,7 @@ export class UserListComponent implements OnInit {
 
   // Add these properties for the modal
   private deleteModal: any;
-  userToDelete: User | null = null;
+  adminToDelete: User | null = null;
 
   constructor(
     private adminService: AdminService,
@@ -40,11 +39,11 @@ export class UserListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.loadAdmins();
 
     // Initialize the modal after view is ready
     setTimeout(() => {
-      const modalElement = document.getElementById('deleteUserModal');
+      const modalElement = document.getElementById('deleteAdminModal');
       if (modalElement && typeof bootstrap !== 'undefined') {
         this.deleteModal = new bootstrap.Modal(modalElement, {
           backdrop: false,
@@ -54,14 +53,14 @@ export class UserListComponent implements OnInit {
     }, 0);
   }
 
-  loadUsers(): void {
+  loadAdmins(): void {
     this.loading = true;
     this.adminService.getAllUsers(this.currentPage, this.itemsPerPage).subscribe({
       next: (response) => {
         if (response && response.data) {
-          // Add User type to the parameter
-          this.users = response.data.filter((user: User) => user.role === 'user');
-          this.filteredUsers = [...this.users];
+          // Filter to only include admin users
+          this.admins = response.data.filter((user: User) => user.role === 'admin');
+          this.filteredAdmins = [...this.admins];
 
           // Set pagination data if available
           if (response.page) this.currentPage = response.page;
@@ -73,67 +72,60 @@ export class UserListComponent implements OnInit {
         this.loading = false;
       },
       error: (err) => {
-        this.error = 'Failed to load users. Please try again.';
+        this.error = 'Failed to load admins. Please try again.';
         this.loading = false;
-        console.error('Error loading users:', err);
+        console.error('Error loading admins:', err);
       }
     });
   }
 
-  filterUsers(): void {
-    // Also fix this filter function to use proper typing
-    this.filteredUsers = this.users.filter((user: User) => {
+  filterAdmins(): void {
+    this.filteredAdmins = this.admins.filter(admin => {
       const matchesSearch = !this.searchTerm ||
-        user.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        (user.lastName && user.lastName.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
-        user.email.toLowerCase().includes(this.searchTerm.toLowerCase());
+        admin.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        (admin.lastName && admin.lastName.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
+        admin.email.toLowerCase().includes(this.searchTerm.toLowerCase());
 
-      const matchesRole = !this.selectedRole || user.role === this.selectedRole;
-
-      return matchesSearch && matchesRole;
+      return matchesSearch;
     });
   }
 
   onSearch(): void {
-    this.filterUsers();
-  }
-
-  onRoleChange(): void {
-    this.filterUsers();
+    this.filterAdmins();
   }
 
   // Add pagination methods
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
       this.currentPage = page;
-      this.loadUsers();
+      this.loadAdmins();
     }
   }
 
   previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.loadUsers();
+      this.loadAdmins();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.loadUsers();
+      this.loadAdmins();
     }
   }
 
-  // Replace the existing deleteUser method with these methods
-  deleteUser(id: string): void {
-    const user = this.users.find(u => u._id === id);
-    if (user) {
-      this.userToDelete = user;
+  // Replace the existing deleteAdmin method with these methods
+  deleteAdmin(id: string): void {
+    const admin = this.admins.find(a => a._id === id);
+    if (admin) {
+      this.adminToDelete = admin;
       if (this.deleteModal) {
         this.deleteModal.show();
       } else {
         // If modal wasn't initialized, try again
-        const modalElement = document.getElementById('deleteUserModal');
+        const modalElement = document.getElementById('deleteAdminModal');
         if (modalElement && typeof bootstrap !== 'undefined') {
           this.deleteModal = new bootstrap.Modal(modalElement, {
             backdrop: false,
@@ -145,18 +137,18 @@ export class UserListComponent implements OnInit {
     }
   }
 
-  confirmDeleteUser(): void {
-    if (!this.userToDelete) return;
+  confirmDeleteAdmin(): void {
+    if (!this.adminToDelete) return;
 
-    this.adminService.deleteUser(this.userToDelete._id).subscribe({
+    this.adminService.deleteUser(this.adminToDelete._id).subscribe({
       next: () => {
-        this.toastr.success('User deleted successfully');
+        this.toastr.success('Admin deleted successfully');
         this.closeDeleteModal();
-        this.loadUsers(); // Reload the current page after deletion
+        this.loadAdmins(); // Reload the current page after deletion
       },
       error: (err) => {
-        console.error('Error deleting user:', err);
-        this.toastr.error('Failed to delete user. Please try again.');
+        console.error('Error deleting admin:', err);
+        this.toastr.error('Failed to delete admin. Please try again.');
       }
     });
   }
@@ -164,7 +156,7 @@ export class UserListComponent implements OnInit {
   closeDeleteModal(): void {
     if (this.deleteModal) {
       this.deleteModal.hide();
-      this.userToDelete = null;
+      this.adminToDelete = null;
     }
   }
 }

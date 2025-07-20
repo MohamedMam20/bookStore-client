@@ -22,30 +22,40 @@ import { OrderConfirmationComponent } from './components/order-confirmation/orde
 import { SearchBooksPageComponent } from './pages/search-books-page/search-books-page.component';
 import { PaypalComponent } from './pages/paypal/paypal.component';
 import { OrderHistoryComponent } from './pages/order-history/order-history.component';
+// import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 import { AdminGuard } from './guards/admin.guard';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { FAQPageComponent } from './pages/faq-page/faq-page.component';
+import { AdminListComponent } from './pages/admin/components/admin-list/admin-list.component';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   {path: 'contact-us', component: ContactUsComponent,title:'contactus'},
   {path: 'faq', component: FAQPageComponent,title:'FAQ'},
   { path: 'paypal', component: PaypalComponent ,title: 'paypal'},
+
+// // export const routes: Routes = [
+//   { path: '', component: HomePageComponent },
+//   { path: 'paypal', component: PaypalComponent, title: 'paypal' },
+
   {
-  path: 'thank-you',
-  loadComponent: () =>
-    import('./pages/paypal/thank-you/thank-you.component').then(m => m.ThankYouComponent)
-},
+    path: 'thank-you',
+    loadComponent: () =>
+      import('./pages/paypal/thank-you/thank-you.component').then(
+        (m) => m.ThankYouComponent
+      ),
+  },
   { path: 'orders', component: OrderHistoryComponent, title: 'My Orders' },
   {
-  path: 'user-profile',
-  loadComponent: () =>
-    import('./pages/user-profile/user-profile.component').then(m => m.UserProfileComponent),
-  title: 'My Profile'
-},
+    path: 'user-profile',
+    loadComponent: () =>
+      import('./pages/user-profile/user-profile.component').then(
+        (m) => m.UserProfileComponent
+      ),
+    title: 'My Profile',
+  },
 
-
-
+  { path: 'contact-us', component: ContactUsComponent },
   { path: 'wishlist', component: WishlistComponent },
   { path: 'shop', component: BooksPageComponent },
   { path: 'checkout', component: CheckoutFormComponent, title: 'Payment Form' },
@@ -78,37 +88,59 @@ export const routes: Routes = [
       { path: 'users', component: UserListComponent },
       { path: 'users/new', component: UserFormComponent },
       { path: 'users/edit/:id', component: UserFormComponent },
+      { path: 'admins', component: AdminListComponent },
       // Categories routes
       {
         path: 'categories',
-        loadComponent: () => import('./pages/admin/components/category-list/category-list.component').then(m => m.CategoryListComponent)
+        loadComponent: () =>
+          import(
+            './pages/admin/components/category-list/category-list.component'
+          ).then((m) => m.CategoryListComponent),
       },
       {
         path: 'categories/new',
-        loadComponent: () => import('./pages/admin/components/category-form/category-form.component').then(m => m.CategoryFormComponent)
+        loadComponent: () =>
+          import(
+            './pages/admin/components/category-form/category-form.component'
+          ).then((m) => m.CategoryFormComponent),
       },
       {
         path: 'categories/edit/:id',
-        loadComponent: () => import('./pages/admin/components/category-form/category-form.component').then(m => m.CategoryFormComponent)
+        loadComponent: () =>
+          import(
+            './pages/admin/components/category-form/category-form.component'
+          ).then((m) => m.CategoryFormComponent),
       },
       // Reviews routes
       {
         path: 'reviews',
-        loadComponent: () => import('./pages/admin/components/review-list/review-list.component').then(m => m.ReviewListComponent)
+        loadComponent: () =>
+          import(
+            './pages/admin/components/review-list/review-list.component'
+          ).then((m) => m.ReviewListComponent),
       },
       {
         path: 'reviews/:id',
-        loadComponent: () => import('./pages/admin/components/review-detail/review-detail.component').then(m => m.ReviewDetailComponent)
+        loadComponent: () =>
+          import(
+            './pages/admin/components/review-detail/review-detail.component'
+          ).then((m) => m.ReviewDetailComponent),
       },
       // Orders routes
       {
         path: 'orders',
-        loadComponent: () => import('./pages/admin/components/order-list/order-list.component').then(m => m.OrderListComponent)
+        loadComponent: () =>
+          import(
+            './pages/admin/components/order-list/order-list.component'
+          ).then((m) => m.OrderListComponent),
       },
       {
         path: 'orders/:id',
-        loadComponent: () => import('./pages/admin/components/order-detail/order-detail.component').then(m => m.OrderDetailComponent)
-      }
+        loadComponent: () =>
+          import(
+            './pages/admin/components/order-detail/order-detail.component'
+          ).then((m) => m.OrderDetailComponent),
+      },
     ],
   },
   {
@@ -118,6 +150,8 @@ export const routes: Routes = [
         (m) => m.ProductDetailsComponent
       ),
   },
+
+// Remove the standalone bestsellers route that was outside the admin section
   { path: '**', component: NotFoundComponent },
 
 ];

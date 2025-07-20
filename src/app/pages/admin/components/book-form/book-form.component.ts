@@ -53,14 +53,14 @@ export class BookFormComponent implements OnInit {
   initForm(): void {
     this.bookForm = this.fb.group({
       title: ['', [Validators.required]],
-      author: [''],
-      category: [''],
-      price: [0, [Validators.required, Validators.min(0)]],
-      description: [''],
-      authorDescription: [''],
-      stockEn: [0, [Validators.min(0)]],
-      stockAr: [0, [Validators.min(0)]],
-      stockFr: [0, [Validators.min(0)]]
+      author: ['', [Validators.required]],
+      category: ['', [Validators.required]],
+      price: [0, [Validators.required, Validators.min(0.01)]],
+      description: ['', [Validators.required]],
+      authorDescription: ['', [Validators.required]],
+      stockEn: [0, [Validators.required, Validators.min(0)]],
+      stockAr: [0, [Validators.required, Validators.min(0)]],
+      stockFr: [0, [Validators.required, Validators.min(0)]]
     });
   }
 
@@ -68,7 +68,7 @@ export class BookFormComponent implements OnInit {
   initCategoryForm(): void {
     this.categoryForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      description: ['', Validators.maxLength(500)]
+      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]]
     });
   }
 
@@ -151,7 +151,21 @@ export class BookFormComponent implements OnInit {
   }
 
   onSubmit(): void {
+    // Mark all form controls as touched to trigger validation messages
+    Object.keys(this.bookForm.controls).forEach(key => {
+      const control = this.bookForm.get(key);
+      control?.markAsTouched();
+    });
+
     if (this.bookForm.invalid) {
+      this.toastr.error('Please fill in all required fields correctly');
+      return;
+    }
+
+    // Validate price is greater than 0
+    const price = this.bookForm.get('price')?.value;
+    if (!price || price <= 0) {
+      this.toastr.error('Price must be greater than 0');
       return;
     }
 
@@ -244,11 +258,28 @@ export class BookFormComponent implements OnInit {
 
   // Submit new category
   submitCategory(): void {
+    // Mark all form controls as touched to trigger validation messages
+    Object.keys(this.categoryForm.controls).forEach(key => {
+      const control = this.categoryForm.get(key);
+      if (control) control.markAsTouched();
+    });
+
     if (this.categoryForm.invalid) {
-      Object.keys(this.categoryForm.controls).forEach(key => {
-        const control = this.categoryForm.get(key);
-        if (control) control.markAsTouched();
-      });
+      this.toastr.error('Please fill in all category fields correctly');
+      return;
+    }
+
+    // Additional validation checks
+    const name = this.categoryForm.get('name')?.value;
+    const description = this.categoryForm.get('description')?.value;
+
+    if (!name || name.trim().length < 2) {
+      this.toastr.error('Category name must be at least 2 characters');
+      return;
+    }
+
+    if (!description || description.trim().length < 10) {
+      this.toastr.error('Category description must be at least 10 characters');
       return;
     }
 

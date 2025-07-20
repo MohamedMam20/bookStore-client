@@ -1,7 +1,6 @@
-import { Component, OnInit , OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../../../services/admin/admin.service';
-
 
 @Component({
   selector: 'app-dashboard-overview',
@@ -10,7 +9,7 @@ import { AdminService } from '../../../../services/admin/admin.service';
   templateUrl: './dashboard-overview.component.html',
   styleUrls: ['./dashboard-overview.component.css'],
 })
-export class DashboardOverviewComponent implements OnInit   {
+export class DashboardOverviewComponent implements OnInit {
   dashboardStats = {
     totalBooks: 0,
     totalOrders: 0,
@@ -27,7 +26,7 @@ export class DashboardOverviewComponent implements OnInit   {
   loading = true;
   error: string | null = null;
 
-  constructor(private adminService: AdminService  ) {}
+  constructor(private adminService: AdminService) {}
 
   ngOnInit(): void {
     this.loadDashboardData();
@@ -95,28 +94,17 @@ export class DashboardOverviewComponent implements OnInit   {
     });
 
     // Try to get bestsellers
-    this.adminService.getBestsellers().subscribe({
-      next: (data: any) => {
-        this.bestsellers = data;
+    // Replace the getBestsellers() call with getBookSalesData()
+    this.adminService.getBookSalesData().subscribe({
+      next: (response) => {
+        // Transform the data to match the format expected by the dashboard
+        this.bestsellers = response.data.map((book: any) => ({
+          title: book.title,
+          author: book.author,
+          sales: book.totalSales
+        })).slice(0, 5); // Limit to top 5 bestsellers
       },
-      error: (err: any) => {
-        // Fallback to mock data
-        this.bestsellers = [
-          {
-            title: 'The Great Gatsby',
-            author: 'F. Scott Fitzgerald',
-            sales: 42,
-          },
-          { title: 'To Kill a Mockingbird', author: 'Harper Lee', sales: 38 },
-          { title: '1984', author: 'George Orwell', sales: 35 },
-          { title: 'Pride and Prejudice', author: 'Jane Austen', sales: 30 },
-          {
-            title: 'The Catcher in the Rye',
-            author: 'J.D. Salinger',
-            sales: 28,
-          },
-        ];
-      },
+      error: (err) => console.error('Error fetching bestsellers:', err),
     });
 
     // Try to get recent orders
@@ -167,6 +155,4 @@ export class DashboardOverviewComponent implements OnInit   {
       },
     });
   }
-
-
 }

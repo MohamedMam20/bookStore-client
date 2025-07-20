@@ -1,8 +1,11 @@
 .admin-sidebar {
-  position: relative; /* Changed from fixed */
-  height: 100vh;
+  position: fixed; /* Fixed position */
+  top: 0; /* Stick to top */
+  left: 0; /* Stick to left */
+  height: 100vh; /* Full viewport height */
   width: var(--sidebar-width);
-  background-color: #e12503; /* Red color as requested */
+  background-color: #ff7043;
+  /* background: linear-gradient(to bottom, #ff7043 0%, #ef896a 100%); Match navbar color */
   border-right: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: var(--shadow-sm);
   z-index: 1000;
@@ -121,47 +124,18 @@
   white-space: nowrap;
 }
 
-/* Search input - adjusted for red background */
-.sidebar-search {
-  padding: 16px;
-}
-
-.search-input {
-  position: relative;
+.logo a {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.search-input i {
-  position: absolute;
-  left: 12px;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 14px;
-}
-
-.search-input input {
+  justify-content: center;
+  text-decoration: none;
   width: 100%;
-  padding: 10px 10px 10px 36px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  background: transparent;
-  color: #ffffff;
-  font-size: 14px;
   transition: all 0.3s ease;
 }
 
-.search-input input:focus {
-  outline: none;
-  border-color: #ffffff;
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
-}
-
-.search-input input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+.logo a:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
 }
 
 /* Navigation - Updated for contrast with red background */
@@ -170,6 +144,7 @@
   flex-direction: column;
   flex: 1;
   padding: 10px 0;
+  margin-top: 10px; /* Add margin to compensate for removed search */
 }
 
 .nav-section {
@@ -375,12 +350,24 @@
 
 /* Dark Theme Adjustments */
 :root.dark-theme .admin-sidebar {
-  background-color: #c01f00; /* Slightly darker red for dark mode */
+  background-color: #b71c1c; /* Deeper but not harsh for dark mode */
   border-right-color: rgba(255, 255, 255, 0.1);
 }
 
 :root.dark-theme .nav-section a.active {
   background-color: rgba(255, 255, 255, 0.15);
+}
+
+.nav-section a,
+.nav-section-header {
+  color: #fff7f0;
+}
+
+.nav-section a:hover,
+.nav-section a.active,
+.nav-section-header:hover {
+  background: rgba(255,255,255,0.13);
+  color: #fff;
 }
 
 /* Media Queries */

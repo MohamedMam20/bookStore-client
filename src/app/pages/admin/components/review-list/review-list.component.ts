@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../../../services/admin/admin.service';
 import { ToastrService } from 'ngx-toastr';
 
+declare var bootstrap: any; // Add this line to fix the TypeScript error
+
 @Component({
   selector: 'app-review-list',
   standalone: true,
@@ -21,12 +23,16 @@ export class ReviewListComponent implements OnInit {
   filterStatus: string = 'all';
   sortColumn: string = 'date';
   sortDirection: 'asc' | 'desc' = 'desc';
-  
+
   // Pagination properties
   currentPage: number = 1;
   totalPages: number = 1;
   itemsPerPage: number = 10;
   totalItems: number = 0;
+
+  // Modal properties
+  deleteModal: any;
+  reviewToDelete: any = null;
 
   constructor(
     private adminService: AdminService,
@@ -44,7 +50,7 @@ export class ReviewListComponent implements OnInit {
         if (response && response.data) {
           this.reviews = response.data;
           this.filteredReviews = [...this.reviews];
-          
+
           // Set pagination data if available
           if (response.currentPage) this.currentPage = response.currentPage;
           if (response.totalPages) this.totalPages = response.totalPages;
@@ -68,19 +74,19 @@ export class ReviewListComponent implements OnInit {
   filterReviews(): void {
     this.filteredReviews = this.reviews.filter(review => {
       // Filter by search term
-      const matchesSearch = !this.searchTerm || 
+      const matchesSearch = !this.searchTerm ||
         review.user?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         review.book?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         review.review?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         review.email?.toLowerCase().includes(this.searchTerm.toLowerCase());
-      
+
       // Filter by status
-      const matchesStatus = this.filterStatus === 'all' || 
+      const matchesStatus = this.filterStatus === 'all' ||
         (review.status && review.status === this.filterStatus);
-      
+
       return matchesSearch && matchesStatus;
     });
-    
+
     // Apply sorting
     this.sortReviews(this.sortColumn);
   }
@@ -93,26 +99,51 @@ export class ReviewListComponent implements OnInit {
     this.filterReviews();
   }
 
-  deleteReview(id: string): void {
-    if (confirm('Are you sure you want to delete this review?')) {
-      this.adminService.deleteReview(id).subscribe({
-        next: () => {
-          this.reviews = this.reviews.filter(review => review.id !== id);
-          this.filterReviews();
-          this.toastr.success('Review deleted successfully');
-        },
-        error: (err) => {
-          console.error('Error deleting review:', err);
-          this.toastr.error(err.error?.message || 'Failed to delete review. Please try again.');
-        }
+  // Open delete modal with the review to delete
+  openDeleteModal(review: any): void {
+    this.reviewToDelete = review;
+    const modalElement = document.getElementById('deleteReviewModal');
+    if (modalElement && typeof bootstrap !== 'undefined') {
+      this.deleteModal = new bootstrap.Modal(modalElement, {
+        backdrop: false,
+        keyboard: true
       });
+      this.deleteModal.show();
+    }
+  }
+
+  // Confirm review deletion from the modal
+  confirmDeleteReview(): void {
+    if (!this.reviewToDelete) return;
+
+    const reviewId = this.reviewToDelete.id;
+
+    this.adminService.deleteReview(reviewId).subscribe({
+      next: () => {
+        this.reviews = this.reviews.filter(review => review.id !== reviewId);
+        this.filterReviews();
+        this.toastr.success('Review deleted successfully');
+        this.closeDeleteModal();
+      },
+      error: (err) => {
+        console.error('Error deleting review:', err);
+        this.toastr.error(err.error?.message || 'Failed to delete review. Please try again.');
+      }
+    });
+  }
+
+  // Close the delete modal
+  closeDeleteModal(): void {
+    if (this.deleteModal) {
+      this.deleteModal.hide();
+      this.reviewToDelete = null;
     }
   }
 
   updateReviewStatus(id: string, status: string): void {
     // Convert string status to boolean for the API
     const isApproved = status === 'approved';
-    
+
     this.adminService.updateReviewStatus(id, isApproved).subscribe({
       next: () => {
         this.toastr.success(`Review ${status === 'approved' ? 'approved' : 'rejected'} successfully`);
@@ -136,13 +167,13 @@ export class ReviewListComponent implements OnInit {
     this.filteredReviews.sort((a, b) => {
       let valA = a[column];
       let valB = b[column];
-      
+
       // Special case for date columns
       if (column === 'date') {
         valA = new Date(a.date).getTime();
         valB = new Date(b.date).getTime();
       }
-      
+
       if (typeof valA === 'string') {
         return this.sortDirection === 'asc'
           ? valA.localeCompare(valB)
@@ -181,4 +212,4 @@ export class ReviewListComponent implements OnInit {
   getStarRating(rating: number): string {
     return '★'.repeat(rating) + '☆'.repeat(5 - rating);
   }
-} 
+}

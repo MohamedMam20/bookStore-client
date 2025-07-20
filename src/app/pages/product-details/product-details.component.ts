@@ -270,7 +270,7 @@ export class ProductDetailsComponent implements OnInit {
   quantity = 1;
   viewsCount = 0;
   showDescription = false;
-  showReviewsSection = false;
+  showReviewsSection = true;
   showSection: 'review' | 'description' | '' = '';
   bookLoading = false;
   bookError: string | null = null;
@@ -286,6 +286,7 @@ export class ProductDetailsComponent implements OnInit {
   @ViewChild('reviewSection') reviewSection!: ElementRef;
 
   ngOnInit() {
+
     this.viewsCount = Math.floor(Math.random() * 200) + 50;
 
     this.route.paramMap.subscribe((params) => {

@@ -19,8 +19,6 @@ export class OrderDetailComponent implements OnInit {
 
   // Status options for the dropdown
   statusOptions = [
-    { value: 'pending', label: 'Pending' },
-    { value: 'processing', label: 'Processing' },
     { value: 'shipped', label: 'Shipped' },
     { value: 'delivered', label: 'Delivered' },
     { value: 'cancelled', label: 'Cancelled' }
@@ -56,6 +54,7 @@ export class OrderDetailComponent implements OnInit {
           // Ensure both _id and id are available
           this.order._id = this.order._id || this.order.id;
           this.order.id = this.order.id || this.order._id;
+          console.log('Order data:', this.order);
         } else {
           this.error = 'Unexpected response format from server';
         }
@@ -70,14 +69,24 @@ export class OrderDetailComponent implements OnInit {
   }
 
   updateOrderStatus(newStatus: string): void {
+    console.log(`Attempting to update order ${this.orderId} status to: ${newStatus}`);
+    console.log(`Current order status: ${this.order.status}`);
+    
     this.adminService.updateOrderStatus(this.orderId, newStatus).subscribe({
-      next: () => {
+      next: (response) => {
+        console.log('Status update successful:', response);
         this.order.status = newStatus;
         this.toastr.success(`Order status updated to ${newStatus}`);
       },
       error: (err) => {
-        this.toastr.error(err.error?.message || 'Failed to update order status');
         console.error('Error updating order status:', err);
+        const errorMessage = err.error?.message || 'Failed to update order status';
+        this.toastr.error(errorMessage);
+        
+        // If there's a backend error, try to refresh the order details
+        if (err.status && err.status !== 0) {
+          this.loadOrderDetails(this.orderId);
+        }
       }
     });
   }
@@ -101,8 +110,88 @@ export class OrderDetailComponent implements OnInit {
     return this.order?._id || this.order?.id || this.orderId;
   }
 
+  // Calculate subtotal from items
+  calculateSubtotal(): number {
+    if (!this.order) return 0;
+    
+    // If subtotal is already provided, use it
+    if (this.order.subtotal && typeof this.order.subtotal === 'number') {
+      return this.order.subtotal;
+    }
+    
+    // Calculate from items
+    const items = this.order.books || this.order.items || [];
+    return items.reduce((sum: number, item: any) => {
+      const price = item.price || 0;
+      const quantity = item.quantity || 1;
+      return sum + (price * quantity);
+    }, 0);
+  }
+
+  // Calculate total
+  calculateTotal(): number {
+    if (!this.order) return 0;
+    
+    // If total is already provided, use it
+    if (this.order.total && typeof this.order.total === 'number') {
+      return this.order.total;
+    }
+    
+    // Calculate from subtotal and other components
+    const subtotal = this.calculateSubtotal();
+    const shipping = this.order.shipping || 0;
+    const tax = this.order.tax || 0;
+    const discount = this.order.discount || 0;
+    
+    return subtotal + shipping + tax - discount;
+  }
+
+  // Get payment method with fallback
+  getPaymentMethod(): string {
+    if (!this.order) return 'Unknown';
+    
+    if (this.order.paymentMethod) return this.order.paymentMethod;
+    if (this.order.payment?.method) return this.order.payment.method;
+    
+    // Check for common payment indicators
+    if (this.order.paymentId && this.order.paymentId.startsWith('pi_')) return 'Stripe';
+    if (this.order.paymentId && this.order.paymentId.startsWith('pay_')) return 'PayPal';
+    
+    return 'Credit Card';
+  }
+
+  // Get payment ID with fallback
+  getPaymentId(): string {
+    if (!this.order) return 'Unknown';
+    
+    if (this.order.paymentId) return this.order.paymentId;
+    if (this.order.payment?.id) return this.order.payment.id;
+    if (this.order.transactionId) return this.order.transactionId;
+    
+    // Generate a mock payment ID based on order ID
+    return `PAYMENT-${this.getOrderId().substring(0, 8)}`;
+  }
+
+  // Get payment status with fallback
+  getPaymentStatus(): string {
+    if (!this.order) return 'Unknown';
+    
+    if (this.order.paymentStatus) return this.order.paymentStatus;
+    if (this.order.payment?.status) return this.order.payment.status;
+    
+    // Infer from order status
+    if (this.order.status === 'cancelled') return 'Refunded';
+    if (['delivered', 'shipped'].includes(this.order.status)) return 'Completed';
+    if (this.order.status === 'processing') return 'Processing';
+    
+    return 'Completed';
+  }
+
   // Format currency
   formatCurrency(amount: number): string {
+    if (amount === undefined || amount === null) {
+      return '$0.00';
+    }
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD'

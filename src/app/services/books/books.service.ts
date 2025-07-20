@@ -9,8 +9,9 @@ import { Filter } from '../filter/filter-state.service';
   providedIn: 'root',
 })
 export class BooksService {
-  private apiUrl = 'http://localhost:3000/api/v1/books';
-
+  private baseUrl = 'http://localhost:3000/api/v1';
+  private apiUrl = `${this.baseUrl}/books`;
+  private bestSellerUrl = `${this.baseUrl}/bestsellers`;
   constructor(private http: HttpClient) {}
 
   getBooks(
@@ -113,5 +114,11 @@ export class BooksService {
   getBookById(slug: string): Observable<Book> {
     return this.http.get<Book>(`${this.apiUrl}/${slug}`);
   }
-}
 
+  //=============== best sellers ================
+  getBestSellers(): Observable<Book[]> {
+    return this.http
+      .get<{ status: string; data: Book[] }>(this.bestSellerUrl)
+      .pipe(map((res) => res.data));
+  }
+}

@@ -55,7 +55,12 @@ export class PasswordResetConfirmComponent implements OnInit, AfterViewInit {
       otpDigit6: ['', [Validators.required, Validators.pattern('^[0-9]$')]],
       newPassword: [
         '',
-        [Validators.required, Validators.minLength(8), Validators.maxLength(16)]
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(16),
+          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,16}$/)
+        ]
       ],
       confirmPassword: ['', [Validators.required]]
     }, { validators: this.passwordMatchValidator });

@@ -1,12 +1,15 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ScrollToTopComponent } from '../../shared/scroll-to-top/scroll-to-top.component';
 import { ChatbotComponent } from "../chatbot/chatbot.component";
-
-
+import { Book } from '../../models/book.model';
+import { BooksService } from '../../services/books/books.service';
+import { ProductCardComponent } from '../product-card/product-card.component';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [ScrollToTopComponent, ChatbotComponent],
+  imports: [ScrollToTopComponent, ChatbotComponent ,CommonModule,
+    ProductCardComponent],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })
@@ -19,9 +22,33 @@ displayText: string = '';
 index: number = 0;
 isTyping: boolean = true;
 
-ngOnInit() {
-    this.typeEffect();
-}
+//books
+ bestSellers: Book[] = [];
+  loading = true;
+
+
+// books
+constructor(private booksService: BooksService) {}
+
+// ngOnInit() {
+//     this.typeEffect();
+// }
+ngOnInit(): void {
+
+  this.typeEffect();
+
+  //books
+    this.booksService.getBestSellers().subscribe({
+      next: (books) => {
+        this.bestSellers = books;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching bestsellers:', err);
+        this.loading = false;
+      },
+    });
+  }
 
 typeEffect() {
     if (this.isTyping) {
@@ -57,5 +84,12 @@ typeEffect() {
     this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
     this.images[this.currentImageIndex].classList.add('active');
   }
+
+// export class HomePageComponent implements OnInit {
+  // bestSellers: Book[] = [];
+  // loading = true;
+
+  // constructor(private booksService: BooksService) {}
+
 
 }

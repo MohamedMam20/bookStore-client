@@ -6,6 +6,8 @@ import { AdminService } from '../../../../services/admin/admin.service';
 import { ToastrService } from 'ngx-toastr';
 import { Category } from '../../../../models/category.model';
 
+declare var bootstrap: any; // Declare Bootstrap to use it without TypeScript errors
+
 @Component({
   selector: 'app-category-list',
   standalone: true,
@@ -26,6 +28,10 @@ export class CategoryListComponent implements OnInit {
   itemsPerPage: number = 10;
   totalItems: number = 0;
 
+  // Modal related properties
+  private deleteModal: any;
+  categoryToDelete: Category | null = null;
+
   constructor(
     private adminService: AdminService,
     private toastr: ToastrService
@@ -33,6 +39,43 @@ export class CategoryListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategories();
+
+    // Initialize the modal after view is ready
+    setTimeout(() => {
+      this.initializeModal();
+    }, 0);
+  }
+
+  private initializeModal(): void {
+    const modalElement = document.getElementById('deleteCategoryModal');
+    if (modalElement && typeof bootstrap !== 'undefined') {
+      // Dispose of any existing modal instance to prevent memory leaks
+      if (this.deleteModal) {
+        this.deleteModal.dispose();
+      }
+
+      this.deleteModal = new bootstrap.Modal(modalElement, {
+        backdrop: false, // Disable the backdrop to prevent interaction issues
+        keyboard: true   // Allow ESC key to close the modal
+      });
+    }
+  }
+
+  openDeleteModal(category: Category): void {
+    this.categoryToDelete = category;
+    if (!this.deleteModal) {
+      this.initializeModal();
+    }
+    if (this.deleteModal) {
+      this.deleteModal.show();
+    }
+  }
+
+  closeDeleteModal(): void {
+    if (this.deleteModal) {
+      this.deleteModal.hide();
+      this.categoryToDelete = null;
+    }
   }
 
   loadCategories(): void {
@@ -82,23 +125,31 @@ export class CategoryListComponent implements OnInit {
     });
   }
 
+  confirmDeleteCategory(): void {
+    if (!this.categoryToDelete) return;
+
+    const idOrSlug = this.categoryToDelete.slug || this.categoryToDelete._id || '';
+
+    this.adminService.deleteCategory(idOrSlug).subscribe({
+      next: () => {
+        this.categories = this.categories.filter(category => category._id !== this.categoryToDelete?._id);
+        this.filterCategories();
+        this.toastr.success('Category deleted successfully');
+        this.closeDeleteModal();
+      },
+      error: (err) => {
+        console.error('Error deleting category:', err);
+        this.toastr.error(err.error?.message || 'Failed to delete category. Please try again.');
+        this.closeDeleteModal();
+      }
+    });
+  }
+
+  // Replace the existing deleteCategory method with this one that opens the modal
   deleteCategory(idOrSlug: string): void {
-    if (confirm('Are you sure you want to delete this category?')) {
-      this.adminService.deleteCategory(idOrSlug).subscribe({
-        next: () => {
-          // Find the category in the original array to get its ID
-          const categoryToRemove = this.categories.find(cat => cat._id === idOrSlug || cat.slug === idOrSlug);
-          if (categoryToRemove && categoryToRemove._id) {
-            this.categories = this.categories.filter(category => category._id !== categoryToRemove._id);
-            this.filterCategories();
-            this.toastr.success('Category deleted successfully');
-          }
-        },
-        error: (err) => {
-          console.error('Error deleting category:', err);
-          this.toastr.error(err.error?.message || 'Failed to delete category. Please try again.');
-        }
-      });
+    const category = this.categories.find(cat => cat._id === idOrSlug || cat.slug === idOrSlug);
+    if (category) {
+      this.openDeleteModal(category);
     }
   }
 

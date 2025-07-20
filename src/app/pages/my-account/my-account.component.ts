@@ -99,23 +99,7 @@ export class MyAccountComponent implements OnInit {
     confirmPassword: ''
   };
 
-  billingAddress: BillingAddress = {
-    fullName: '',
-    street: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    country: ''
-  };
 
-  shippingAddress: BillingAddress = {
-    fullName: '',
-    street: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    country: ''
-  };
 
   paymentMethods: PaymentMethod[] = [];
 
@@ -148,14 +132,12 @@ export class MyAccountComponent implements OnInit {
         this.cartItems = data.cartItems;
         this.wishlist = data.wishlist;
         this.reviews = data.reviews;
-        this.billingAddress = data.billingAddress;
-        this.shippingAddress = data.shippingAddress;
+
         this.paymentMethods = data.paymentMethods;
         this.isLoading = false;
       },
       error: (err) => {
         console.error(err);
-        this.addNotification('Failed to load dashboard data');
         this.isLoading = false;
       }
     });
@@ -190,24 +172,68 @@ export class MyAccountComponent implements OnInit {
         this.isLoading = false;
         // Update the display name
         this.userInfo.name = `${this.userInfo.firstName || ''} ${this.userInfo.lastName || ''}`.trim();
-        this.addNotification(this.userInfoMessage);
         setTimeout(() => this.userInfoMessage = '', 3000);
       },
       error: (err) => {
         console.error(err);
         this.userInfoMessage = 'Failed to update profile';
         this.isLoading = false;
-        this.addNotification(this.userInfoMessage);
         setTimeout(() => this.userInfoMessage = '', 3000);
       }
     });
   }
 
+  // Add validation error messages
+  validationErrors = {
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  };
+
   changePassword() {
-    if (this.userInfo.newPassword !== this.userInfo.confirmPassword) {
-      this.userInfoMessage = 'Passwords do not match!';
+    // Reset validation errors
+    this.validationErrors = {
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: ''
+    };
+
+    // Validate current password
+    if (!this.userInfo.currentPassword) {
+      this.validationErrors.currentPassword = 'Current password is required';
       return;
     }
+
+    // Validate new password
+    if (!this.userInfo.newPassword) {
+      this.validationErrors.newPassword = 'New password is required';
+      return;
+    } else if (this.userInfo.newPassword.length < 8 || this.userInfo.newPassword.length > 16) {
+      this.validationErrors.newPassword = 'Password must be between 8-16 characters';
+      return;
+    } else if (!/(?=.*[a-z])/.test(this.userInfo.newPassword)) {
+      this.validationErrors.newPassword = 'Password must contain at least one lowercase letter';
+      return;
+    } else if (!/(?=.*[A-Z])/.test(this.userInfo.newPassword)) {
+      this.validationErrors.newPassword = 'Password must contain at least one uppercase letter';
+      return;
+    } else if (!/(?=.*\d)/.test(this.userInfo.newPassword)) {
+      this.validationErrors.newPassword = 'Password must contain at least one number';
+      return;
+    } else if (!/(?=.*[!@#$%^&*()_\-+=[\]{};':"\\|,.<>\/?])/.test(this.userInfo.newPassword)) {
+      this.validationErrors.newPassword = 'Password must contain at least one special character';
+      return;
+    }
+
+    // Validate confirm password
+    if (!this.userInfo.confirmPassword) {
+      this.validationErrors.confirmPassword = 'Please confirm your password';
+      return;
+    } else if (this.userInfo.newPassword !== this.userInfo.confirmPassword) {
+      this.validationErrors.confirmPassword = 'Passwords do not match!';
+      return;
+    }
+
     this.isLoading = true;
 
     // Define the passwordData object before using it
@@ -224,219 +250,22 @@ export class MyAccountComponent implements OnInit {
         this.userInfo.currentPassword = '';
         this.userInfo.newPassword = '';
         this.userInfo.confirmPassword = '';
-        this.addNotification(this.userInfoMessage);
         setTimeout(() => this.userInfoMessage = '', 3000);
       },
       error: (err) => {
         console.error(err);
-        this.userInfoMessage = 'Failed to change password';
-        this.isLoading = false;
-        this.addNotification(this.userInfoMessage);
-        setTimeout(() => this.userInfoMessage = '', 3000);
-      }
-    });
-  }
-
-  updateBillingAddress() {
-    this.isLoading = true;
-    this.userService.updateBillingAddress(this.billingAddress).subscribe({
-      next: (response) => {
-        this.billingMessage = 'Billing address updated successfully!';
-        this.isLoading = false;
-        this.showAddressForm = false;
-        this.addNotification(this.billingMessage);
-        setTimeout(() => this.billingMessage = '', 3000);
-      },
-      error: (err) => {
-        console.error(err);
-        this.billingMessage = 'Failed to update billing address';
-        this.isLoading = false;
-        this.addNotification(this.billingMessage);
-        setTimeout(() => this.billingMessage = '', 3000);
-      }
-    });
-  }
-
-  updateShippingAddress() {
-    this.isLoading = true;
-    this.userService.updateShippingAddress(this.shippingAddress).subscribe({
-      next: (response) => {
-        this.billingMessage = 'Shipping address updated successfully!';
-        this.isLoading = false;
-        this.editingShippingAddress = false;
-        this.addNotification(this.billingMessage);
-        setTimeout(() => this.billingMessage = '', 3000);
-      },
-      error: (err) => {
-        console.error(err);
-        this.billingMessage = 'Failed to update shipping address';
-        this.isLoading = false;
-        this.addNotification(this.billingMessage);
-        setTimeout(() => this.billingMessage = '', 3000);
-      }
-    });
-  }
-
-  addPaymentMethod() {
-    this.isLoading = true;
-    this.userService.addPaymentMethod(this.newPaymentMethod).subscribe({
-      next: (response) => {
-        this.paymentMessage = 'Payment method added successfully!';
-        this.isLoading = false;
-        this.showPaymentForm = false;
-        this.newPaymentMethod = { type: 'Visa', cardNumber: '', expiryDate: '', cvv: '', cardHolder: '' };
-        this.addNotification(this.paymentMessage);
-        this.fetchDashboardData(); // Refresh payment methods
-        setTimeout(() => this.paymentMessage = '', 3000);
-      },
-      error: (err) => {
-        console.error(err);
-        this.paymentMessage = 'Failed to add payment method';
-        this.isLoading = false;
-        this.addNotification(this.paymentMessage);
-        setTimeout(() => this.paymentMessage = '', 3000);
-      }
-    });
-  }
-
-  removePaymentMethod(id: string) {
-    this.userService.removePaymentMethod(id).subscribe({
-      next: (response) => {
-        this.paymentMethods = this.paymentMethods.filter(pm => pm._id !== id);
-        this.addNotification('Payment method removed!');
-      },
-      error: (err) => {
-        console.error(err);
-        this.addNotification('Failed to remove payment method');
-      }
-    });
-  }
-
-  setDefaultPaymentMethod(id: string) {
-    this.userService.setDefaultPaymentMethod(id).subscribe({
-      next: (response) => {
-        this.paymentMethods.forEach(pm => pm.isDefault = pm._id === id);
-        this.addNotification('Default payment method updated!');
-      },
-      error: (err) => {
-        console.error(err);
-        this.addNotification('Failed to update default payment method');
-      }
-    });
-  }
-
-  removeFromCart(id: string) {
-    this.userService.removeFromCart(id).subscribe({
-      next: (response) => {
-        this.cartItems = this.cartItems.filter(item => item._id !== id);
-        this.addNotification('Item removed from cart!');
-      },
-      error: (err) => {
-        console.error(err);
-        this.addNotification('Failed to remove item from cart');
-      }
-    });
-  }
-
-  removeFromWishlist(id: string) {
-    this.userService.removeFromWishlist(id).subscribe({
-      next: (response) => {
-        this.wishlist = this.wishlist.filter(item => item.bookId !== id);
-        this.addNotification('Item removed from wishlist!');
-      },
-      error: (err) => {
-        console.error(err);
-        this.addNotification('Failed to remove item from wishlist');
-      }
-    });
-  }
-
-  moveToCart(id: string) {
-    const item = this.wishlist.find(w => w.bookId === id);
-    if (item) {
-      this.userService.addToCart({
-        bookId: id,
-        quantity: 1,
-        language: item.language || 'English'
-      }).subscribe({
-        next: (response) => {
-          this.removeFromWishlist(id);
-          this.fetchDashboardData(); // Refresh cart items
-          this.addNotification('Item moved to cart!');
-        },
-        error: (err) => {
-          console.error(err);
-          this.addNotification('Failed to move item to cart');
+        if (err.status === 401) {
+          this.validationErrors.currentPassword = 'Current password is incorrect';
+        } else {
+          this.userInfoMessage = 'Failed to change password';
         }
-      });
-    }
-  }
-
-  placeOrder() {
-    this.isLoading = true;
-
-    const orderData = {
-      items: this.cartItems.map(item => ({
-        bookId: item.book._id,
-        quantity: item.quantity
-      })),
-      shippingAddress: this.shippingAddress,
-      paymentMethodId: this.paymentMethods.find(pm => pm.isDefault)?._id
-    };
-
-    this.userService.placeOrder(orderData).subscribe({
-      next: (response) => {
-        this.cartItems = [];
         this.isLoading = false;
-        this.addNotification('Order placed successfully!');
-        this.selectSection('orders');
-        this.fetchDashboardData(); // Refresh orders
-      },
-      error: (err) => {
-        console.error(err);
-        this.isLoading = false;
-        this.addNotification('Failed to place order');
+        setTimeout(() => this.userInfoMessage = '', 3000);
       }
     });
   }
 
-  deleteReview(reviewId: string) {
-    this.isLoading = true;
-    this.userService.deleteReview(reviewId).subscribe({
-      next: (response) => {
-        this.reviews = this.reviews.filter(review => review._id !== reviewId);
-        this.isLoading = false;
-        this.addNotification('Review deleted successfully!');
-      },
-      error: (err) => {
-        console.error(err);
-        this.isLoading = false;
-        this.addNotification('Failed to delete review');
-      }
-    });
-  }
-
-  getSelectedOrder(): Order | null {
-    if (!this.selectedOrderId) return null;
-    return this.orders.find(order => order._id === this.selectedOrderId) || null;
-  }
-
-  getCartTotal(): number {
-    return this.cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  }
-
-  getStarsArray(rating: number): { filled: boolean }[] {
-    return Array(5).fill(0).map((_, i) => ({ filled: i < rating }));
-  }
-
-  addNotification(message: string) {
-    this.notifications.push(message);
-    setTimeout(() => {
-      this.notifications = this.notifications.filter(n => n !== message);
-    }, 4000);
-  }
-
-  dismissNotification(message: string) {
-    this.notifications = this.notifications.filter(n => n !== message);
-  }
 }
+
+
+

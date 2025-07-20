@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ReviewService } from '../../services/review.service';
 import { Output, EventEmitter } from '@angular/core';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-book-reviews',
@@ -23,16 +24,26 @@ export class BookReviewsComponent implements OnInit {
   warningMessage = '';
   isEditing = false;
   editIndex: number | null = null;
+  currentUserId = '';
 
   constructor(
     private reviewService: ReviewService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+   const user = this.authService.getCurrentUser();
+this.currentUserId = user?.id || '';
     this.fetchReviews();
+  console.log("Current User ID:", this.currentUserId);
   }
+
+
 @Output() ratingStats = new EventEmitter<{ average: number, count: number }>();
+isReviewOwner(review: any): boolean {
+  return review.user?._id === this.currentUserId;
+}
 
 fetchReviews() {
   this.reviewService.getBookReviews(this.slug).subscribe({
@@ -50,6 +61,8 @@ fetchReviews() {
       this.toastr.error('Error fetching reviews.');
     }
   });
+  console.log("Fetched Reviews:", this.reviews);
+
 }
 
 
