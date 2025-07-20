@@ -190,7 +190,7 @@
   transform: translateX(-50%) translateY(0);
 }
 
-.gradient-icon {
+/* .gradient-icon {
   font-size: 35px;
   background: linear-gradient(to right, #dbc87e 40%, var(--main-color) 50%);
   -webkit-background-clip: text;
@@ -201,7 +201,26 @@
   font-size: 2rem;
   font-weight: 600;
   color: var(--main-color);
+} */
+
+.logo img {
+  width: 18%;
 }
+
+/*image responsive*/
+@media (max-width: 768px) {
+  .logo img {
+    width: 40%;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo img {
+    width: 60%;
+  }
+}
+
+
 
 .navbar-dropdown-image-links {
   display: flex;

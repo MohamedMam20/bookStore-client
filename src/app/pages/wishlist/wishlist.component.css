@@ -1,19 +1,20 @@
 .wishlist-header {
-  background: url("../../../assets/images/header-img.jpg") no-repeat center
-    center;
+  background: url("../../../assets/wishlist.jpg") no-repeat;
   background-size: cover;
   height: 12.5rem;
   position: relative;
   text-align: center;
   font-family: var(--font-main);
-  color: var(--text-color);
+  /* color: var(--text-color); */
+  color: #fff;
 }
 
 .wishlist-header::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-color: var(--overlay-white);
+  /* background-color: var(--overlay-white); */
+  background-color: #e3dcc08f;
   z-index: 1;
 }
 
@@ -30,7 +31,14 @@
 
 .wishlist-header p {
   font-size: 1rem;
+  color: #fff;
 }
+
+.wishlist-header p a {
+  color: #fff;
+}
+
+
 
 .wishlist-empty {
   text-align: center;
