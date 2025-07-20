@@ -76,7 +76,7 @@ export class AuthService {
   return this.http.post(`${this.baseUrl}/googleLogin`, { token });
 }
 
-  
+
 
 
 decodeToken(token: string): any {

@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { AdminSidebarComponent } from './components/sidebar/sidebar.component';
 import { AdminHeaderComponent } from './components/header/header.component';
 import { AdminFooterComponent } from './components/footer/footer.component';
+import { NotificationsPanelComponent } from './components/notifications-panel/notifications-panel.component';
 import { trigger, transition, style, animate, state, query, animateChild } from '@angular/animations';
 
 @Component({
@@ -14,7 +15,8 @@ import { trigger, transition, style, animate, state, query, animateChild } from 
     RouterModule,
     AdminSidebarComponent,
     AdminHeaderComponent,
-    AdminFooterComponent
+    AdminFooterComponent,
+    NotificationsPanelComponent
   ],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
@@ -60,7 +62,7 @@ export class AdminComponent implements OnInit {
   checkScreenSize() {
     const prevIsMobile = this.isMobile;
     this.isMobile = window.innerWidth <= 768;
-    
+
     // Automatically collapse sidebar on mobile
     if (this.isMobile && !prevIsMobile) {
       this.sidebarCollapsed = true;
@@ -83,7 +85,7 @@ export class AdminComponent implements OnInit {
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
       this.isAnimating = false;
-      
+
       // Force layout recalculation to ensure proper sizing
       document.body.style.minHeight = '100vh';
       setTimeout(() => {
@@ -103,5 +105,13 @@ export class AdminComponent implements OnInit {
     if (!this.isMobile) {
       localStorage.setItem('admin-sidebar-collapsed', JSON.stringify(this.sidebarCollapsed));
     }
+  }
+
+  // Add this property to the AdminComponent class
+  notificationsPanelOpen = false;
+
+  // Add this method to the AdminComponent class
+  toggleNotificationsPanel() {
+    this.notificationsPanelOpen = !this.notificationsPanelOpen;
   }
 }
