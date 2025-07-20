@@ -1,5 +1,5 @@
 <div class="admin-dashboard">
-  <div class="admin-container" [class.sidebar-collapsed]="sidebarCollapsed" [class.mobile]="isMobile">
+  <div class="admin-container" [class.sidebar-collapsed]="sidebarCollapsed" [class.mobile]="isMobile" [class.notifications-open]="notificationsPanelOpen">
     <app-admin-sidebar
       [collapsed]="sidebarCollapsed"
       [isMobile]="isMobile"
@@ -9,7 +9,8 @@
     <div class="admin-content">
       <app-admin-header
         [isMobile]="isMobile"
-        (toggleSidebar)="toggleSidebar()">
+        (toggleSidebar)="toggleSidebar()"
+        (toggleNotifications)="toggleNotificationsPanel()">
       </app-admin-header>
 
       <main class="admin-main" [@fadeInAnimation]>
@@ -18,7 +19,14 @@
 
       <app-admin-footer></app-admin-footer>
     </div>
+
+    <!-- Notifications Panel -->
+    <app-notifications-panel
+      *ngIf="notificationsPanelOpen"
+      (close)="toggleNotificationsPanel()">
+    </app-notifications-panel>
   </div>
+</div>
 
   <!-- Mobile overlay with improved animation -->
   <div class="mobile-overlay"
@@ -26,4 +34,4 @@
        (click)="toggleSidebar()"
        [@fadeInOut]="'in'">
   </div>
-</div>
+

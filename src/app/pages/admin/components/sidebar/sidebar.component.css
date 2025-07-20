@@ -9,7 +9,7 @@
   border-right: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: var(--shadow-sm);
   z-index: 1000;
-  transition: width var(--transition-speed) var(--transition-function), 
+  transition: width var(--transition-speed) var(--transition-function),
               transform var(--transition-speed) var(--transition-function);
   display: flex;
   flex-direction: column;
@@ -298,13 +298,13 @@
   .admin-sidebar {
     width: 240px;
   }
-  
+
   .admin-sidebar.collapsed {
     width: 60px;
     min-width: 60px;
     max-width: 60px;
   }
-  
+
   :root {
     --sidebar-width: 240px;
     --sidebar-collapsed-width: 60px;
@@ -315,15 +315,15 @@
   .admin-sidebar {
     width: 220px;
   }
-  
+
   :root {
     --sidebar-width: 220px;
   }
-  
+
   .nav-section-header {
     font-size: 11px;
   }
-  
+
   .nav-section a {
     padding: 10px 14px;
   }
@@ -337,11 +337,11 @@
     width: 260px;
     z-index: 2000;
   }
-  
+
   :root {
     --sidebar-width: 0px;
   }
-  
+
   /* Enhance the mobile overlay */
   .mobile-overlay {
     z-index: 1500;
@@ -406,4 +406,62 @@
   background: var(--gradient-primary);
   border-radius: 4px 0 0 4px;
   transform: translateY(-50%);
+}
+
+/* User Info Section */
+.user-info-section {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all var(--transition-speed) var(--transition-function);
+}
+
+.user-info-section.collapsed {
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.user-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin-right: 10px;
+}
+
+.user-info-section.collapsed .user-avatar {
+  margin-right: 0;
+}
+
+.user-avatar i {
+  font-size: 20px;
+  color: white;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.user-name {
+  font-weight: 600;
+  color: white;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-email {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

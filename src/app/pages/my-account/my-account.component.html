@@ -1,5 +1,5 @@
 <div class="my-account-container">
- 
+
 
   <!-- Loading Overlay -->
   <div class="loading-overlay" *ngIf="isLoading">
@@ -13,7 +13,7 @@
   <main class="content">
     <div class="welcome-section">
       <header class="welcome-header">
-        <h1>Welcome back, {{ userInfo.name }}!</h1>
+        <h1>Welcome back, {{ (userInfo.firstName || '') + ' ' + (userInfo.lastName || '') + ' '}}!</h1>
         <p>Manage your account settings below.</p>
       </header>
 

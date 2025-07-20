@@ -58,7 +58,7 @@ export class AppComponent implements OnInit {
     return this.authService.currentUser?.role === 'admin';
   }
 
-  get hideNavbar(): boolean {
+  get hideComponent(): boolean {
     const hiddenRoutes = [
       '/login',
       '/register',

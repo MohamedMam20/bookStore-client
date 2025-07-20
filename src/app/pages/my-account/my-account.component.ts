@@ -3,64 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user/user.service';
 
-interface Order {
-  _id: string;
-  orderDate: string;
-  totalAmount: number;
-  status: string;
-  items: OrderItem[];
-  shippingAddress: any;
-  paymentMethod: string;
-}
-
-interface OrderItem {
-  book: any;
-  quantity: number;
-  price: number;
-}
-
-interface CartItem {
-  _id: string;
-  book: any;
-  quantity: number;
-  price: number;
-}
-
-interface WishlistItem {
-  _id: string;
-  bookId: string;
-  title: string;
-  price: number;
-  image?: string;
-  language: string;
-}
-
-interface Review {
-  _id: string;
-  book: any;
-  rating: number;
-  comment: string;
-  createdAt: string;
-  helpful: number;
-}
-
-interface BillingAddress {
-  fullName: string;
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-}
-
-interface PaymentMethod {
-  _id: string;
-  type: string;
-  cardNumber: string;
-  expiryDate: string;
-  cardHolder: string;
-  isDefault: boolean;
-}
 
 @Component({
   selector: 'app-my-account',
@@ -72,48 +14,25 @@ interface PaymentMethod {
 export class MyAccountComponent implements OnInit {
   constructor(private userService: UserService) {}
 
-  selectedSection: string = 'dashboard';
-  selectedOrderId: string | null = null;
   showPasswordChange: boolean = false;
-  showAddressForm: boolean = false;
-  showPaymentForm: boolean = false;
-  editingShippingAddress: boolean = false;
-
   isLoading: boolean = false;
-  notifications: string[] = [];
+  userInfoMessage = '';
 
-  // Dynamic Data
-  orders: Order[] = [];
-  cartItems: CartItem[] = [];
-  wishlist: WishlistItem[] = [];
-  reviews: Review[] = [];
 
   userInfo = {
     firstName: '',
     lastName: '',
-    name: '',
     email: '',
-    phone: '',
     currentPassword: '',
     newPassword: '',
     confirmPassword: ''
   };
 
-
-
-  paymentMethods: PaymentMethod[] = [];
-
-  newPaymentMethod = {
-    type: 'Visa',
-    cardNumber: '',
-    expiryDate: '',
-    cardHolder: '',
-    cvv: ''
+  validationErrors = {
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
   };
-
-  userInfoMessage = '';
-  billingMessage = '';
-  paymentMessage = '';
 
   ngOnInit(): void {
     this.fetchDashboardData();
@@ -123,17 +42,9 @@ export class MyAccountComponent implements OnInit {
     this.isLoading = true;
     this.userService.getUserDashboardData().subscribe({
       next: (data) => {
-        this.userInfo = {
-          ...this.userInfo,
-          ...data.userInfo,
-          name: `${data.userInfo.firstName || ''} ${data.userInfo.lastName || ''}`.trim()
-        };
-        this.orders = data.orders;
-        this.cartItems = data.cartItems;
-        this.wishlist = data.wishlist;
-        this.reviews = data.reviews;
-
-        this.paymentMethods = data.paymentMethods;
+        this.userInfo.firstName = data.userInfo.firstName;
+        this.userInfo.lastName = data.userInfo.lastName;
+        this.userInfo.email = data.userInfo.email;
         this.isLoading = false;
       },
       error: (err) => {
@@ -142,56 +53,8 @@ export class MyAccountComponent implements OnInit {
       }
     });
   }
-
-  selectSection(section: string) {
-    this.selectedSection = section;
-    this.selectedOrderId = null;
-    this.showPasswordChange = false;
-    this.showAddressForm = false;
-    this.showPaymentForm = false;
-    this.editingShippingAddress = false;
-  }
-
-  viewOrderDetails(orderId: string) {
-    this.selectedOrderId = orderId;
-    this.selectedSection = 'order-details';
-  }
-
-  updateUserInfo() {
-    this.isLoading = true;
-
-    const userData = {
-      firstName: this.userInfo.firstName,
-      lastName: this.userInfo.lastName,
-      phone: this.userInfo.phone
-    };
-
-    this.userService.updateUserProfile(userData).subscribe({
-      next: (response) => {
-        this.userInfoMessage = 'Profile updated successfully!';
-        this.isLoading = false;
-        // Update the display name
-        this.userInfo.name = `${this.userInfo.firstName || ''} ${this.userInfo.lastName || ''}`.trim();
-        setTimeout(() => this.userInfoMessage = '', 3000);
-      },
-      error: (err) => {
-        console.error(err);
-        this.userInfoMessage = 'Failed to update profile';
-        this.isLoading = false;
-        setTimeout(() => this.userInfoMessage = '', 3000);
-      }
-    });
-  }
-
-  // Add validation error messages
-  validationErrors = {
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  };
 
   changePassword() {
-    // Reset validation errors
     this.validationErrors = {
       currentPassword: '',
       newPassword: '',
