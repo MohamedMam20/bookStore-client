@@ -75,16 +75,16 @@ header .header-image img {
     display: none !important;
   }
 
-  /* .header-text {
+  .header-text {
     text-align: center;
     align-items: center;
-  } */
+  }
 
   .header-text h1 {
     font-size: 10px;
     padding: 5px;
     margin: 10px;
-    /* text-align: center; */
+    text-align: center;
   }
   .header-text p {
     font-size: 10px;
@@ -97,7 +97,7 @@ header .header-image img {
   }
 }
 /* header typing effect */
-.typing-text {
+/* .typing-text {
   color: var(--main-color);
   font-weight: bold;
   position: relative;
@@ -141,9 +141,9 @@ header .header-image img {
   51%, 100% {
     opacity: 0;
   }
-}
-/* image slider */
-.header-image {
+} */
+/* ================image slider  ===========*/
+/* .header-image {
   position: relative;
   overflow: hidden;
   height: 400px;
@@ -167,7 +167,7 @@ header .header-image img {
 
 .slider-image.active {
   opacity: 1;
-}
+} */
 
 /* About us*/
 .main-header {

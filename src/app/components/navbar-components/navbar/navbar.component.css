@@ -207,6 +207,21 @@
   width: 18%;
 }
 
+/*image responsive*/
+@media (max-width: 768px) {
+  .logo img {
+    width: 40%;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo img {
+    width: 60%;
+  }
+}
+
+
+
 .navbar-dropdown-image-links {
   display: flex;
   align-items: center;

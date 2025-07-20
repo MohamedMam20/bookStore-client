@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })
-export class HomePageComponent implements OnInit , AfterViewInit {
+export class HomePageComponent implements OnInit  {
   currentImageIndex: number = 0;
   images!: NodeListOf<HTMLImageElement>;
 
@@ -35,7 +35,7 @@ constructor(private booksService: BooksService) {}
 // }
 ngOnInit(): void {
 
-  this.typeEffect();
+  // this.typeEffect();
 
   //books
     this.booksService.getBestSellers().subscribe({
@@ -50,40 +50,40 @@ ngOnInit(): void {
     });
   }
 
-typeEffect() {
-    if (this.isTyping) {
-      if (this.index < this.fullText.length) {
-        this.displayText = this.fullText.slice(0, this.index + 1);
-        this.index++;
-        setTimeout(() => this.typeEffect(), 150);
-      } else {
-        this.isTyping = false;
-        setTimeout(() => this.typeEffect(), 2000);
-      }
-    } else {
-      if (this.index > 0) {
-        this.displayText = this.fullText.slice(0, this.index - 1);
-        this.index--;
-        setTimeout(() => this.typeEffect(), 100);
-      } else {
-        this.isTyping = true;
-        setTimeout(() => this.typeEffect(), 500);
-      }
-    }
-  }
+// typeEffect() {
+//     if (this.isTyping) {
+//       if (this.index < this.fullText.length) {
+//         this.displayText = this.fullText.slice(0, this.index + 1);
+//         this.index++;
+//         setTimeout(() => this.typeEffect(), 150);
+//       } else {
+//         this.isTyping = false;
+//         setTimeout(() => this.typeEffect(), 2000);
+//       }
+//     } else {
+//       if (this.index > 0) {
+//         this.displayText = this.fullText.slice(0, this.index - 1);
+//         this.index--;
+//         setTimeout(() => this.typeEffect(), 100);
+//       } else {
+//         this.isTyping = true;
+//         setTimeout(() => this.typeEffect(), 500);
+//       }
+//     }
+//   }
 
-   ngAfterViewInit(): void {
-    this.images = document.querySelectorAll('.slider-image');
-    setInterval(() => this.showNextImage(), 4000);
-  }
+//    ngAfterViewInit(): void {
+//     this.images = document.querySelectorAll('.slider-image');
+//     setInterval(() => this.showNextImage(), 4000);
+//   }
 
-  showNextImage() {
-    if (!this.images.length) return;
+//   showNextImage() {
+//     if (!this.images.length) return;
 
-    this.images[this.currentImageIndex].classList.remove('active');
-    this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
-    this.images[this.currentImageIndex].classList.add('active');
-  }
+//     this.images[this.currentImageIndex].classList.remove('active');
+//     this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
+//     this.images[this.currentImageIndex].classList.add('active');
+//   }
 
 // export class HomePageComponent implements OnInit {
   // bestSellers: Book[] = [];

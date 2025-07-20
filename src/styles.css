@@ -20,7 +20,7 @@ body {
   --overlay-bg: rgba(0, 0, 0, 0.4);
   --overlay-white: rgba(255, 255, 255, 0.85);
   /* --font-main: "Cormorant Garamond", serif !important; */
-  /* --font-main: Georgia, serif; */
+  --font-main: Georgia, serif;
   --border-color: #cccccc;
   --box-shadow-color: rgba(0, 0, 0, 0.1);
   --icon-color: #333333;

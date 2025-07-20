@@ -18,7 +18,6 @@ export class SortService {
    * Set the current sort option
    */
   setSortOption(sortValue: string): void {
-    console.log('Sort Service - Setting sort option:', sortValue);
     this.selectedSortSubject.next(sortValue);
   }
 
@@ -33,9 +32,8 @@ export class SortService {
    * Get books sorted by the specified option
    */
   getSortedBooks(sortValue: string): Observable<BookResponse> {
-    console.log('Sort Service - Getting sorted books with option:', sortValue);
     return this.http.get<BookResponse>(`${this.baseUrl}`, {
-      params: { sort: sortValue }
+      params: { sort: sortValue },
     });
   }
 }

@@ -1,30 +1,29 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
-const API = 'http://localhost:3000/api/v1';
+import { environment } from '../../../environments/environment';
+const API = environment.apiUrl;
 
 export interface PlaceOrderResponse {
-
-  status:  string;
+  status: string;
   message: string;
-  data: {                 //  ←  this is the field name
-    _id:        string;
+  data: {
+    //  ←  this is the field name
+    _id: string;
     totalPrice: number;
-    status:     'pending' | 'delivered' | string;
+    status: 'pending' | 'delivered' | string;
   };
 }
 export interface OrderHistoryItem {
-  id:         string;
-  createdAt:  string;
-  status:     string;
+  id: string;
+  createdAt: string;
+  status: string;
   totalPrice: number;
   books: {
-    title:    string;
-    image:    string;
-    price:    number;
+    title: string;
+    image: string;
+    price: number;
     quantity: number;
-    
   }[];
 }
 
@@ -32,22 +31,21 @@ export interface OrderHistoryItem {
 export class OrderService {
   constructor(private http: HttpClient) {}
 
-placeOrder() {
-  return this.http.post<PlaceOrderResponse>(
-    `${API}/orders/place-order`,
-    {},
-    { headers: this.auth() }
-  );
-}
+  placeOrder() {
+    return this.http.post<PlaceOrderResponse>(
+      `${API}/orders/place-order`,
+      {},
+      { headers: this.auth() }
+    );
+  }
 
-createPaypal(orderId: string) {
-  return this.http.post<any>(
-    `${API}/paypal/create`,
-    { orderId },
-    { headers: this.auth() }
-  );
-}
-
+  createPaypal(orderId: string) {
+    return this.http.post<any>(
+      `${API}/paypal/create`,
+      { orderId },
+      { headers: this.auth() }
+    );
+  }
 
   capturePaypal(token: string) {
     return this.http.get<any>(`${API}/paypal/capture?token=${token}`);
@@ -60,16 +58,10 @@ createPaypal(orderId: string) {
   //   );
   // }
 
-  getHistory(page: number = 1, limit: number = 10): Observable<{
-  data: OrderHistoryItem[];
-  totalPages: number;
-  totalOrders: number;
-  page: number;
-  limit: number;
-  count: number;
-  status: string;
-}> {
-  return this.http.get<{
+  getHistory(
+    page: number = 1,
+    limit: number = 10
+  ): Observable<{
     data: OrderHistoryItem[];
     totalPages: number;
     totalOrders: number;
@@ -77,17 +69,22 @@ createPaypal(orderId: string) {
     limit: number;
     count: number;
     status: string;
-  }>(
-    `${API}/orders/history?page=${page}&limit=${limit}`,
-    { headers: this.auth() }
-  );
-}
+  }> {
+    return this.http.get<{
+      data: OrderHistoryItem[];
+      totalPages: number;
+      totalOrders: number;
+      page: number;
+      limit: number;
+      count: number;
+      status: string;
+    }>(`${API}/orders/history?page=${page}&limit=${limit}`, {
+      headers: this.auth(),
+    });
+  }
 
-
-
-
-private auth() {
-  const token = localStorage.getItem('authToken') || '';
-  return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-}
+  private auth() {
+    const token = localStorage.getItem('authToken') || '';
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
 }

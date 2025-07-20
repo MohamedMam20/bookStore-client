@@ -27,7 +27,7 @@ import { AdminGuard } from './guards/admin.guard';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { FAQPageComponent } from './pages/faq-page/faq-page.component';
 import { AdminListComponent } from './pages/admin/components/admin-list/admin-list.component';
-
+import { AboutUsComponent } from './components/about-us/about-us.component';
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   {path: 'contact-us', component: ContactUsComponent,title:'contactus'},
@@ -73,6 +73,7 @@ export const routes: Routes = [
   { path: 'product-details', component: ProductDetailsComponent },
   { path: 'my-account', component: MyAccountComponent },
   { path: 'search', component: SearchBooksPageComponent },
+  { path: 'aboutus', component: AboutUsComponent },
   {
     path: 'admin',
     component: AdminComponent,
@@ -151,7 +152,7 @@ export const routes: Routes = [
       ),
   },
 
-// Remove the standalone bestsellers route that was outside the admin section
+  // Remove the standalone bestsellers route that was outside the admin section
   { path: '**', component: NotFoundComponent },
 
 ];

@@ -6,7 +6,10 @@ import { Book } from '../../models/book.model';
 import { BooksService } from '../../services/books/books.service';
 import { ToggleFilterMenuComponent } from '../../components/toggle-filter-menu/toggle-filter-menu.component';
 import { ToastrService } from 'ngx-toastr';
-import { FilterService, Filter } from '../../services/filter/filter-state.service';
+import {
+  FilterService,
+  Filter,
+} from '../../services/filter/filter-state.service';
 import { SortService } from '../../services/sort/sort.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -40,18 +43,18 @@ export class BooksPageComponent implements OnInit {
     private router: Router
   ) {
     // Listen for navigation events to detect when user navigates directly to /shop
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      // Reset firstLoad flag if user navigates to /shop with no params
-      if (event.url === '/shop') {
-        this.isFirstLoad = true;
-      }
-    });
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        // Reset firstLoad flag if user navigates to /shop with no params
+        if (event.url === '/shop') {
+          this.isFirstLoad = true;
+        }
+      });
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       // Check if this is the initial navigation to /shop with no query params
       const hasQueryParams = Object.keys(params).length > 0;
 
@@ -59,20 +62,27 @@ export class BooksPageComponent implements OnInit {
 
       // Reconstruct filters from query parameters
       if (params['genre']) {
-        const genres = Array.isArray(params['genre']) ? params['genre'] : [params['genre']];
-        genres.forEach(g => filters.push({ label: 'genre', value: g }));
+        const genres = Array.isArray(params['genre'])
+          ? params['genre']
+          : [params['genre']];
+        genres.forEach((g) => filters.push({ label: 'genre', value: g }));
       }
 
       if (params['language']) {
-        const langs = Array.isArray(params['language']) ? params['language'] : [params['language']];
-        langs.forEach(l => filters.push({ label: 'language', value: l }));
+        const langs = Array.isArray(params['language'])
+          ? params['language']
+          : [params['language']];
+        langs.forEach((l) => filters.push({ label: 'language', value: l }));
       }
 
       // Handle both price formats: either as a single 'price' parameter or as 'priceMin'/'priceMax'
       if (params['price']) {
         filters.push({ label: 'price', value: params['price'] });
       } else if (params['priceMin'] && params['priceMax']) {
-        filters.push({ label: 'price', value: `LE ${params['priceMin']} - LE ${params['priceMax']}` });
+        filters.push({
+          label: 'price',
+          value: `LE ${params['priceMin']} - LE ${params['priceMax']}`,
+        });
       }
 
       const sortOption = params['sort'] || '';
@@ -80,7 +90,7 @@ export class BooksPageComponent implements OnInit {
 
       // Apply state
       this.filterService.clearFilters();
-      filters.forEach(f => this.filterService.addFilter(f));
+      filters.forEach((f) => this.filterService.addFilter(f));
       this.sortService.setSortOption(sortOption);
 
       // Only apply filters with pagination if there are query parameters
@@ -102,7 +112,6 @@ export class BooksPageComponent implements OnInit {
 
     this.booksService.getBooks(page).subscribe({
       next: (data) => {
-        console.log('📦 Received books data:', data);
         this.products = data.books;
         this.totalPages = data.totalPages;
         this.currentPage = page;
@@ -129,7 +138,7 @@ export class BooksPageComponent implements OnInit {
       if (!this.isFilteredResults) {
         // Simple pagination with no filters - just use page parameter
         this.router.navigate(['/shop'], {
-          queryParams: { page }
+          queryParams: { page },
         });
         this.loadBooks(page);
         return;
@@ -140,7 +149,7 @@ export class BooksPageComponent implements OnInit {
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams,
-        queryParamsHandling: 'merge'
+        queryParamsHandling: 'merge',
       });
 
       this.applyFiltersWithPagination(page);
@@ -153,25 +162,29 @@ export class BooksPageComponent implements OnInit {
     const filters = this.filterService.filters;
 
     let sortOption = '';
-    this.sortService.selectedSort$.subscribe(value => {
-      sortOption = value;
-    }).unsubscribe();
+    this.sortService.selectedSort$
+      .subscribe((value) => {
+        sortOption = value;
+      })
+      .unsubscribe();
 
     // Call the API
-    this.filterService.getSortedAndFilteredBooks(sortOption, filters, page).subscribe({
-      next: (data) => {
-        this.products = data.data;
-        this.totalPages = data.totalPages || 1;
-        this.currentPage = page;
-        this.isLoading = false;
-        this.isFilteredResults = true;
-      },
-      error: (err) => {
-        console.error('Error applying filters with pagination', err);
-        this.toastr.error('Failed to apply filters');
-        this.isLoading = false;
-      }
-    });
+    this.filterService
+      .getSortedAndFilteredBooks(sortOption, filters, page)
+      .subscribe({
+        next: (data) => {
+          this.products = data.data;
+          this.totalPages = data.totalPages || 1;
+          this.currentPage = page;
+          this.isLoading = false;
+          this.isFilteredResults = true;
+        },
+        error: (err) => {
+          console.error('Error applying filters with pagination', err);
+          this.toastr.error('Failed to apply filters');
+          this.isLoading = false;
+        },
+      });
   }
 
   onSortedBooks(result: any): void {
@@ -200,7 +213,7 @@ export class BooksPageComponent implements OnInit {
     if (filters.length > 0) {
       queryParams.limit = 6;
 
-      filters.forEach(filter => {
+      filters.forEach((filter) => {
         const key = filter.label.toLowerCase();
 
         // Special handling for price filters
@@ -222,9 +235,11 @@ export class BooksPageComponent implements OnInit {
 
     // Only add sort parameter if there is an active sort option
     let sortOption = '';
-    this.sortService.selectedSort$.subscribe(sort => {
-      sortOption = sort;
-    }).unsubscribe();
+    this.sortService.selectedSort$
+      .subscribe((sort) => {
+        sortOption = sort;
+      })
+      .unsubscribe();
 
     if (sortOption) {
       queryParams.sort = sortOption;
@@ -237,7 +252,7 @@ export class BooksPageComponent implements OnInit {
     // Replace all query parameters instead of merging
     this.router.navigate(['/shop'], {
       queryParams,
-      replaceUrl: true
+      replaceUrl: true,
     });
   }
 }
