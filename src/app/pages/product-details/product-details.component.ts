@@ -19,7 +19,6 @@
 // import { StripeService } from '../../services/payment/payment.service';
 // import { loadStripe } from '@stripe/stripe-js';
 
-
 // @Component({
 //   selector: 'app-product-details',
 //   standalone: true,
@@ -34,7 +33,6 @@
 //   private authService: AuthService,
 //   private stripeService: StripeService
 // ) {}
-
 
 //   imageBaseUrl = environment.imageBaseUrl;
 //   private route = inject(ActivatedRoute);
@@ -119,7 +117,7 @@
 //       },
 //       error: (err: any) => {
 //         this.bookError = err?.error?.message || 'Error fetching book details.';
-//         this.toastr.error(this.bookError || 'Error fetching book details.');
+//         this.toastr.error(this.bookError || ' details.');
 //         this.bookLoading = false;
 //       },
 //     });
@@ -230,7 +228,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute,Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BooksService } from '../../services/books/books.service';
 import { BookReviewsComponent } from '../book-reviews/book-reviews.component';
@@ -239,8 +237,6 @@ import { CartService } from '../../services/cart/cart.service';
 import { Stripe } from '@stripe/stripe-js';
 import { AuthService } from '../../services/auth/auth.service';
 import { StripeService } from '../../services/payment/payment.service';
-
-
 
 @Component({
   selector: 'app-product-details',
@@ -255,7 +251,8 @@ export class ProductDetailsComponent implements OnInit {
     private authService: AuthService,
     private StripeService: StripeService,
     private route: ActivatedRoute,
-  private router: Router) {}
+    private router: Router
+  ) {}
 
   imageBaseUrl = environment.imageBaseUrl;
 
@@ -280,7 +277,6 @@ export class ProductDetailsComponent implements OnInit {
   cardElement: any;
   stripe: Stripe | null = null;
   isPaymentReady = false;
-
 
   product: any = {};
   @ViewChild('reviewSection') reviewSection!: ElementRef;
@@ -325,20 +321,24 @@ export class ProductDetailsComponent implements OnInit {
         this.reviewsCount = this.product.reviewsCount || 0;
 
         this.product.languages = (
-  Object.entries(this.product.stock || {}) as [string, number][]
-).map(([code, quantity]) => ({
-  name: this.getLanguageName(code),
-  code,
-  selected: code === 'en',
-  stock: quantity
-}));
+          Object.entries(this.product.stock || {}) as [string, number][]
+        ).map(([code, quantity]) => ({
+          name: this.getLanguageName(code),
+          code,
+          selected: code === 'en',
+          stock: quantity,
+        }));
 
-        const defaultLang = this.product.languages.find((l: any) => l.stock > 0);
-this.selectedLanguage = defaultLang?.code || this.product.languages[0]?.code || 'en';
-const totalStock = (Object.values(this.product.stock || {}) as number[]).reduce((acc, val) => acc + val, 0);
+        const defaultLang = this.product.languages.find(
+          (l: any) => l.stock > 0
+        );
+        this.selectedLanguage =
+          defaultLang?.code || this.product.languages[0]?.code || 'en';
+        const totalStock = (
+          Object.values(this.product.stock || {}) as number[]
+        ).reduce((acc, val) => acc + val, 0);
 
-this.product.isOutOfStock = totalStock === 0;
-
+        this.product.isOutOfStock = totalStock === 0;
 
         this.bookLoading = false;
       },
@@ -403,26 +403,27 @@ this.product.isOutOfStock = totalStock === 0;
     });
   }
 
+  buyNow() {
+    const token = localStorage.getItem('authToken');
 
-buyNow() {
-  const token = localStorage.getItem('authToken');
+    if (!token) {
+      this.toastr.error('You must be logged in to proceed with the purchase.');
 
-  if (!token) {
-    this.toastr.error('You must be logged in to proceed with the purchase.');
+      return;
+    }
 
-    return;
+    const cartItems = [
+      {
+        productId: this.product._id,
+        name: this.product.title,
+        price: this.product.price,
+        quantity: this.quantity,
+        image: this.product.images?.[0] || this.product.image || '',
+        language: this.selectedLanguage,
+      },
+    ];
+
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+    this.router.navigateByUrl('/checkout');
   }
-
-  const cartItems = [{
-    productId: this.product._id,
-    name: this.product.title,
-    price: this.product.price,
-    quantity: this.quantity,
-    image: this.product.images?.[0] || this.product.image || '',
-    language: this.selectedLanguage
-  }];
-
-  localStorage.setItem('cart', JSON.stringify(cartItems));
-  this.router.navigateByUrl('/checkout');
-}
 }

@@ -10,7 +10,7 @@ import { Filter } from '../filter/filter-state.service';
 })
 export class BooksService {
   private baseUrl = 'http://localhost:3000/api/v1';
-  private apiUrl = `${this.baseUrl}/book`;
+  private apiUrl = `${this.baseUrl}/books`;
   private bestSellerUrl = `${this.baseUrl}/bestsellers`;
   constructor(private http: HttpClient) {}
 
