@@ -9,6 +9,8 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
 import { ToastrService } from 'ngx-toastr';
+declare const google: any;
+
 
 @Component({
   selector: 'app-login',
@@ -72,9 +74,48 @@ export class LoginComponent {
     }
   }
 
-  signInWithGoogle(): void {
-    console.log('Sign in with Google');
+
+  signInWithFacebook(): void {
+    console.log('Sign in with Facebook');
   }
+signInWithGoogle(): void {
+  google.accounts.id.initialize({
+    client_id: '634039215831-25c4o3plsd6745grjshosb04t1e4c99a.apps.googleusercontent.com',
+    callback: (response: any) => this.handleGoogleCredential(response),
+  });
+
+  google.accounts.id.renderButton(
+    document.getElementById('google-signin-button')!,
+    { theme: 'outline', size: 'large' }
+  );
+
+  google.accounts.id.prompt();
+}
+
+handleGoogleCredential(response: any): void {
+  const token = response.credential;
+
+  this.authService.googleLogin(token).subscribe({
+    next: (res) => {
+      localStorage.setItem('authToken', res.token);
+
+      const role = res.user?.role || 'user';
+      this.toastr.success('✅ Google login successful!');
+
+      if (role === 'admin') {
+        this.router.navigate(['/admin']);
+      } else {
+        this.router.navigate(['/']);
+      }
+    },
+    error: (err) => {
+      this.toastr.error(err?.error?.message || '❌ Google Login failed');
+    }
+  });
+}
+
+
+
 
   onForgotPassword(event: Event): void {
     event.preventDefault();
