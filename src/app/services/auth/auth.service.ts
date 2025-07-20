@@ -68,4 +68,27 @@ export class AuthService {
   googleLogin(token: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/googleLogin`, { token });
   }
+
+  isAdmin(): boolean {
+    const token = localStorage.getItem('authToken');
+    if (!token) return false;
+
+    try {
+      const decodedToken: any = jwtDecode(token);
+      return decodedToken.role === 'admin';
+    } catch {
+      return false;
+    }
+  }
+   getCurrentUser(): any | null {
+    const token = localStorage.getItem('authToken');
+    if (!token) return null;
+
+    try {
+      return jwtDecode(token); 
+    } catch {
+      return null;
+    }
+  }
+
 }

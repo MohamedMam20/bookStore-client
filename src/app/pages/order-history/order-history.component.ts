@@ -15,22 +15,37 @@ export class OrderHistoryComponent implements OnInit {
   error   = '';
  // orders: OrderHistoryItem[] = [];
 
+   currentPage = 1;
+  limit = 5;
+  totalPages = 1;
+
+
   constructor(private orderSrv: OrderService) {}
 
   ngOnInit(): void {
-    this.orderSrv.getHistory().subscribe({
+   this.loadOrders();
+  }
+
+  loadOrders(): void {
+    this.loading = true;
+    this.orderSrv.getHistory(this.currentPage, this.limit).subscribe({
       next: res => {
         this.orders = res.data;
+        this.totalPages = res.totalPages;
         this.loading = false;
       },
       error: err => {
-        this.error   = err.error?.message || 'Failed to load order history.';
+        this.error = err.error?.message || 'Failed to load order history.';
         this.loading = false;
       }
     });
   }
 
-  payNow(orderId: string) {
+  goToPage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.loadOrders();
+  }  payNow(orderId: string) {
   this.orderSrv.createPaypal(orderId).subscribe({
     next: res => {
       if (res.approvalUrl) {
