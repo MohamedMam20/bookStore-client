@@ -25,6 +25,7 @@ import { OrderHistoryComponent } from './pages/order-history/order-history.compo
 import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 import { AdminGuard } from './guards/admin.guard';
 import { AdminListComponent } from './pages/admin/components/admin-list/admin-list.component';
+import { AboutUsComponent } from './components/about-us/about-us.component';
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'paypal', component: PaypalComponent, title: 'paypal' },
@@ -63,6 +64,7 @@ export const routes: Routes = [
   { path: 'product-details', component: ProductDetailsComponent },
   { path: 'my-account', component: MyAccountComponent },
   { path: 'search', component: SearchBooksPageComponent },
+  { path: 'aboutus', component: AboutUsComponent },
   {
     path: 'admin',
     component: AdminComponent,
@@ -141,6 +143,6 @@ export const routes: Routes = [
       ),
   },
 
-// Remove the standalone bestsellers route that was outside the admin section
+  // Remove the standalone bestsellers route that was outside the admin section
   { path: '**', component: NotFoundComponent },
 ];

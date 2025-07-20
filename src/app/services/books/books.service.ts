@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Book } from '../../models/book.model';
 import { Filter } from '../filter/filter-state.service';
-
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class BooksService {
-  private baseUrl = 'http://localhost:3000/api/v1';
+  private baseUrl = environment.apiUrl;
   private apiUrl = `${this.baseUrl}/books`;
   private bestSellerUrl = `${this.baseUrl}/bestsellers`;
   constructor(private http: HttpClient) {}
@@ -37,8 +37,6 @@ export class BooksService {
 
     // Process filters
     if (filters && filters.length > 0) {
-      console.log('Processing filters:', filters); // Debug log
-
       // Group filters by label (case-insensitive comparison)
       const genreFilters = filters
         .filter((f) => f.label.toLowerCase() === 'genre')
@@ -49,10 +47,6 @@ export class BooksService {
       const priceFilters = filters.filter(
         (f) => f.label.toLowerCase() === 'price'
       );
-
-      console.log('Genre filters:', genreFilters); // Debug log
-      console.log('Language filters:', languageFilters); // Debug log
-      console.log('Price filters:', priceFilters); // Debug log
 
       // Add genre filters
       if (genreFilters.length > 0) {
@@ -96,8 +90,6 @@ export class BooksService {
         }
       }
     }
-
-    console.log('Request params:', params.toString()); // Debug log
 
     return this.http
       .get<{

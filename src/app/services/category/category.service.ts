@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { Category } from '../../models/category.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CategoryService {
   private baseUrl = `${environment.apiUrl}/categories`;
@@ -21,27 +21,22 @@ export class CategoryService {
   getAllCategories(): Observable<Category[]> {
     // Return cached categories if available
     if (this.categoriesLoaded) {
-      console.log('Category Service - Returning cached categories');
       return of(this.categoriesCache);
     }
 
-    console.log('Category Service - Fetching all categories');
-    return this.http.get<any>(this.baseUrl)
-      .pipe(
-        map(response => {
-          console.log('Category Service - Categories fetched:', response);
-          return response.data || [];
-        }),
-        tap(categories => {
-          // Store categories in cache
-          this.categoriesCache = categories;
-          this.categoriesLoaded = true;
-        }),
-        catchError(error => {
-          console.error('Error fetching categories:', error);
-          return of([]);
-        })
-      );
+    return this.http.get<any>(this.baseUrl).pipe(
+      map((response) => {
+        return response.data || [];
+      }),
+      tap((categories) => {
+        // Store categories in cache
+        this.categoriesCache = categories;
+        this.categoriesLoaded = true;
+      }),
+      catchError((error) => {
+        return of([]);
+      })
+    );
   }
 
   /**
@@ -50,24 +45,21 @@ export class CategoryService {
   getAllCategoriesWithoutPagination(): Observable<Category[]> {
     // Return cached categories if available
     if (this.categoriesLoaded) {
-      console.log('Category Service - Returning cached categories (without pagination)');
       return of(this.categoriesCache);
     }
 
-    console.log('Category Service - Fetching all categories without pagination');
-    return this.http.get<any>(`${this.baseUrl}?limit=100`) // Set a high limit to get all categories
+    return this.http
+      .get<any>(`${this.baseUrl}?limit=100`) // Set a high limit to get all categories
       .pipe(
-        map(response => {
-          console.log('Category Service - All categories fetched:', response);
+        map((response) => {
           return response.data || [];
         }),
-        tap(categories => {
+        tap((categories) => {
           // Store categories in cache
           this.categoriesCache = categories;
           this.categoriesLoaded = true;
         }),
-        catchError(error => {
-          console.error('Error fetching all categories:', error);
+        catchError((error) => {
           return of([]);
         })
       );
@@ -86,20 +78,16 @@ export class CategoryService {
    */
   getCategoryById(id: string): Observable<Category> {
     // Check cache first
-    const cachedCategory = this.categoriesCache.find(cat => cat._id === id);
+    const cachedCategory = this.categoriesCache.find((cat) => cat._id === id);
     if (cachedCategory) {
-      console.log(`Category Service - Returning cached category with id: ${id}`);
       return of(cachedCategory);
     }
 
-    console.log(`Category Service - Fetching category with id: ${id}`);
-    return this.http.get<any>(`${this.baseUrl}/${id}`)
-      .pipe(
-        map(response => {
-          console.log('Category Service - Category fetched:', response);
-          return response.data;
-        })
-      );
+    return this.http.get<any>(`${this.baseUrl}/${id}`).pipe(
+      map((response) => {
+        return response.data;
+      })
+    );
   }
 
   /**
@@ -107,19 +95,17 @@ export class CategoryService {
    */
   getCategoryBySlug(slug: string): Observable<Category> {
     // Check cache first
-    const cachedCategory = this.categoriesCache.find(cat => cat.slug === slug);
+    const cachedCategory = this.categoriesCache.find(
+      (cat) => cat.slug === slug
+    );
     if (cachedCategory) {
-      console.log(`Category Service - Returning cached category with slug: ${slug}`);
       return of(cachedCategory);
     }
 
-    console.log(`Category Service - Fetching category with slug: ${slug}`);
-    return this.http.get<any>(`${this.baseUrl}/slug/${slug}`)
-      .pipe(
-        map(response => {
-          console.log('Category Service - Category fetched:', response);
-          return response.data;
-        })
-      );
+    return this.http.get<any>(`${this.baseUrl}/slug/${slug}`).pipe(
+      map((response) => {
+        return response.data;
+      })
+    );
   }
 }

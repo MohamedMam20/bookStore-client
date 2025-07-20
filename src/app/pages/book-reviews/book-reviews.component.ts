@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth/auth.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './book-reviews.component.html',
-  styleUrl: './book-reviews.component.css'
+  styleUrl: './book-reviews.component.css',
 })
 export class BookReviewsComponent implements OnInit {
   @Input() slug: string = '';
@@ -33,39 +33,35 @@ export class BookReviewsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-   const user = this.authService.getCurrentUser();
-this.currentUserId = user?.id || '';
+    const user = this.authService.getCurrentUser();
+    this.currentUserId = user?.id || '';
     this.fetchReviews();
-  console.log("Current User ID:", this.currentUserId);
   }
 
+  @Output() ratingStats = new EventEmitter<{
+    average: number;
+    count: number;
+  }>();
+  isReviewOwner(review: any): boolean {
+    return review.user?._id === this.currentUserId;
+  }
 
-@Output() ratingStats = new EventEmitter<{ average: number, count: number }>();
-isReviewOwner(review: any): boolean {
-  return review.user?._id === this.currentUserId;
-}
+  fetchReviews() {
+    this.reviewService.getBookReviews(this.slug).subscribe({
+      next: (res) => {
+        this.reviews = res.data || [];
+        this.calculateAverageRating();
 
-fetchReviews() {
-  this.reviewService.getBookReviews(this.slug).subscribe({
-    next: (res) => {
-      this.reviews = res.data || [];
-      this.calculateAverageRating();
-
-
-      this.ratingStats.emit({
-        average: this.averageRating,
-        count: this.reviews.length
-      });
-    },
-    error: () => {
-      this.toastr.error('Error fetching reviews.');
-    }
-  });
-  console.log("Fetched Reviews:", this.reviews);
-
-}
-
-
+        this.ratingStats.emit({
+          average: this.averageRating,
+          count: this.reviews.length,
+        });
+      },
+      error: () => {
+        this.toastr.error('Error fetching reviews.');
+      },
+    });
+  }
 
   calculateAverageRating() {
     const sum = this.reviews.reduce((acc, r) => acc + r.rating, 0);
@@ -79,14 +75,15 @@ fetchReviews() {
 
   submitReview() {
     if (!this.reviewForm.rating || !this.reviewText.trim()) {
-      this.warningMessage = '⭐ Please give a rating and a comment before submitting!';
+      this.warningMessage =
+        '⭐ Please give a rating and a comment before submitting!';
       this.showWarning = true;
       return;
     }
 
     const payload = {
       rating: this.reviewForm.rating,
-      review: this.reviewText
+      review: this.reviewText,
     };
 
     if (this.isEditing && this.editIndex !== null) {
@@ -96,7 +93,7 @@ fetchReviews() {
           this.fetchReviews();
           this.cancelReview();
         },
-        error: () => this.toastr.error('Error updating review.')
+        error: () => this.toastr.error('Error updating review.'),
       });
     } else {
       this.reviewService.submitReview(this.slug, payload).subscribe({
@@ -106,8 +103,10 @@ fetchReviews() {
           this.cancelReview();
         },
         error: (err) => {
-          this.toastr.error(err?.error?.message || 'You may have already reviewed this book.');
-        }
+          this.toastr.error(
+            err?.error?.message || 'You may have already reviewed this book.'
+          );
+        },
       });
     }
   }
@@ -126,7 +125,7 @@ fetchReviews() {
         this.toastr.success('Review deleted!');
         this.fetchReviews();
       },
-      error: () => this.toastr.error('Error deleting review.')
+      error: () => this.toastr.error('Error deleting review.'),
     });
   }
 
@@ -140,4 +139,3 @@ fetchReviews() {
     this.editIndex = null;
   }
 }
-

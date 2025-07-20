@@ -32,7 +32,7 @@ export class NavbarComponent {
   }
 
   get isAdmin(): boolean {
-    return this.authService.isAdmin;
+    return this.authService.isAdmin();
   }
 
   onLogout() {

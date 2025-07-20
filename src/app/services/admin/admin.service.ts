@@ -3,14 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpParams } from '@angular/common/http';
-import { Book } from '../../models/book.model';
-import { User } from '../../models/user.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminService {
-  private baseUrl = 'http://localhost:3000/api/v1';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -23,7 +22,13 @@ export class AdminService {
   }
 
   // Book Management
-  getAllBooks(page: number = 1, limit: number = 10, search?: string, category?: string, sortBy: string = 'createdAt'): Observable<any> {
+  getAllBooks(
+    page: number = 1,
+    limit: number = 10,
+    search?: string,
+    category?: string,
+    sortBy: string = 'createdAt'
+  ): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString())
@@ -138,11 +143,11 @@ export class AdminService {
     // Validate allowed statuses
     const allowedStatuses = ['shipped', 'delivered', 'cancelled'];
     if (!allowedStatuses.includes(status)) {
-      return new Observable(observer => {
+      return new Observable((observer) => {
         observer.error({
           error: {
-            message: `Status change to "${status}" is not allowed. Only shipped, delivered, and cancelled statuses can be set.`
-          }
+            message: `Status change to "${status}" is not allowed. Only shipped, delivered, and cancelled statuses can be set.`,
+          },
         });
       });
     }
@@ -175,8 +180,6 @@ export class AdminService {
 
   getCategoryById(idOrSlug: string): Observable<any> {
     const token = localStorage.getItem('authToken');
-    console.log('🔍 Getting category by ID/slug:', idOrSlug);
-    console.log('🔑 Token being sent:', token);
 
     return this.http.get(`${this.baseUrl}/categories/${idOrSlug}`, {
       headers: this.getAuthHeaders(),
@@ -199,8 +202,6 @@ export class AdminService {
       Authorization: authHeader,
       'Content-Type': 'application/json',
     });
-
-    console.log('📦 Token being sent:', headers.get('Authorization')); // 🔍 Debug
 
     return this.http.post(`${this.baseUrl}/categories`, categoryData, {
       headers: headers,
@@ -278,7 +279,6 @@ export class AdminService {
         return [];
       })
     );
-
   }
 
   // Get recent orders
@@ -322,7 +322,10 @@ export class AdminService {
   }
 
   // Update bestseller status
-  updateBestsellerStatus(bookId: string, isBestseller: boolean): Observable<any> {
+  updateBestsellerStatus(
+    bookId: string,
+    isBestseller: boolean
+  ): Observable<any> {
     return this.http.patch(
       `${this.baseUrl}/bestsellers/admin/${bookId}`,
       { isBestseller },

@@ -55,7 +55,6 @@ export class FilterService {
   getFilteredBooks(): Observable<BookResponse> {
     const params = this.buildFilterParams(this.filters);
 
-    console.log('Filter Service - Getting filtered books with params:', params);
     return this.http.get<BookResponse>(`${this.baseUrl}`, { params });
   }
 
@@ -77,7 +76,6 @@ export class FilterService {
     params.page = page.toString();
     params.limit = limit.toString();
 
-    console.log('Filter Service - Getting sorted and filtered books with params:', params);
     return this.http.get<BookResponse>(`${this.baseUrl}`, { params });
   }
 
@@ -87,7 +85,7 @@ export class FilterService {
   private buildFilterParams(filters: Filter[]): any {
     const params: any = {};
 
-    filters.forEach(filter => {
+    filters.forEach((filter) => {
       const key = filter.label.toLowerCase();
 
       switch (key) {

@@ -26,7 +26,6 @@ export class PaypalComponent implements OnInit {
     const token = this.route.snapshot.queryParamMap.get('token');
 
     if (token) {
-      // ✅ Step 3: Return from PayPal → Capture the payment
       this.message = 'Finalising your payment…';
 
       this.orderSrv.capturePaypal(token).subscribe({
@@ -41,7 +40,6 @@ export class PaypalComponent implements OnInit {
         }
       });
     } else {
-      // ❌ No token = invalid PayPal flow
       this.loading = false;
       this.error = '❌ Invalid PayPal session. Token missing.';
     }

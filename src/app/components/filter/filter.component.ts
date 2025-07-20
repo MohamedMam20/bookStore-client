@@ -32,9 +32,9 @@ export class FilterComponent implements OnInit, OnDestroy {
   isLoading: boolean = false; // Keep the variable but don't use it for loading display
 
   @Output() sortedBooks = new EventEmitter<{
-    books: any[],
-    totalPages?: number,
-    currentPage?: number
+    books: any[];
+    totalPages?: number;
+    currentPage?: number;
   }>(); // emit to parent with pagination info
 
   // Default filter options
@@ -58,15 +58,19 @@ export class FilterComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.filterSubscription = this.filterService.filters$.subscribe((filters) => {
-      this.activeFilters = filters;
-      // Apply filters whenever they change
-      this.applyFilters();
-    });
+    this.filterSubscription = this.filterService.filters$.subscribe(
+      (filters) => {
+        this.activeFilters = filters;
+        // Apply filters whenever they change
+        this.applyFilters();
+      }
+    );
 
-    this.sortSubscription = this.sortService.selectedSort$.subscribe(sortOption => {
-      this.selectedSort = sortOption;
-    });
+    this.sortSubscription = this.sortService.selectedSort$.subscribe(
+      (sortOption) => {
+        this.selectedSort = sortOption;
+      }
+    );
 
     // Load categories from the API
     this.loadCategories();
@@ -89,10 +93,9 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.categoryService.getAllCategoriesWithoutPagination().subscribe({
       next: (categories) => {
-        console.log('Categories loaded:', categories);
         // Extract category names from the response and sort alphabetically
         this.filters.categories = categories
-          .map(cat => cat.name)
+          .map((cat) => cat.name)
           .sort((a, b) => a.localeCompare(b));
         this.isLoading = false;
       },
@@ -100,7 +103,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         console.error('Error loading categories:', error);
         this.toastr.error('Failed to load categories');
         this.isLoading = false;
-      }
+      },
     });
   }
 
@@ -120,13 +123,13 @@ export class FilterComponent implements OnInit, OnDestroy {
 
     // For price filters, we need to handle the format differences
     if (label === 'Price') {
-      return this.activeFilters.some(f => {
+      return this.activeFilters.some((f) => {
         return f.label.toLowerCase() === 'price' && f.value === value;
       });
     }
 
     // For other filters
-    return this.activeFilters.some(f => {
+    return this.activeFilters.some((f) => {
       return f.label.toLowerCase() === filterLabel && f.value === value;
     });
   }
@@ -144,8 +147,6 @@ export class FilterComponent implements OnInit, OnDestroy {
       filterLabel = 'language';
     }
 
-    console.log(`Filter toggled: ${filterLabel} - ${value} - ${checked}`);
-
     if (checked) {
       this.filterService.addFilter({ label: filterLabel, value });
     } else {
@@ -160,8 +161,6 @@ export class FilterComponent implements OnInit, OnDestroy {
     const sortValue = (event.target as HTMLSelectElement).value;
     this.selectedSort = sortValue;
     this.sortService.setSortOption(sortValue);
-
-    console.log(`Sort changed to: ${sortValue}`);
 
     // Apply sort (start at page 1 when changing sort)
     this.applySortAndFilters(1);
@@ -198,27 +197,28 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     // Always use the combined endpoint regardless of whether we have both filters and sort
-    this.filterService.getSortedAndFilteredBooks(
-      this.selectedSort,
-      this.activeFilters,
-      page  // Pass the current page
-    ).subscribe({
-      next: (res) => {
-        console.log('Combined sort and filter results:', res);
-        // Emit both the data and pagination information
-        this.sortedBooks.emit({
-          books: res.data,
-          totalPages: res.totalPages || 1,
-          currentPage: page  // Use the provided page number
-        });
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Failed to apply sort and filters:', err);
-        this.toastr.error('Failed to apply sort and filters');
-        this.isLoading = false;
-      }
-    });
+    this.filterService
+      .getSortedAndFilteredBooks(
+        this.selectedSort,
+        this.activeFilters,
+        page // Pass the current page
+      )
+      .subscribe({
+        next: (res) => {
+          // Emit both the data and pagination information
+          this.sortedBooks.emit({
+            books: res.data,
+            totalPages: res.totalPages || 1,
+            currentPage: page, // Use the provided page number
+          });
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Failed to apply sort and filters:', err);
+          this.toastr.error('Failed to apply sort and filters');
+          this.isLoading = false;
+        },
+      });
   }
 
   // Apply filters
