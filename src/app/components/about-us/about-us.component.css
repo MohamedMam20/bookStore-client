@@ -1,0 +1,22 @@
+.main-header {
+  font-size: 50px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.main-header::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  bottom: -10px;
+  width: 60px;
+  height: 5px;
+  background-color: var(--main-color);
+  border-radius: 2px;
+}
+
+.about-us p {
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--padding-color);
+}
