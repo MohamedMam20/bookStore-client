@@ -7,8 +7,6 @@ import { jwtDecode } from 'jwt-decode';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 
-
-
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -17,9 +15,11 @@ import { environment } from '../../../environments/environment';
 export class AuthService {
   private baseUrl = `${environment.apiUrl}/auth`;
 
-
-
-  constructor(private http: HttpClient, private router: Router, private toaster: ToastrService) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private toaster: ToastrService
+  ) {}
 
   //socket
   get currentUser(): any | null {
@@ -56,31 +56,24 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('authToken');
-      this.toaster.success('Logged out successfully');
-
+    this.toaster.success('Logged out successfully');
   }
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('authToken');
   }
 
-
   googleLogin(token: string): Observable<any> {
-  return this.http.post(`${this.baseUrl}/googleLogin`, { token });
-}
+    return this.http.post(`${this.baseUrl}/googleLogin`, { token });
 
 
-
-
-decodeToken(token: string): any {
-  try {
-    return JSON.parse(atob(token.split('.')[1]));
-  } catch (e) {
-    return null;
+  decodeToken(token: string): any {
+    try {
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch (e) {
+      return null;
+    }
   }
-}
-
-
 
   isAdmin(): boolean {
     const token = localStorage.getItem('authToken');

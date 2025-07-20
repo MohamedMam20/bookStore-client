@@ -114,9 +114,9 @@ export class BooksService {
   }
 
   //=============== best sellers ================
-  getBestSellers(): Observable<Book[]> {
-    return this.http
-      .get<{ status: string; data: Book[] }>(this.bestSellerUrl)
-      .pipe(map((res) => res.data));
-  }
+  // getBestSellers(): Observable<Book[]> {
+  //   return this.http
+  //     .get<{ status: string; data: Book[] }>(this.bestSellerUrl)
+  //     .pipe(map((res) => res.data));
+  // }
 }
