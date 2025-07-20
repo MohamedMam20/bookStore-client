@@ -9,6 +9,13 @@
   font-family: serif;
   font-weight: bold;
   transition: color 0.4s ease;
+  line-height: 1; /* Adds spacing between lines */
+  max-height: 4.2rem; /* Approx. 2.5 lines of text */
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limits to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Container around image */

@@ -37,8 +37,9 @@ header .header-text p {
   margin-top: 20px;
   color: var(--padding-color);
 }
-
-header .main-btn {
+/* home page buttons */
+.main-btn,
+.browse-btn {
   padding: 15px;
   background-color: var(--main-color);
   color: #fff;
@@ -48,11 +49,21 @@ header .main-btn {
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-.main-btn:hover {
+.main-btn:hover,
+.browse-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(183, 54, 29, 0.6);
 }
 
+.browse-btn:focus,
+.browse-btn:active {
+  background-color: var(--main-color); /* Same as default */
+  color: #fff;
+  border-color: transparent;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(183, 54, 29, 0.3); /* Optional: visible focus ring */
+}
+/* ============================================ */
 header .header-image img {
   position: relative;
   animation: up-and-down 5s linear infinite;
@@ -200,11 +211,18 @@ header .header-image img {
   font-size: 30px;
 }
 
-.best-seller {
-  background-color: var(--secondary-color);
-  height: 350px;
+/* Offers Section */
+.offer {
+  margin-bottom: 100px;
+  position: relative;
+  z-index: 1;
 }
-.best-seller {
-  padding: 20px 0;
-  min-height: 700px;
+
+/* Best Sellers Section */
+.books-section {
+  position: relative;
+  z-index: 0;
+  padding: 40px 0;
+  min-height: auto;
+  clear: both;
 }

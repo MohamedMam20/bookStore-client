@@ -1,6 +1,10 @@
 <!--Start Header -->
 <header class="mt-5 mb-5">
-  <img class="wave-1 w-25" src="../../assets/wave-1.png" alt="" />
+  <img
+    class="wave-1 w-25 d-none d-md-block"
+    src="../../assets/wave-1.png"
+    alt=""
+  />
   <div class="container">
     <div class="row">
       <div class="col-12 col-md-8">
@@ -13,12 +17,16 @@
           <button class="main-btn">Click Here to Start</button>
         </div>
       </div>
-      <div class="col-4">
+      <div class="col-12 col-md-4 d-none d-md-block">
         <div class="header-image">
-          <img src="../../assets/header-pic.png" alt="" />
+          <img src="../../assets/header-pic.png" alt="" class="img-fluid" />
         </div>
       </div>
-      <img class="wave-2 w-25" src="../../assets/wave-3.png" alt="" />
+      <img
+        class="wave-2 w-25 d-none d-md-block"
+        src="../../assets/wave-3.png"
+        alt=""
+      />
     </div>
   </div>
 </header>
@@ -28,7 +36,6 @@
 <section class="about-us mt-5 mb-5">
   <div class="container">
     <div class="row align-items-center">
-      <!-- Image Column -->
       <div class="col-12 col-md-5 mb-4 mb-md-0 text-center">
         <div class="about-image">
           <img
@@ -38,8 +45,6 @@
           />
         </div>
       </div>
-
-      <!-- Text Column -->
       <div class="col-12 col-md-7">
         <div class="about-text text-center text-md-start">
           <h1 class="main-header">About Us</h1>
@@ -60,30 +65,37 @@
   </div>
 </section>
 
-<!-- Best Seller Section -->
-<section class="best-seller">
+<!-- Books Section -->
+<section class="books-section my-5">
   <div class="container">
-    <h1 class="mb-4">Best Sellers</h1>
+    <h1 class="main-header mb-4 fs-1">Our Books</h1>
 
-    <div *ngIf="loading" class="text-center">Loading...</div>
+    <div *ngIf="loading" class="text-center fs-5">Loading...</div>
 
-    <div class="row" *ngIf="!loading && bestSellers.length > 0">
+    <div
+      class="row justify-content-center"
+      *ngIf="!loading && books.length > 0"
+    >
       <div
-        class="col-6 col-md-4 col-lg-3 mb-4"
-        *ngFor="let book of bestSellers"
+        class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4"
+        *ngFor="let book of books"
       >
         <app-product-card [product]="book"></app-product-card>
       </div>
     </div>
-
-    <p *ngIf="!loading && bestSellers.length === 0" class="text-center">
-      No best sellers found.
+    <p *ngIf="!loading && books.length === 0" class="text-center fs-5">
+      No books found.
     </p>
+    <div class="d-flex justify-content-end mt-4">
+      <a routerLink="/shop" class="btn browse-btn px-4 py-2">
+        Browse All Books <i class="fas fa-arrow-right ms-2"></i>
+      </a>
+    </div>
   </div>
 </section>
 
 <!-- Offers -->
-<section class="offer py-5">
+<section class="offer py-5 mt-5 my-5">
   <div class="container">
     <div class="row g-4">
       <div class="col-12 col-sm-6 col-md-4">
@@ -157,31 +169,25 @@
 </div>
 
 <!-- Popular books section -->
-<section class="popular">
-  <div class="container">
-    <h1>Popular this Month</h1>
-    <div class="books-content"></div>
-  </div>
-</section>
 
 <!-- Start Subscribe -->
 <section class="subscribe text-center pt-5 pb-5">
   <div class="container">
     <h1>Subscribe to Our Newsletter</h1>
     <p>Get the latest updates and news delivered to your inbox.</p>
-    <input
-      style="width: 350px; border-radius: 2px; border-color: transparent"
-      class="field-style me-1 p-2"
-      type="text"
-      placeholder="Enter your email address"
-    />
-    <input class="Sub-btn p-2" type="submit" title="Subscribe" />
+    <div
+      class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-2"
+    >
+      <input
+        class="field-style p-2"
+        type="text"
+        placeholder="Enter your email address"
+      />
+      <input class="Sub-btn p-2" type="submit" title="Subscribe" />
+    </div>
   </div>
 </section>
 
-
- <app-scroll-to-top></app-scroll-to-top>
- <app-chatbot></app-chatbot>
-
-
+<app-scroll-to-top></app-scroll-to-top>
+<app-chatbot></app-chatbot>
 <app-footer></app-footer>
