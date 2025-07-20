@@ -15,7 +15,8 @@ import { FooterComponent } from './shared/footer/footer.component';
 //socket
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from './services/auth/auth.service';
-import {io} from 'socket.io-client';
+// import {io} from 'socket.io-client';
+import { SocketService } from './services/Sockets/socket.service';
 
 
 @Component({
@@ -29,16 +30,26 @@ import {io} from 'socket.io-client';
 export class AppComponent implements OnInit {
   private socket: any;
   constructor(public router: Router , private toastr: ToastrService,
-    private authService: AuthService) {}
+    private authService: AuthService , private socketSrvices:SocketService) {}
+
+  // ngOnInit(): void {
+  //   this.socket = io('http://localhost:3000');
+  //   this.socket.on('newOrderNotification', (data: any) => {
+  //   console.log('✅ WebSocket connected to server');
+  //    if(this.isAdmin){
+  //     this.toastr.success(`New order placed by ${data.userName}`);
+  //    }
+  //   });
+  // }
 
   ngOnInit(): void {
-    this.socket = io('http://localhost:3000');
-    this.socket.on('newOrderNotification', (data: any) => {
-    console.log('✅ WebSocket connected to server');
-     if(this.isAdmin){
-      this.toastr.success(`New order placed by ${data.userName}`);
-     }
-    });
+    // this.socketSrvices.listenToNewOrders().subscribe(data:any) =>{
+    //   console.log('📩 Received new order notification:', data);
+    //   if (this.authService.isAdmin()){
+    //     const name = data?.user?.name || data?.userName || 'User';
+    //     this.toastr.success(`New order placed by ${name}`)
+    //   }
+    // }
   }
 
   get isAdmin():boolean {

@@ -12,6 +12,12 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
+  //socket
+  get currentUser(): any | null {
+  return this.getCurrentUser();
+}
+
+
   // Registration
   register(userData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/register`, userData);
