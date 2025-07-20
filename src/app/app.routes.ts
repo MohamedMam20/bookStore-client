@@ -90,7 +90,6 @@ export const routes: Routes = [
       { path: 'users/new', component: UserFormComponent },
       { path: 'users/edit/:id', component: UserFormComponent },
       { path: 'admins', component: AdminListComponent },
-      // Categories routes
       {
         path: 'categories',
         loadComponent: () =>
@@ -152,6 +151,5 @@ export const routes: Routes = [
       ),
   },
 
-  // Remove the standalone bestsellers route that was outside the admin section
   { path: '**', component: NotFoundComponent },
 ];
