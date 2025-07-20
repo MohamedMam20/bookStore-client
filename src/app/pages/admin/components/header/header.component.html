@@ -17,15 +17,60 @@
       <span class="btn-text">View Site</span>
     </a>
 
+    <!-- Notification Dropdown -->
+    <div class="dropdown notification-dropdown">
+      <button class="btn notification-btn" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-bell"></i>
+        <span class="notification-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end notification-menu" aria-labelledby="notificationDropdown">
+        <li class="notification-header">
+          <h6>Notifications</h6>
+          <button class="view-all-btn" (click)="viewAllNotifications()">View All</button>
+        </li>
+        <li *ngIf="notifications.length === 0" class="no-notifications">
+          <p>No notifications</p>
+        </li>
+        <ng-container *ngFor="let notification of notifications">
+          <li>
+            <a class="dropdown-item notification-item" [class.unread]="!notification.read" (click)="markAsRead(notification)">
+              <div class="notification-icon">
+                <i class="fas" [ngClass]="{
+                  'fa-shopping-cart': notification.type === 'order',
+                  'fa-star': notification.type === 'review',
+                  'fa-user': notification.type === 'user',
+                  'fa-info-circle': notification.type === 'system'
+                }"></i>
+              </div>
+              <div class="notification-content">
+                <p class="notification-message">{{ notification.message }}</p>
+                <p class="notification-time">{{ notification.createdAt | date:'short' }}</p>
+              </div>
+            </a>
+          </li>
+        </ng-container>
+        <li *ngIf="notifications.length > 0">
+          <hr class="dropdown-divider">
+        </li>
+        <li>
+          <button class="dropdown-item view-all-mobile" (click)="viewAllNotifications()">
+            <i class="fas fa-list"></i> View All Notifications
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- User Dropdown -->
     <div class="dropdown">
       <button class="btn dropdown-toggle user-dropdown" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
         <div class="avatar">
           <i class="fas fa-user"></i>
         </div>
-        <span class="user-name">{{ currentUser?.name || 'Admin' }}</span>
+        <span class="user-name">{{ userInfo.firstName }} {{ userInfo.lastName || ' ' }}</span>
       </button>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-        <li><a class="dropdown-item" [routerLink]="['/my-account']"><i class="fas fa-user"></i> View Profile</a></li>
+        <li><a class="dropdown-item" [routerLink]="['/user-profile']"><i class="fas fa-user"></i> View Profile</a></li>
+        <li><a class="dropdown-item"><i class="fas fa-envelope"></i> {{ userInfo.email }}</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" (click)="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
       </ul>

@@ -65,7 +65,7 @@ export class AuthService {
 
   googleLogin(token: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/googleLogin`, { token });
-  }
+
 
   decodeToken(token: string): any {
     try {
