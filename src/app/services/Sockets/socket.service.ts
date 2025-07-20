@@ -14,7 +14,7 @@ export class SocketService {
   }
 
   private connect(): void {
-    this.socket = io(environment.apiUrl, {
+    this.socket = io(environment.socketUrl, {
       withCredentials: true,
     });
 
