@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
+
+
 
 // import { RouterOutlet } from '@angular/router';
 import { HomePageComponent } from './components/home-page/home-page.component';
