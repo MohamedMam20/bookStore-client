@@ -12,7 +12,6 @@
       <div class="col-lg-4 mb-4">
         <div class="contact-card">
           <h4 class="mb-4">Contact Information</h4>
-
           <div class="contact-info-item">
             <div class="contact-icon">
               <i class="fas fa-map-marker-alt"></i>
@@ -22,7 +21,6 @@
               <p>123 Business Street<br>City, State 12345</p>
             </div>
           </div>
-
           <div class="contact-info-item">
             <div class="contact-icon">
               <i class="fas fa-phone"></i>
@@ -32,7 +30,6 @@
               <p>+1 (555) 123-4567</p>
             </div>
           </div>
-
           <div class="contact-info-item">
             <div class="contact-icon">
               <i class="fas fa-envelope"></i>
@@ -42,7 +39,6 @@
               <p>contact.company.com</p>
             </div>
           </div>
-
           <div class="contact-info-item">
             <div class="contact-icon">
               <i class="fas fa-clock"></i>
@@ -52,7 +48,6 @@
               <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
             </div>
           </div>
-
           <div class="mt-4">
             <h6 class="mb-3">Follow Us</h6>
             <div class="social-links">
@@ -69,34 +64,34 @@
       <div class="col-lg-8">
         <div class="contact-card">
           <h4 class="mb-4">Send us a Message</h4>
-          <form id="contactForm">
+          <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
             <div class="row">
               <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Your Name" required>
+                <input type="text" name="name" [(ngModel)]="formData.name" class="form-control" placeholder="Your Name" required>
               </div>
               <div class="col-md-6">
-                <input type="email" class="form-control" placeholder="Your Email" required>
+                <input type="email" name="email" [(ngModel)]="formData.email" class="form-control" placeholder="Your Email" required>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6">
-                <input type="tel" class="form-control" placeholder="Your Phone">
+                <input type="tel" name="phone" [(ngModel)]="formData.phone" class="form-control" placeholder="Your Phone">
               </div>
               <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Subject" required>
+                <input type="text" name="subject" [(ngModel)]="formData.subject" class="form-control" placeholder="Subject" required>
               </div>
             </div>
             <div class="mb-3">
-              <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+              <textarea name="message" [(ngModel)]="formData.message" class="form-control" rows="5" placeholder="Your Message" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary" [disabled]="!contactForm.valid">
               <i class="fas fa-paper-plane me-2"></i>Send Message
             </button>
           </form>
         </div>
 
         <!-- Map Section -->
-        <div class="contact-card">
+        <div class="contact-card mt-4">
           <h4 class="mb-4">Our Location</h4>
           <div class="map-placeholder">
             <div>
@@ -110,4 +105,5 @@
     </div>
   </div>
 </section>
+
 

@@ -3,13 +3,12 @@
 /*Narimaaan bodyStyle color*/
 body {
   background-color: #fbf6f0;
-  font-family: "Cormorant Garamond", serif !important;
+  /* font-family: "Cormorant Garamond", serif !important; */
 }
 
-h1, h2, h3, h4, h5, h6 {
+/* h1, h2, h3, h4, h5, h6 , a , p {
   font-family: "Cormorant Garamond", serif !important;
-}
-
+} */
 
 :root {
   --main-color: #c43618;
@@ -20,7 +19,7 @@ h1, h2, h3, h4, h5, h6 {
   --text-color: #000000;
   --overlay-bg: rgba(0, 0, 0, 0.4);
   --overlay-white: rgba(255, 255, 255, 0.85);
-  --font-main: "Cormorant Garamond", serif !important;
+  /* --font-main: "Cormorant Garamond", serif !important; */
   /* --font-main: Georgia, serif; */
   --border-color: #cccccc;
   --box-shadow-color: rgba(0, 0, 0, 0.1);
