@@ -24,11 +24,20 @@ import { PaypalComponent } from './pages/paypal/paypal.component';
 import { OrderHistoryComponent } from './pages/order-history/order-history.component';
 import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 import { AdminGuard } from './guards/admin.guard';
+// import { ContactUsComponent } from './contact-us/contact-us.component';
+import { FAQPageComponent } from './pages/faq-page/faq-page.component';
 import { AdminListComponent } from './pages/admin/components/admin-list/admin-list.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
+  { path: 'contact-us', component: ContactUsComponent, title: 'contactus' },
+  { path: 'faq', component: FAQPageComponent, title: 'FAQ' },
   { path: 'paypal', component: PaypalComponent, title: 'paypal' },
+
+  // // export const routes: Routes = [
+  //   { path: '', component: HomePageComponent },
+  //   { path: 'paypal', component: PaypalComponent, title: 'paypal' },
+
   {
     path: 'thank-you',
     loadComponent: () =>

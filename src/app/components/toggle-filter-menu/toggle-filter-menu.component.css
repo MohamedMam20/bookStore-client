@@ -6,7 +6,6 @@
 
 /* Style the icon inside the close button */
 .offcanvas .custom-close-btn i {
-  font-size: 1.5rem;
   color: black;
   transition: color 0.3s ease;
 }
@@ -17,13 +16,25 @@
 }
 .filter-toggle-btn {
   margin-left: 2rem; /* or any spacing you prefer */
-  background-color: #c43618; /* orange background */
-  color: white; /* white text/icons */
-  border: none;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 7px;
+  background-color: var(--main-color);
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  font-size: 1rem;
 }
 
-.filter-toggle-btn:hover {
-  background-color: black; /* black background on hover */
-  color: white; /* keep text white */
+.filter-toggle-btn:focus,
+.filter-toggle-btn:active {
+  background-color: var(--main-color);
+  color: #fff;
+  border-color: none;
+  outline: none;
+}
+.close-icon,
+.offcanvas-title {
+  font-size: 1.5rem;
+}
+.filter-icon {
+  font-size: 1.3rem;
 }

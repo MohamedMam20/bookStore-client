@@ -13,11 +13,13 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet, Router } from '@angular/router';
 import { NavbarComponent } from './components/navbar-components/navbar/navbar.component';
 
+//footer
+import { FooterComponent } from './shared/footer/footer.component';
+
 //socket
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from './services/auth/auth.service';
 import { io } from 'socket.io-client';
-import { FooterComponent } from './shared/footer/footer.component';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 
 @Component({

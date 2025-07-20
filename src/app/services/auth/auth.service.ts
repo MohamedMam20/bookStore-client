@@ -21,17 +21,10 @@ export class AuthService {
     private toaster: ToastrService
   ) {}
 
-  //auth for socket to know that the user is admin
-  get currentUser(): any {
-    const token = localStorage.getItem('authToken');
-    if (!token) return null;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.user || null;
-    } catch (err) {
-      return null;
-    }
-  }
+  //socket
+  get currentUser(): any | null {
+  return this.getCurrentUser();
+}
 
   // Registration
   register(userData: any): Observable<any> {
