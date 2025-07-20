@@ -3,19 +3,35 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
+
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 
+
+
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:3000/api/v1/auth';
+  private baseUrl = `${environment.apiUrl}/auth`;
 
 
 
   constructor(private http: HttpClient, private router: Router, private toaster: ToastrService) {}
+
+  //auth for socket to know that the user is admin
+  get currentUser(): any {
+    const token = localStorage.getItem('authToken');
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.user || null;
+    } catch (err) {
+      return null;
+    }
+  }
 
   // Registration
   register(userData: any): Observable<any> {
@@ -55,6 +71,7 @@ export class AuthService {
     return !!localStorage.getItem('authToken');
   }
 
+
   googleLogin(token: string): Observable<any> {
   return this.http.post(`${this.baseUrl}/googleLogin`, { token });
 }
@@ -81,6 +98,16 @@ decodeToken(token: string): any {
       return decodedToken.role === 'admin';
     } catch {
       return false;
+    }
+  }
+  getCurrentUser(): any | null {
+    const token = localStorage.getItem('authToken');
+    if (!token) return null;
+
+    try {
+      return jwtDecode(token);
+    } catch {
+      return null;
     }
   }
 }

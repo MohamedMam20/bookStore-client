@@ -121,7 +121,7 @@
           <div class="card-body">
             <div class="d-flex justify-content-between mb-2">
               <span>Subtotal</span>
-              <span>{{formatCurrency(order.subtotal || order.total)}}</span>
+              <span>{{formatCurrency(calculateSubtotal())}}</span>
             </div>
             <div class="d-flex justify-content-between mb-2" *ngIf="order.shipping">
               <span>Shipping</span>
@@ -138,7 +138,7 @@
             <hr>
             <div class="d-flex justify-content-between fw-bold">
               <span>Total</span>
-              <span>{{formatCurrency(order.total)}}</span>
+              <span>{{formatCurrency(calculateTotal())}}</span>
             </div>
           </div>
         </div>
@@ -148,9 +148,9 @@
             <h5 class="mb-0">Payment Information</h5>
           </div>
           <div class="card-body">
-            <p class="mb-1"><strong>Payment Method:</strong> {{order.paymentMethod || 'PayPal'}}</p>
-            <p class="mb-1"><strong>Payment ID:</strong> {{order.paymentId || 'N/A'}}</p>
-            <p class="mb-0"><strong>Payment Status:</strong> {{order.paymentStatus || 'Completed'}}</p>
+            <p class="mb-1"><strong>Payment Method:</strong> {{order.paymentMethod || getPaymentMethod()}}</p>
+            <p class="mb-1"><strong>Payment ID:</strong> {{order.paymentId || getPaymentId()}}</p>
+            <p class="mb-0"><strong>Payment Status:</strong> {{order.paymentStatus || getPaymentStatus()}}</p>
           </div>
         </div>
         

@@ -11,7 +11,39 @@
     </div>
   </div>
 
-  <!-- Remove search filters section -->
+  <!-- Search bar and top pagination -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="input-group w-50">
+      <input type="text" class="form-control" placeholder="Search by title, author, category, or description..." [(ngModel)]="searchQuery" (input)="onSearchQueryChange()">
+    </div>
+    <div class="ms-3" style="min-width: 220px;">
+      <select class="form-select" [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
+        <option value="">All Categories</option>
+        <option *ngFor="let cat of categories" [value]="cat.name">{{cat.name}}</option>
+      </select>
+    </div>
+    <div *ngIf="!loading && books.length > 0">
+      <nav aria-label="Page navigation">
+        <ul class="pagination mb-0">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" href="javascript:void(0)" (click)="goToPage(currentPage - 1)">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [class.active]="currentPage === i + 1">
+            <a class="page-link" href="javascript:void(0)" (click)="goToPage(i + 1)">
+              {{ i + 1 }}
+            </a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" href="javascript:void(0)" (click)="goToPage(currentPage + 1)">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
 
   <div *ngIf="loading && books.length === 0" class="text-center my-5">
     <div class="spinner-border text-primary" role="status">
@@ -25,15 +57,23 @@
   </div>
 
   <div *ngIf="!loading || books.length > 0" class="animated-list">
-    <div class="row">
+    <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-2">
       <div *ngFor="let book of books; let i = index"
-           class="col-lg-3 col-md-4 col-sm-6 mb-4 book-card-container"
+           class="col book-card-container"
            [style.animation-delay]="(i % 20) * 0.05 + 's'">
         <div class="card book-card h-100">
           <div class="book-image-container position-relative"> <!-- Added position-relative -->
             <img [src]="book.image || '/assets/shelfes.jpg'"
                  [alt]="book.title"
                  class="card-img-top book-image">
+            <!-- Add status badge based on stock levels -->
+            <div class="status-badge" 
+                 [ngClass]="{'in-stock': getTotalStock(book) > 10, 
+                            'low-stock': getTotalStock(book) > 0 && getTotalStock(book) <= 10,
+                            'out-of-stock': getTotalStock(book) === 0}">
+              {{ getTotalStock(book) > 10 ? 'In Stock' : 
+                 getTotalStock(book) > 0 ? 'Low Stock' : 'Out of Stock' }}
+            </div>
           </div>
           <div class="card-body d-flex flex-column">
             <h6 class="card-title text-truncate" [title]="book.title"><span class="text-muted">Title:</span> {{book.title}}</h6>
@@ -43,22 +83,36 @@
 
             <!-- Added stock information -->
             <div class="stock-info small">
-              <p class="mb-1"><span class="text-muted">Stock:</span></p>
-              <ul class="list-unstyled ms-3 mb-2">
-                <li><span class="text-muted">English:</span> {{book.stock?.en || 0}}</li>
-                <li><span class="text-muted">Arabic:</span> {{book.stock?.ar || 0}}</li>
-                <li><span class="text-muted">French:</span> {{book.stock?.fr || 0}}</li>
-              </ul>
+              <p class="mb-1"><span class="text-muted">Stock:</span> <span class="total-stock">Total: {{getTotalStock(book)}}</span></p>
+              <div class="d-flex justify-content-between">
+                <span><small class="text-muted">EN:</small> <span [ngClass]="{
+                  'text-success': (book.stock?.en || 0) > 5, 
+                  'text-warning': (book.stock?.en || 0) > 0 && (book.stock?.en || 0) <= 5, 
+                  'text-danger': !(book.stock?.en || 0)
+                }">{{book.stock?.en || 0}}</span></span>
+                
+                <span><small class="text-muted">AR:</small> <span [ngClass]="{
+                  'text-success': (book.stock?.ar || 0) > 5, 
+                  'text-warning': (book.stock?.ar || 0) > 0 && (book.stock?.ar || 0) <= 5, 
+                  'text-danger': !(book.stock?.ar || 0)
+                }">{{book.stock?.ar || 0}}</span></span>
+                
+                <span><small class="text-muted">FR:</small> <span [ngClass]="{
+                  'text-success': (book.stock?.fr || 0) > 5, 
+                  'text-warning': (book.stock?.fr || 0) > 0 && (book.stock?.fr || 0) <= 5, 
+                  'text-danger': !(book.stock?.fr || 0)
+                }">{{book.stock?.fr || 0}}</span></span>
+              </div>
             </div>
 
             <div class="mt-auto">
-              <div class="btn-group w-100" role="group">
+              <div class="d-flex justify-content-between">
                 <a [routerLink]="['/admin/books/edit', book.slug || book._id]"
-                   class="btn btn-outline-primary btn-sm">
+                   class="btn btn-outline-primary btn-sm flex-grow-1 me-2">
                   <i class="fas fa-edit"></i>
                 </a>
-                <button class="btn btn-outline-danger btn-sm"
-                        (click)="deleteBook(book.slug || book._id)">
+                <button class="btn btn-outline-danger btn-sm flex-grow-1"
+                        (click)="openDeleteModal(book)">
                   <i class="fas fa-trash"></i>
                 </button>
               </div>
@@ -108,6 +162,35 @@
     <!-- No more books indicator -->
     <div *ngIf="!hasMoreBooks && books.length > 0" class="text-center my-4 text-muted">
       <p>No more books to load</p>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal custom-modal" id="deleteBookModal" tabindex="-1" aria-labelledby="deleteBookModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteBookModalLabel">Confirm Deletion</h5>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" *ngIf="bookToDelete">
+        <p>Are you sure you want to delete the following book?</p>
+        <div class="book-details p-3 border rounded">
+          <h6 class="mb-2">{{ bookToDelete.title }}</h6>
+          <p class="mb-1 small"><strong>Author:</strong> {{ bookToDelete.author }}</p>
+          <p class="mb-1 small"><strong>Category:</strong> {{ bookToDelete.category?.name || 'Uncategorized' }}</p>
+          <p class="mb-0 small"><strong>Price:</strong> ${{ bookToDelete.price }}</p>
+        </div>
+        <div class="alert alert-warning mt-3">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          This action cannot be undone.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDeleteBook()">Delete Book</button>
+      </div>
     </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../../../services/admin/admin.service';
 
@@ -7,7 +7,7 @@ import { AdminService } from '../../../../services/admin/admin.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './dashboard-overview.component.html',
-  styleUrls: ['./dashboard-overview.component.css']
+  styleUrls: ['./dashboard-overview.component.css'],
 })
 export class DashboardOverviewComponent implements OnInit {
   dashboardStats = {
@@ -18,7 +18,7 @@ export class DashboardOverviewComponent implements OnInit {
     bookGrowth: 0,
     orderGrowth: 0,
     userGrowth: 0,
-    revenueGrowth: 0
+    revenueGrowth: 0,
   };
 
   bestsellers: any[] = [];
@@ -30,6 +30,53 @@ export class DashboardOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadDashboardData();
+
+    this.adminService.getAllBooks().subscribe({
+      next: (data: any) => {
+        this.dashboardStats.totalBooks = parseInt(data.totalItems);
+      },
+      error: (err) => console.error('Error fetching books:', err),
+    });
+
+    this.adminService.getTotalUsers().subscribe({
+      next: (res: any) => {
+        console.log(res);
+
+        this.dashboardStats.totalUsers = res.totalUsers || 0;
+      },
+      error: (err) => console.error('Error fetching users:', err),
+    });
+
+    this.adminService.getTotalOrders().subscribe({
+      next: (res: any) => {
+        console.log(`$total is ${res}`);
+
+        this.dashboardStats.totalOrders = res.totalOrders;
+      },
+      error: (err) => console.error('Error fetching orders:', err),
+    });
+
+    this.adminService.getTotalRevenue().subscribe({
+      next: (res: any) => {
+        this.dashboardStats.totalRevenue = res.totalRevenue || 0;
+      },
+      error: (err) => console.error('Error fetching revenue:', err),
+    });
+
+    this.adminService.getBestsellers().subscribe({
+      next: (data) => {
+        this.bestsellers = data || [];
+      },
+      error: (err) => console.error('Error fetching bestsellers:', err),
+    });
+
+    this.adminService.getRecentOrders().subscribe({
+      next: (data) => {
+        this.recentOrders = data.data;
+        console.log(this.recentOrders);
+      },
+      error: (err) => console.error('Error fetching recent orders:', err),
+    });
   }
 
   loadDashboardData(): void {
@@ -42,38 +89,22 @@ export class DashboardOverviewComponent implements OnInit {
         this.loading = false;
       },
       error: (err: any) => {
-        console.error('Error loading dashboard stats:', err);
-        // Fallback to mock data
-        this.dashboardStats = {
-          totalBooks: 125,
-          totalOrders: 85,
-          totalUsers: 42,
-          totalRevenue: 12580,
-          bookGrowth: 15,
-          orderGrowth: 8,
-          userGrowth: 12,
-          revenueGrowth: 10
-        };
         this.loading = false;
-      }
+      },
     });
 
     // Try to get bestsellers
-    this.adminService.getBestsellers().subscribe({
-      next: (data: any) => {
-        this.bestsellers = data;
+    // Replace the getBestsellers() call with getBookSalesData()
+    this.adminService.getBookSalesData().subscribe({
+      next: (response) => {
+        // Transform the data to match the format expected by the dashboard
+        this.bestsellers = response.data.map((book: any) => ({
+          title: book.title,
+          author: book.author,
+          sales: book.totalSales
+        })).slice(0, 5); // Limit to top 5 bestsellers
       },
-      error: (err: any) => {
-        console.error('Error loading bestsellers:', err);
-        // Fallback to mock data
-        this.bestsellers = [
-          { title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', sales: 42 },
-          { title: 'To Kill a Mockingbird', author: 'Harper Lee', sales: 38 },
-          { title: '1984', author: 'George Orwell', sales: 35 },
-          { title: 'Pride and Prejudice', author: 'Jane Austen', sales: 30 },
-          { title: 'The Catcher in the Rye', author: 'J.D. Salinger', sales: 28 }
-        ];
-      }
+      error: (err) => console.error('Error fetching bestsellers:', err),
     });
 
     // Try to get recent orders
@@ -85,13 +116,43 @@ export class DashboardOverviewComponent implements OnInit {
         console.error('Error loading recent orders:', err);
         // Fallback to mock data
         this.recentOrders = [
-          { id: 'ORD-001', customer: 'John Doe', date: '2023-06-15', total: 125.99, status: 'Completed' },
-          { id: 'ORD-002', customer: 'Jane Smith', date: '2023-06-14', total: 89.50, status: 'Processing' },
-          { id: 'ORD-003', customer: 'Robert Johnson', date: '2023-06-13', total: 210.75, status: 'Completed' },
-          { id: 'ORD-004', customer: 'Emily Davis', date: '2023-06-12', total: 45.25, status: 'Shipped' },
-          { id: 'ORD-005', customer: 'Michael Brown', date: '2023-06-11', total: 78.00, status: 'Completed' }
+          {
+            id: 'ORD-001',
+            customer: 'John Doe',
+            date: '2023-06-15',
+            total: 125.99,
+            status: 'Completed',
+          },
+          {
+            id: 'ORD-002',
+            customer: 'Jane Smith',
+            date: '2023-06-14',
+            total: 89.5,
+            status: 'Processing',
+          },
+          {
+            id: 'ORD-003',
+            customer: 'Robert Johnson',
+            date: '2023-06-13',
+            total: 210.75,
+            status: 'Completed',
+          },
+          {
+            id: 'ORD-004',
+            customer: 'Emily Davis',
+            date: '2023-06-12',
+            total: 45.25,
+            status: 'Shipped',
+          },
+          {
+            id: 'ORD-005',
+            customer: 'Michael Brown',
+            date: '2023-06-11',
+            total: 78.0,
+            status: 'Completed',
+          },
         ];
-      }
+      },
     });
   }
 }

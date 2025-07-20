@@ -1,116 +1,10 @@
-.product-details-wrapper {
-  max-width: 1200px;
-  margin: auto;
-  padding: 30px 20px;
-  font-family: 'Segoe UI', sans-serif;
-  color: #333;
-  min-height: 1200px;
-}
 
-.product-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 70px;
-}
 
-.left-section {
-  flex: 1 1 400px;
-}
 
-.main-image {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
 
-.thumbnail-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
 
-.thumbnail {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 6px;
-  cursor: pointer;
-  border: 2px solid #eee;
-  transition: border 0.2s;
-}
 
-.thumbnail:hover {
-  border-color: #d14031;
-}
 
-.right-section {
-  flex: 1 1 600px;
-}
-
-.title {
-  font-size: 28px;
-  margin-bottom: 10px;
-}
-
-.description {
-  font-size: 15px;
-  margin-bottom: 20px;
-  color: #666;
-}
-
-.price-box {
-  display: flex;
-  align-items: baseline;
-  gap: 15px;
-  margin: 10px 0;
-}
-
-.price {
-  font-size: 24px;
-  font-weight: bold;
-  color: #e53935;
-}
-
-.original-price {
-  text-decoration: line-through;
-  color: #aaa;
-}
-
-.sale-badge {
-  background: #ff9800;
-  color: white;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.info-pair {
-  margin: 10px 0;
-  font-size: 14px;
-}
-
-.option-label {
-  font-weight: 600;
-  margin: 10px 0 4px;
-}
-
-.option-group span {
-  display: inline-block;
-  background: #f2f2f2;
-  padding: 5px 12px;
-  border-radius: 20px;
-  margin-right: 10px;
-  margin-top: 5px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid #aaa;
-}
-
-.option-group .selected {
-  background: #d14031;
-  color: white;
-}
 
 .star {
   font-size: 20px;
@@ -167,7 +61,7 @@
   max-width: 70%;
 }
 
-.btn {
+/* .btn {
   background: #d14031;
   color: white;
   padding: 10px 16px;
@@ -175,25 +69,35 @@
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s ease;
+} */
+.btn-link {
+  background: none;
+  color: #d14031;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+  display: inline;
+  margin-right: 30px;
+}
+
+.btn-link:hover {
+  color: #0056b3;
+  text-decoration: none;
 }
 
 .btn:hover {
   background: #4d120c;
 }
 
-.btn.add,
-.btn.wishlist {
-  flex: 1;
-}
 
-.btn.buy {
-  background-color: #a82820;
-  width: 100%;
-}
 
 .btn.submit {
   background-color: #d14031;
-  margin-top: 10px;
+ 
+  margin-right: 20px;
 }
 
 .btn.cancel {

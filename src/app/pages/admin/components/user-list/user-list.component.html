@@ -1,6 +1,6 @@
 <div class="user-list-container">
   <div class="user-list-header d-flex justify-content-between align-items-center">
-    <h2>User Management</h2>
+    <h2>Regular User Management</h2>
     <a routerLink="/admin/users/new" class="btn btn-primary">
       <i class="fas fa-plus"></i> Add User
     </a>
@@ -23,13 +23,7 @@
         </div>
       </div>
 
-      <div class="col-md-6">
-        <select class="form-select" [(ngModel)]="selectedRole" (change)="onRoleChange()">
-          <option value="">All Roles</option>
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
-        </select>
-      </div>
+
     </div>
   </div>
 
@@ -110,4 +104,34 @@
     </nav>
   </div>
 </div>
+</div>
+
+<!-- Add this at the end of the file -->
+
+<!-- Delete Confirmation Modal -->
+<div class="modal custom-modal" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteUserModalLabel">Confirm Deletion</h5>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" *ngIf="userToDelete">
+        <p>Are you sure you want to delete the following user?</p>
+        <div class="user-details p-3 border rounded">
+          <h2 class="mb-2">{{ userToDelete.firstName }} {{ userToDelete.lastName }}</h2>
+          <p class="mb-1 small"><strong>Email:</strong> {{ userToDelete.email }}</p>
+          <p class="mb-0 small"><strong>Role:</strong> {{ userToDelete.role }}</p>
+        </div>
+        <div class="alert alert-warning mt-3">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          This action cannot be undone.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDeleteUser()">Delete User</button>
+      </div>
+    </div>
+  </div>
 </div>

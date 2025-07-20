@@ -11,7 +11,8 @@ import {
   Filter,
 } from '../../services/filter/filter-state.service';
 import { SortService } from '../../services/sort/sort.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-books-page',
@@ -27,10 +28,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class BooksPageComponent implements OnInit {
   products: Book[] = [];
-  isLoading = true;
+  isLoading = true; // Keep the variable but load data immediately
   currentPage = 1;
   totalPages = 1;
   isFilteredResults = false;
+  isFirstLoad = true;
 
   constructor(
     private booksService: BooksService,
@@ -39,10 +41,23 @@ export class BooksPageComponent implements OnInit {
     private sortService: SortService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) {
+    // Listen for navigation events to detect when user navigates directly to /shop
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        // Reset firstLoad flag if user navigates to /shop with no params
+        if (event.url === '/shop') {
+          this.isFirstLoad = true;
+        }
+      });
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
+      // Check if this is the initial navigation to /shop with no query params
+      const hasQueryParams = Object.keys(params).length > 0;
+
       const filters: Filter[] = [];
 
       // Reconstruct filters from query parameters
@@ -78,11 +93,20 @@ export class BooksPageComponent implements OnInit {
       filters.forEach((f) => this.filterService.addFilter(f));
       this.sortService.setSortOption(sortOption);
 
-      this.applyFiltersWithPagination(page);
+      // Only apply filters with pagination if there are query parameters
+      // Otherwise, just load books without changing the URL
+      if (hasQueryParams) {
+        this.applyFiltersWithPagination(page);
+        // No longer first load if we have query params
+        this.isFirstLoad = false;
+      } else {
+        this.loadBooks(page);
+      }
     });
   }
 
   loadBooks(page: number = 1): void {
+    // Keep the isLoading variable for other logic
     this.isLoading = true;
     this.isFilteredResults = false;
 
@@ -103,7 +127,24 @@ export class BooksPageComponent implements OnInit {
 
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
-      // Update the URL with the new page number
+      // First page navigation should happen without query params
+      if (page === 1 && !this.isFilteredResults) {
+        this.router.navigate(['/shop']);
+        this.loadBooks(page);
+        return;
+      }
+
+      // For pages other than first, add only the page parameter
+      if (!this.isFilteredResults) {
+        // Simple pagination with no filters - just use page parameter
+        this.router.navigate(['/shop'], {
+          queryParams: { page },
+        });
+        this.loadBooks(page);
+        return;
+      }
+
+      // For filtered results, keep all existing parameters and update page
       const queryParams = { ...this.route.snapshot.queryParams, page };
       this.router.navigate([], {
         relativeTo: this.route,
@@ -111,16 +152,12 @@ export class BooksPageComponent implements OnInit {
         queryParamsHandling: 'merge',
       });
 
-      // If we have filtered results, apply the filters with the new page
-      if (this.isFilteredResults) {
-        this.applyFiltersWithPagination(page);
-      } else {
-        this.loadBooks(page);
-      }
+      this.applyFiltersWithPagination(page);
     }
   }
 
   applyFiltersWithPagination(page: number): void {
+    // Keep the isLoading variable for other logic
     this.isLoading = true;
     const filters = this.filterService.filters;
 
@@ -148,8 +185,6 @@ export class BooksPageComponent implements OnInit {
           this.isLoading = false;
         },
       });
-    // Remove this line as it's causing the error
-    // this.applySortAndFilters(1);
   }
 
   onSortedBooks(result: any): void {
@@ -164,12 +199,20 @@ export class BooksPageComponent implements OnInit {
     this.totalPages = result.totalPages || 1;
     this.currentPage = result.currentPage || 1;
 
+    // Skip URL update on first load
+    if (this.isFirstLoad) {
+      this.isFirstLoad = false;
+      return;
+    }
+
     // Update URL with page, filters, and sort
     const filters = this.filterService.filters;
-    const queryParams: any = { page: this.currentPage, limit: 6 };
+    const queryParams: any = { page: this.currentPage };
 
-    // Only add filter parameters if there are active filters
+    // Add limit parameter only when we have filters or sorting
     if (filters.length > 0) {
+      queryParams.limit = 6;
+
       filters.forEach((filter) => {
         const key = filter.label.toLowerCase();
 
@@ -200,13 +243,16 @@ export class BooksPageComponent implements OnInit {
 
     if (sortOption) {
       queryParams.sort = sortOption;
+      // Ensure limit is added when sorting
+      if (!queryParams.limit) {
+        queryParams.limit = 6;
+      }
     }
 
     // Replace all query parameters instead of merging
-    this.router.navigate([], {
-      relativeTo: this.route,
+    this.router.navigate(['/shop'], {
       queryParams,
-      queryParamsHandling: '', // Use empty string to replace all parameters
+      replaceUrl: true,
     });
   }
 }
