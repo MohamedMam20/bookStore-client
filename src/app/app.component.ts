@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from './services/auth/auth.service';
 // Remove this import: import { io } from 'socket.io-client';
 import { FooterComponent } from './shared/footer/footer.component';
+
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { SocketService } from './services/Sockets/socket.service'; // Add this import
 

@@ -13,6 +13,7 @@ import {
 import { SortService } from '../../services/sort/sort.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { PageHeaderComponent } from '../../components/page-header/page-header.component';
 
 @Component({
   selector: 'app-books-page',
@@ -22,6 +23,7 @@ import { filter } from 'rxjs/operators';
     ProductCardComponent,
     FilterComponent,
     ToggleFilterMenuComponent,
+    PageHeaderComponent,
   ],
   templateUrl: './books-page.component.html',
   styleUrls: ['./books-page.component.css'],

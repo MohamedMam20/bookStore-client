@@ -3,7 +3,7 @@
   font-family: "Times New Roman", Times, serif;
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 100;
 }
 
 .navbar-top-bar {
@@ -190,7 +190,7 @@
   transform: translateX(-50%) translateY(0);
 }
 
-.gradient-icon {
+/* .gradient-icon {
   font-size: 35px;
   background: linear-gradient(to right, #dbc87e 40%, var(--main-color) 50%);
   -webkit-background-clip: text;
@@ -201,6 +201,23 @@
   font-size: 2rem;
   font-weight: 600;
   color: var(--main-color);
+} */
+
+.logo img {
+  width: 18%;
+}
+
+/*image responsive*/
+@media (max-width: 768px) {
+  .logo img {
+    width: 40%;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo img {
+    width: 60%;
+  }
 }
 
 .navbar-dropdown-image-links {
@@ -328,4 +345,9 @@
 .disabled {
   pointer-events: none; /* disables click */
   cursor: default; /* normal cursor */
+}
+/* ====================== */
+.link-text {
+  font-size: 1.2rem !important; /* or any size you want, like 20px */
+  font-weight: 500; /* optional: to make it bolder */
 }

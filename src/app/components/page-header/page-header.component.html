@@ -1,1 +1,9 @@
-<p>page-header works!</p>
+<div
+  class="page-header"
+  [ngStyle]="{ 'background-image': 'url(' + background + ')' }"
+>
+  <div class="page-header-content">
+    <h2>{{ title }}</h2>
+    <p><a routerLink="/">Home</a> / {{ path }}</p>
+  </div>
+</div>

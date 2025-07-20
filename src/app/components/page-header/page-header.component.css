@@ -1,0 +1,37 @@
+.page-header {
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 12.5rem;
+  position: relative;
+  text-align: center;
+  font-family: var(--font-main);
+  color: #fff;
+}
+
+.page-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #e3dcc08f;
+  z-index: 1;
+}
+
+.page-header-content {
+  position: relative;
+  z-index: 2;
+  padding-top: 3rem;
+}
+
+.page-header h2 {
+  font-size: 1.625rem;
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  font-size: 1rem;
+  color: #fff;
+}
+
+.page-header p a {
+  color: #fff;
+}
