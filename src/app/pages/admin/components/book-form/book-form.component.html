@@ -23,15 +23,18 @@
             </div>
 
             <div class="mb-3">
-              <label for="author" class="form-label">Author</label>
-              <input type="text" class="form-control" id="author" formControlName="author">
+              <label for="author" class="form-label">Author*</label>
+              <input type="text" class="form-control" id="author" formControlName="author" required>
+              <div *ngIf="bookForm.get('author')?.invalid && bookForm.get('author')?.touched" class="text-danger">
+                Author is required
+              </div>
             </div>
 
             <div class="row mb-3">
               <div class="col-md-6">
-                <label for="category" class="form-label">Category</label>
+                <label for="category" class="form-label">Category*</label>
                 <div class="input-group">
-                  <select class="form-select" id="category" formControlName="category">
+                  <select class="form-select" id="category" formControlName="category" required>
                     <option value="">Select Category</option>
                     <option *ngFor="let category of categories" [value]="category._id">{{category.name}}</option>
                   </select>
@@ -39,28 +42,37 @@
                     <i class="fas fa-plus"></i>
                   </button>
                 </div>
+                <div *ngIf="bookForm.get('category')?.invalid && bookForm.get('category')?.touched" class="text-danger">
+                  Category is required
+                </div>
               </div>
 
               <div class="col-md-6">
                 <label for="price" class="form-label">Price*</label>
                 <div class="input-group">
                   <span class="input-group-text">$</span>
-                  <input type="number" class="form-control" id="price" formControlName="price" min="0" step="0.01" required>
+                  <input type="number" class="form-control" id="price" formControlName="price" min="0.01" step="0.01" required>
                 </div>
                 <div *ngIf="bookForm.get('price')?.invalid && bookForm.get('price')?.touched" class="text-danger">
-                  Valid price is required
+                  Price must be greater than 0
                 </div>
               </div>
             </div>
 
             <div class="mb-3">
-              <label for="description" class="form-label">Book Description</label>
-              <textarea class="form-control" id="description" formControlName="description" rows="4"></textarea>
+              <label for="description" class="form-label">Book Description*</label>
+              <textarea class="form-control" id="description" formControlName="description" rows="4" required></textarea>
+              <div *ngIf="bookForm.get('description')?.invalid && bookForm.get('description')?.touched" class="text-danger">
+                Description is required
+              </div>
             </div>
 
             <div class="mb-3">
-              <label for="authorDescription" class="form-label">Author Description</label>
-              <textarea class="form-control" id="authorDescription" formControlName="authorDescription" rows="3"></textarea>
+              <label for="authorDescription" class="form-label">Author Description*</label>
+              <textarea class="form-control" id="authorDescription" formControlName="authorDescription" rows="3" required></textarea>
+              <div *ngIf="bookForm.get('authorDescription')?.invalid && bookForm.get('authorDescription')?.touched" class="text-danger">
+                Author description is required
+              </div>
             </div>
           </div>
         </div>
@@ -90,18 +102,27 @@
             <h5 class="card-title">Stock Information</h5>
 
             <div class="mb-3">
-              <label for="stockEn" class="form-label">English Stock</label>
-              <input type="number" class="form-control" id="stockEn" formControlName="stockEn" min="0">
+              <label for="stockEn" class="form-label">English Stock*</label>
+              <input type="number" class="form-control" id="stockEn" formControlName="stockEn" min="0" required>
+              <div *ngIf="bookForm.get('stockEn')?.invalid && bookForm.get('stockEn')?.touched" class="text-danger">
+                English stock is required and must be 0 or greater
+              </div>
             </div>
 
             <div class="mb-3">
-              <label for="stockAr" class="form-label">Arabic Stock</label>
-              <input type="number" class="form-control" id="stockAr" formControlName="stockAr" min="0">
+              <label for="stockAr" class="form-label">Arabic Stock*</label>
+              <input type="number" class="form-control" id="stockAr" formControlName="stockAr" min="0" required>
+              <div *ngIf="bookForm.get('stockAr')?.invalid && bookForm.get('stockAr')?.touched" class="text-danger">
+                Arabic stock is required and must be 0 or greater
+              </div>
             </div>
 
             <div class="mb-3">
-              <label for="stockFr" class="form-label">French Stock</label>
-              <input type="number" class="form-control" id="stockFr" formControlName="stockFr" min="0">
+              <label for="stockFr" class="form-label">French Stock*</label>
+              <input type="number" class="form-control" id="stockFr" formControlName="stockFr" min="0" required>
+              <div *ngIf="bookForm.get('stockFr')?.invalid && bookForm.get('stockFr')?.touched" class="text-danger">
+                French stock is required and must be 0 or greater
+              </div>
             </div>
           </div>
         </div>
@@ -136,6 +157,7 @@
               id="categoryName"
               formControlName="name"
               [class.is-invalid]="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched"
+              required
             >
             <div class="invalid-feedback" *ngIf="categoryForm.get('name')?.errors?.['required'] && categoryForm.get('name')?.touched">
               Name is required
@@ -143,17 +165,27 @@
             <div class="invalid-feedback" *ngIf="categoryForm.get('name')?.errors?.['minlength'] && categoryForm.get('name')?.touched">
               Name must be at least 2 characters
             </div>
+            <div class="invalid-feedback" *ngIf="categoryForm.get('name')?.errors?.['maxlength'] && categoryForm.get('name')?.touched">
+              Name must be less than 50 characters
+            </div>
           </div>
 
           <div class="mb-3">
-            <label for="categoryDescription" class="form-label">Description</label>
+            <label for="categoryDescription" class="form-label">Description *</label>
             <textarea
               class="form-control"
               id="categoryDescription"
               rows="3"
               formControlName="description"
               [class.is-invalid]="categoryForm.get('description')?.invalid && categoryForm.get('description')?.touched"
+              required
             ></textarea>
+            <div class="invalid-feedback" *ngIf="categoryForm.get('description')?.errors?.['required'] && categoryForm.get('description')?.touched">
+              Description is required
+            </div>
+            <div class="invalid-feedback" *ngIf="categoryForm.get('description')?.errors?.['minlength'] && categoryForm.get('description')?.touched">
+              Description must be at least 10 characters
+            </div>
             <div class="invalid-feedback" *ngIf="categoryForm.get('description')?.errors?.['maxlength'] && categoryForm.get('description')?.touched">
               Description must be less than 500 characters
             </div>

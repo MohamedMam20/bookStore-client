@@ -32,30 +32,30 @@ export class CategoryFormComponent implements OnInit {
   ) {
     this.categoryForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      description: ['', Validators.maxLength(500)]
+      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]]
     });
   }
 
   ngOnInit(): void {
     this.loading = true;
-    
+
     this.route.paramMap.subscribe(params => {
       console.log('Route params:', params);
       const id = params.get('id');
       console.log('Category ID from route:', id);
-      
+
       if (id && id !== 'new') {
         this.isEditMode = true;
         this.categoryIdOrSlug = id;
-        
+
         console.log('Edit mode activated, fetching category with ID/slug:', id);
-        
+
         // Direct HTTP request with proper error handling
         const token = localStorage.getItem('authToken');
         const headers = {
           'Authorization': `Bearer ${token}`
         };
-        
+
         this.http.get(`${this.baseUrl}/categories/${id}`, { headers }).subscribe({
           next: (response: any) => {
             console.log('Category data received:', response);

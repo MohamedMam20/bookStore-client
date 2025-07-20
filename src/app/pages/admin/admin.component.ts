@@ -40,32 +40,16 @@ import { trigger, transition, style, animate, state, query, animateChild } from 
 export class AdminComponent implements OnInit {
   isMobile = false;
   sidebarCollapsed = false;
-  isDarkMode = false;
   isAnimating = false;
 
   constructor(private renderer: Renderer2) {}
 
   ngOnInit() {
     this.checkScreenSize();
-    this.loadThemePreference();
     this.loadSidebarState();
 
     // Add smooth page transitions
     this.renderer.addClass(document.body, 'smooth-transitions');
-    
-    // Add prefers-color-scheme listener
-    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
-    if (prefersDarkMode.matches && localStorage.getItem('admin-theme') === null) {
-      this.isDarkMode = true;
-      this.applyTheme();
-    }
-    
-    prefersDarkMode.addEventListener('change', (e) => {
-      if (localStorage.getItem('admin-theme') === null) {
-        this.isDarkMode = e.matches;
-        this.applyTheme();
-      }
-    });
   }
 
   @HostListener('window:resize', ['$event'])
@@ -106,30 +90,6 @@ export class AdminComponent implements OnInit {
         document.body.style.minHeight = '';
       }, 0);
     }, 400);
-  }
-
-  toggleTheme() {
-    this.isDarkMode = !this.isDarkMode;
-    this.applyTheme();
-    this.saveThemePreference();
-  }
-
-  private applyTheme() {
-    if (this.isDarkMode) {
-      this.renderer.addClass(document.documentElement, 'dark-theme');
-    } else {
-      this.renderer.removeClass(document.documentElement, 'dark-theme');
-    }
-  }
-
-  private loadThemePreference() {
-    const savedTheme = localStorage.getItem('admin-theme');
-    this.isDarkMode = savedTheme === 'dark';
-    this.applyTheme();
-  }
-
-  private saveThemePreference() {
-    localStorage.setItem('admin-theme', this.isDarkMode ? 'dark' : 'light');
   }
 
   private loadSidebarState() {

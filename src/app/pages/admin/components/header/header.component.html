@@ -12,31 +12,20 @@
   </div>
 
   <div class="header-actions">
-    <button class="btn theme-toggle" (click)="onToggleTheme()" [title]="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
-      <i class="fas" [ngClass]="isDarkMode ? 'fa-sun' : 'fa-moon'"></i>
-    </button>
-
     <a href="/" class="btn btn-outline-primary view-site-btn">
       <i class="fas fa-external-link-alt"></i>
       <span class="btn-text">View Site</span>
     </a>
-
-    <button class="btn notification-btn" type="button">
-      <i class="fas fa-bell"></i>
-      <span class="notification-badge">3</span>
-    </button>
 
     <div class="dropdown">
       <button class="btn dropdown-toggle user-dropdown" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
         <div class="avatar">
           <i class="fas fa-user"></i>
         </div>
-        <span class="user-name">Admin</span>
-        <i class="fas fa-chevron-down"></i>
+        <span class="user-name">{{ currentUser?.name || 'Admin' }}</span>
       </button>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-        <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Profile</a></li>
-        <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Settings</a></li>
+        <li><a class="dropdown-item" [routerLink]="['/my-account']"><i class="fas fa-user"></i> View Profile</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" (click)="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
       </ul>

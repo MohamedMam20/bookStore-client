@@ -39,22 +39,18 @@ export class AdminSidebarComponent implements OnInit {
     settings: false
   };
 
-  searchQuery = '';
-  filteredMenuItems: any[] = [];
-
   menuItems = [
     { route: '/admin/dashboard', icon: 'fas fa-tachometer-alt', label: 'Dashboard', section: 'main' },
     { route: '/admin/books', icon: 'fas fa-book', label: 'Books', section: 'content' },
     { route: '/admin/categories', icon: 'fas fa-tags', label: 'Categories', section: 'content' },
     { route: '/admin/orders', icon: 'fas fa-shopping-cart', label: 'Orders', section: 'orders' },
-    { route: '/admin/users', icon: 'fas fa-users', label: 'Customers', section: 'users' },
+    { route: '/admin/users', icon: 'fas fa-users', label: 'Regular Users', section: 'users' },
+    { route: '/admin/admins', icon: 'fas fa-user-shield', label: 'Admins', section: 'users' },
     { route: '/admin/reviews', icon: 'fas fa-star', label: 'Reviews', section: 'main' },
     { route: '/admin/settings', icon: 'fas fa-cog', label: 'Settings', section: 'settings' }
   ];
 
-  constructor() {
-    this.filteredMenuItems = this.menuItems;
-  }
+  constructor() {}
 
   ngOnInit() {
     // Load any saved collapsed section states
@@ -81,15 +77,5 @@ export class AdminSidebarComponent implements OnInit {
 
   onToggleSidebar(): void {
     this.toggleSidebar.emit();
-  }
-
-  onSearch(): void {
-    if (this.searchQuery.trim()) {
-      this.filteredMenuItems = this.menuItems.filter(item =>
-        item.label.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    } else {
-      this.filteredMenuItems = this.menuItems;
-    }
   }
 }

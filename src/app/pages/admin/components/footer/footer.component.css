@@ -2,11 +2,12 @@
   padding: 15px 20px;
   background-color: #fff;
   border-top: 1px solid var(--border-color);
+  text-align: center;
 }
 
 .footer-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   font-size: 14px;
   color: #6c757d;
@@ -31,8 +32,5 @@
   margin: 0;
   color: #6c757d;
   font-size: 14px;
-}
 
-.admin-footer {
-  text-align: center;
 }

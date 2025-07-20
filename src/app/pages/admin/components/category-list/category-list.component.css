@@ -14,6 +14,11 @@
   color: #333;
 }
 
+.category-list-header .btn-primary {
+  background-color: var(--main-color);
+  border-color: var(--main-color);
+}
+
 .category-list-filters {
   margin-bottom: 20px;
 }
@@ -59,7 +64,46 @@
 }
 
 .pagination {
-  margin-top: 20px;
+  margin: 0 0 0 0;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  background: #fff;
+}
+
+.pagination .page-item .page-link {
+  color: var(--main-color);
+  border: none;
+  margin: 0 2px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.pagination .page-item.active .page-link,
+.pagination .page-item .page-link:hover {
+  background: var(--main-color);
+  color: #fff;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #ccc;
+  background: #f8f9fa;
+}
+
+.category-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.category-list-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.category-list-header .btn-primary {
+  background-color: var(--main-color);
+  border-color: var(--main-color);
 }
 
 .page-link {
@@ -71,4 +115,84 @@
   color: #6c757d;
   display: block;
   margin-top: 4px;
-} 
+}
+
+
+/* Modal styles */
+.modal-content {
+  border: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.modal-backdrop.show {
+  opacity: 0.5; /* Reduced opacity from 0.7 to 0.5 */
+}
+
+.category-details {
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.category-details h4 {
+  color: #333;
+  font-size: 1.4rem;
+}
+
+/* Custom modal styling */
+.custom-modal {
+  background: rgba(0, 0, 0, 0.1) !important; /* Very light transparent overlay */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1050;
+  pointer-events: auto; /* Allow interaction with the modal */
+}
+
+.custom-modal .modal-dialog {
+  pointer-events: auto;
+  /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); */
+  margin-top: 10vh; /* Position slightly higher than center */
+}
+
+.custom-modal.show {
+  display: block;
+  opacity: 1;
+}
+
+/* Override Bootstrap's modal backdrop */
+.modal-backdrop {
+  display: none !important;
+}
+
+/* Modal styles */
+.modal-content {
+  border: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.category-details {
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.category-details h4 {
+  color: #333;
+  font-size: 1.4rem;
+}
+
+/* Remove duplicate modal styles */
+.modal-backdrop.show {
+  opacity: 0.5; /* Reduced opacity from 0.7 to 0.5 */
+}
+
+.category-details {
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.category-details h4 {
+  color: #333;
+  font-size: 1.4rem;
+}

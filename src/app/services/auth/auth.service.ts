@@ -63,4 +63,9 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!localStorage.getItem('authToken');
   }
+
+  // Google Login
+  googleLogin(token: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/googleLogin`, { token });
+  }
 }
