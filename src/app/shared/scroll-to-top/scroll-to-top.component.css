@@ -1,18 +1,21 @@
 /* scroll btn */
 .up {
   position: fixed;
-  bottom: 80px;
-  right: -60px;
+  bottom: 26px;
+  right: -200px;
   background-color: #fff;
   color: var(--main-color);
-  border-color: var(--main-color);
-  font-weight: bold;
-  font-size: 35px;
-  padding: 20px 25px;
+  border: 3px solid var(--main-color);
+  padding: 8px 12px;
+  margin-right: 80px;
   border-radius: 50%;
   font-family: Arial, Tahoma;
   cursor: pointer;
   transition: 0.2s;
+}
+.up i {
+  font-weight: bolder;
+  font-size: 27px;
 }
 .up.show {
   right: 10px;

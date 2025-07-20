@@ -18,10 +18,17 @@ export class SocketService {
       withCredentials: true,
     });
 
-    this.socket.on('connect', () => {});
+    this.socket.on('connect', () => {
+      console.log('✅ Socket connected successfully with ID:', this.socket.id);
+    });
 
     this.socket.on('connect_error', (err) => {
       console.error('❌ Socket connection error:', err.message);
+    });
+
+    // Add debug logging for all incoming events
+    this.socket.onAny((event, ...args) => {
+      console.log(`🔔 Socket event received: ${event}`, args);
     });
   }
 

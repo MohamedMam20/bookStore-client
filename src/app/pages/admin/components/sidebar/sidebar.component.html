@@ -14,6 +14,17 @@
     </div>
   </div>
 
+  <!-- User Info Section -->
+  <div class="user-info-section" [class.collapsed]="collapsed">
+    <div class="user-avatar">
+      <i class="fas fa-user-circle"></i>
+    </div>
+    <div class="user-details" *ngIf="!collapsed" @fadeAnimation>
+      <div class="user-name">{{ userInfo.firstName }} {{ userInfo.lastName || 'Admin' }}</div>
+      <div class="user-email">{{ userInfo.email }}</div>
+    </div>
+  </div>
+
   <nav class="sidebar-nav">
     <!-- Dashboard -->
     <div class="nav-section">
