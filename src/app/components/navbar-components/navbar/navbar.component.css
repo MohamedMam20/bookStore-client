@@ -3,14 +3,14 @@
   font-family: "Times New Roman", Times, serif;
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 100;
 }
 
 .navbar-top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem;
+  padding: 0.5rem;
   background: white;
   position: relative;
 }
@@ -204,7 +204,8 @@
 } */
 
 .logo img {
-  width: 18%;
+  width: 15%;
+  margin: 0;
 }
 
 /*image responsive*/
@@ -219,8 +220,6 @@
     width: 60%;
   }
 }
-
-
 
 .navbar-dropdown-image-links {
   display: flex;
@@ -347,4 +346,9 @@
 .disabled {
   pointer-events: none; /* disables click */
   cursor: default; /* normal cursor */
+}
+/* ====================== */
+.link-text {
+  font-size: 1.2rem !important; /* or any size you want, like 20px */
+  font-weight: 500; /* optional: to make it bolder */
 }

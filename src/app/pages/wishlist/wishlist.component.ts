@@ -4,11 +4,17 @@ import { ProductCardComponent } from '../../components/product-card/product-card
 import { WishlistService } from '../../services/wishlist/wishlist.service';
 import { Book } from '../../models/book.model';
 import { Router, RouterLink } from '@angular/router';
+import { PageHeaderComponent } from '../../components/page-header/page-header.component';
 
 @Component({
   selector: 'app-wishlist',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent, RouterLink],
+  imports: [
+    CommonModule,
+    ProductCardComponent,
+    RouterLink,
+    PageHeaderComponent,
+  ],
   templateUrl: './wishlist.component.html',
   styleUrls: ['./wishlist.component.css'],
 })
@@ -39,7 +45,7 @@ export class WishlistComponent implements OnInit {
           price: item.price,
           image: item.image,
           author: item.author,
-          slug: item.slug || item.title.toLowerCase().replace(/\s+/g, '-') // Add slug property
+          slug: item.slug || item.title.toLowerCase().replace(/\s+/g, '-'), // Add slug property
         }));
         this.isLoading = false;
       },
