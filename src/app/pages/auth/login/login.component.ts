@@ -75,9 +75,6 @@ export class LoginComponent {
   }
 
 
-  signInWithFacebook(): void {
-    console.log('Sign in with Facebook');
-  }
 signInWithGoogle(): void {
   google.accounts.id.initialize({
     client_id: '634039215831-25c4o3plsd6745grjshosb04t1e4c99a.apps.googleusercontent.com',
@@ -122,7 +119,5 @@ handleGoogleCredential(response: any): void {
     this.router.navigate(['/password-reset']);
   }
 
-  onClose(): void {
-    console.log('Close modal');
-  }
+ 
 }

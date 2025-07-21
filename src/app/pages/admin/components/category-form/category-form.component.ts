@@ -40,15 +40,15 @@ export class CategoryFormComponent implements OnInit {
     this.loading = true;
 
     this.route.paramMap.subscribe(params => {
-      console.log('Route params:', params);
+      // console.log('Route params:', params);
       const id = params.get('id');
-      console.log('Category ID from route:', id);
+      // console.log('Category ID from route:', id);
 
       if (id && id !== 'new') {
         this.isEditMode = true;
         this.categoryIdOrSlug = id;
 
-        console.log('Edit mode activated, fetching category with ID/slug:', id);
+        // console.log('Edit mode activated, fetching category with ID/slug:', id);
 
         // Direct HTTP request with proper error handling
         const token = localStorage.getItem('authToken');
@@ -58,11 +58,11 @@ export class CategoryFormComponent implements OnInit {
 
         this.http.get(`${this.baseUrl}/categories/${id}`, { headers }).subscribe({
           next: (response: any) => {
-            console.log('Category data received:', response);
+            // console.log('Category data received:', response);
             if (response && response.data) {
               this.populateForm(response.data);
             } else {
-              console.error('Invalid response format:', response);
+              // console.error('Invalid response format:', response);
               this.toastr.error('Failed to load category data');
             }
             this.loading = false;
@@ -75,7 +75,7 @@ export class CategoryFormComponent implements OnInit {
           }
         });
       } else {
-        console.log('Create mode activated');
+        // console.log('Create mode activated');
         this.isEditMode = false;
         this.loading = false;
       }
@@ -97,7 +97,7 @@ export class CategoryFormComponent implements OnInit {
   }
 
   populateForm(category: Category): void {
-    console.log('Populating form with category:', category);
+    // console.log('Populating form with category:', category);
     this.categoryForm.patchValue({
       name: category.name,
       description: category.description || ''
@@ -111,7 +111,6 @@ export class CategoryFormComponent implements OnInit {
     }
 
     const formData = this.categoryForm.value;
-    console.log("🚀 Submitting category:", formData, "isEditMode:", this.isEditMode, "ID/Slug:", this.categoryIdOrSlug);
 
     this.submitting = true;
 

@@ -91,7 +91,7 @@ export class CategoryListComponent implements OnInit {
           if (response.totalPages) this.totalPages = response.totalPages;
           if (response.totalItems) this.totalItems = response.totalItems;
         } else {
-          console.error('Unexpected response format:', response);
+          // console.error('Unexpected response format:', response);
           this.error = 'Unexpected data format from server';
           this.categories = [];
           this.filteredCategories = [];

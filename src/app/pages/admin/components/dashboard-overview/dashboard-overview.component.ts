@@ -35,25 +35,25 @@ export class DashboardOverviewComponent implements OnInit {
       next: (data: any) => {
         this.dashboardStats.totalBooks = parseInt(data.totalItems);
       },
-      error: (err) => console.error('Error fetching books:', err),
+      // error: (err) => console.error('Error fetching books:', err),
     });
 
     this.adminService.getTotalUsers().subscribe({
       next: (res: any) => {
-       
+
 
         this.dashboardStats.totalUsers = res.totalUsers || 0;
       },
-      error: (err) => console.error('Error fetching users:', err),
+      // error: (err) => console.error('Error fetching users:', err),
     });
 
     this.adminService.getTotalOrders().subscribe({
       next: (res: any) => {
-       
+
 
         this.dashboardStats.totalOrders = res.totalOrders;
       },
-      error: (err) => console.error('Error fetching orders:', err),
+      // error: (err) => console.error('Error fetching orders:', err),
     });
 
     // this.adminService.getTotalRevenue().subscribe({
@@ -74,7 +74,7 @@ export class DashboardOverviewComponent implements OnInit {
       next: (data) => {
         this.recentOrders = data.data;
       },
-      error: (err) => console.error('Error fetching recent orders:', err),
+      // error: (err) => console.error('Error fetching recent orders:', err),
     });
   }
 

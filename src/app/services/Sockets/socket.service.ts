@@ -16,12 +16,12 @@ export class SocketService {
   private connect(): void {
     // Extract the base URL without /api/v1
     const baseUrl = environment.apiUrl.replace('/api/v1', '');
-    
+
     this.socket = io(baseUrl, {
       withCredentials: true,
     });
 
-    
+
   }
 
   listen(eventName: string): Observable<any> {

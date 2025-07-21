@@ -27,7 +27,7 @@ export class PasswordResetRequestComponent implements OnInit {
     });
   }
 
- 
+
   onSubmit() {
     if (this.resetRequestForm.valid) {
       this.loading = true;
@@ -39,7 +39,6 @@ export class PasswordResetRequestComponent implements OnInit {
       // Call the backend API
       this.authService.requestPasswordReset(email).subscribe({
         next: (res) => {
-          console.log('✅ OTP sent:', res.message);
           this.router.navigate(['/password-reset-confirm']);
         },
         error: (err) => {
@@ -56,5 +55,5 @@ export class PasswordResetRequestComponent implements OnInit {
     }
   }
 
- 
+
 }
