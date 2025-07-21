@@ -157,4 +157,10 @@ export class CartSideMenuComponent implements OnChanges {
       },
     });
   }
+
+goToPayment() {
+  this.router.navigate(['/payment']);
+}
+
+
 }

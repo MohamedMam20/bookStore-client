@@ -62,7 +62,7 @@
         <span>Total:</span>
         <span class="total-price">{{ getTotalPrice() }} L.E</span>
       </div>
-      <button class="purchase-btn" (click)="proceedToPurchase()">
+      <!-- <button class="purchase-btn" (click)="proceedToPurchase()">
         Proceed to Purchase
       </button>
       <br />
@@ -73,6 +73,10 @@
       >
         {{ paypalLoading ? "Processing…" : "Pay with PayPal" }}
       </button>
-    </div>
+    </div> -->
+    <button class="purchase-btn" (click)="goToPayment()">
+  Go to Payment
+</button>
+
   </div>
 </div>
