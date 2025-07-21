@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, Renderer2 } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AdminSidebarComponent } from './components/sidebar/sidebar.component';
@@ -6,6 +6,8 @@ import { AdminHeaderComponent } from './components/header/header.component';
 import { AdminFooterComponent } from './components/footer/footer.component';
 import { NotificationsPanelComponent } from './components/notifications-panel/notifications-panel.component';
 import { trigger, transition, style, animate, state, query, animateChild } from '@angular/animations';
+import { NotificationService } from '../../services/notification/notification.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -39,12 +41,19 @@ import { trigger, transition, style, animate, state, query, animateChild } from 
     ])
   ]
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
   isMobile = false;
   sidebarCollapsed = false;
   isAnimating = false;
+  notificationsPanelOpen = false;
+  unreadCount = 0;
+  
+  private subscriptions: Subscription[] = [];
 
-  constructor(private renderer: Renderer2) {}
+  constructor(
+    private renderer: Renderer2,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit() {
     this.checkScreenSize();
@@ -52,6 +61,18 @@ export class AdminComponent implements OnInit {
 
     // Add smooth page transitions
     this.renderer.addClass(document.body, 'smooth-transitions');
+    
+    // Subscribe to notification count
+    this.subscriptions.push(
+      this.notificationService.getUnreadCount().subscribe(count => {
+        this.unreadCount = count;
+      })
+    );
+  }
+  
+  ngOnDestroy() {
+    // Clean up subscriptions
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   @HostListener('window:resize', ['$event'])
@@ -107,11 +128,8 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  // Add this property to the AdminComponent class
-  notificationsPanelOpen = false;
-
-  // Add this method to the AdminComponent class
   toggleNotificationsPanel() {
     this.notificationsPanelOpen = !this.notificationsPanelOpen;
   }
-}
+  
+  }

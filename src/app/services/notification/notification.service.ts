@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SocketService } from '../Sockets/socket.service';
 import { Notification } from '../../models/notification.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,10 @@ export class NotificationService {
   private unreadCount = new BehaviorSubject<number>(0);
   unreadCount$ = this.unreadCount.asObservable();
 
-  constructor(private socketService: SocketService) {
+  constructor(
+    private socketService: SocketService,
+    private toastr: ToastrService
+  ) {
     this.loadNotificationsFromStorage();
     this.setupSocketListeners();
   }
@@ -21,15 +25,27 @@ export class NotificationService {
   private setupSocketListeners(): void {
     // Listen for new order notifications
     this.socketService.listenToNewOrders().subscribe((data) => {
-      console.log('📨 Received new order notification:', data); // Add this line
-      this.addNotification({
+      
+      // Create notification object with enhanced data
+      const notification: Notification = {
         id: this.generateId(),
         message: `New order placed by ${data.userName}`,
         type: 'order',
         read: false,
         createdAt: new Date(),
-        data: { orderId: data.orderId }
-      });
+        data: { 
+          orderId: data.orderId,
+          email: data.user?.email || 'unknown',
+          totalAmount: data.totalAmount || 0,
+          books: data.books || []
+        }
+      };
+      
+      // Add to notification system
+      this.addNotification(notification);
+      
+      // Show toast notification
+      this.toastr.success(`New order placed by ${data.userName || 'a customer'}`, 'New Order');
     });
   }
 

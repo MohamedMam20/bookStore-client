@@ -40,7 +40,7 @@ export class DashboardOverviewComponent implements OnInit {
 
     this.adminService.getTotalUsers().subscribe({
       next: (res: any) => {
-        console.log(res);
+       
 
         this.dashboardStats.totalUsers = res.totalUsers || 0;
       },
@@ -49,31 +49,30 @@ export class DashboardOverviewComponent implements OnInit {
 
     this.adminService.getTotalOrders().subscribe({
       next: (res: any) => {
-        console.log(`$total is ${res}`);
+       
 
         this.dashboardStats.totalOrders = res.totalOrders;
       },
       error: (err) => console.error('Error fetching orders:', err),
     });
 
-    this.adminService.getTotalRevenue().subscribe({
-      next: (res: any) => {
-        this.dashboardStats.totalRevenue = res.totalRevenue || 0;
-      },
-      error: (err) => console.error('Error fetching revenue:', err),
-    });
+    // this.adminService.getTotalRevenue().subscribe({
+    //   next: (res: any) => {
+    //     this.dashboardStats.totalRevenue = res.totalRevenue || 0;
+    //   },
+    //   error: (err) => console.error('Error fetching revenue:', err),
+    // });
 
-    this.adminService.getBestsellers().subscribe({
-      next: (data) => {
-        this.bestsellers = data || [];
-      },
-      error: (err) => console.error('Error fetching bestsellers:', err),
-    });
+    // this.adminService.getBestsellers().subscribe({
+    //   next: (data) => {
+    //     this.bestsellers = data || [];
+    //   },
+    //   error: (err) => console.error('Error fetching bestsellers:', err),
+    // });
 
     this.adminService.getRecentOrders().subscribe({
       next: (data) => {
         this.recentOrders = data.data;
-        console.log(this.recentOrders);
       },
       error: (err) => console.error('Error fetching recent orders:', err),
     });
