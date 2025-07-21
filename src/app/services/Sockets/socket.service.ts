@@ -14,15 +14,14 @@ export class SocketService {
   }
 
   private connect(): void {
-    this.socket = io(environment.apiUrl, {
+    // Extract the base URL without /api/v1
+    const baseUrl = environment.apiUrl.replace('/api/v1', '');
+    
+    this.socket = io(baseUrl, {
       withCredentials: true,
     });
 
-    this.socket.on('connect', () => {});
-
-    this.socket.on('connect_error', (err) => {
-      console.error('❌ Socket connection error:', err.message);
-    });
+    
   }
 
   listen(eventName: string): Observable<any> {

@@ -60,16 +60,22 @@
   padding: 0;
 }
 
+.no-notifications {
+  padding: 20px;
+  text-align: center;
+  color: #999;
+}
+
 .notification-item {
   display: flex;
   padding: 15px 20px;
   border-bottom: 1px solid #f1f1f1;
-  cursor: pointer;
   transition: background-color 0.2s;
+  position: relative;
 }
 
 .notification-item:hover {
-  background-color: #f8f9fa;
+  background-color: rgba(255, 112, 67, 0.05);
 }
 
 .notification-item.unread {
@@ -90,6 +96,7 @@
 
 .notification-content {
   flex: 1;
+  cursor: pointer;
 }
 
 .notification-message {
@@ -104,8 +111,46 @@
   color: #999;
 }
 
-.no-notifications {
-  padding: 20px;
-  text-align: center;
-  color: #999;
+/* New styles for enhanced notification display */
+.notification-details {
+  margin: 6px 0;
+  font-size: 13px;
+  color: #495057;
+}
+
+.notification-email,
+.notification-price {
+  margin: 2px 0;
+  display: flex;
+  align-items: center;
+}
+
+.notification-email i,
+.notification-price i {
+  margin-right: 6px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.notification-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.notification-actions button {
+  padding: 4px 8px;
+  font-size: 12px;
+  background-color: transparent;
+  border: 1px solid #ff7043;
+  color: #ff7043;
+}
+
+.notification-actions button:hover {
+  background-color: #ff7043;
+  color: white;
+}
+
+.notification-actions button i {
+  margin-right: 0;
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../../../services/notification/notification.service';
 import { Notification } from '../../../../models/notification.model';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-notifications-panel',
@@ -17,7 +18,10 @@ export class NotificationsPanelComponent implements OnInit, OnDestroy {
   notifications: Notification[] = [];
   private subscriptions: Subscription[] = [];
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(
+    private notificationService: NotificationService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -45,5 +49,19 @@ export class NotificationsPanelComponent implements OnInit, OnDestroy {
 
   clearAll(): void {
     this.notificationService.clearNotifications();
+  }
+  
+  viewOrder(orderId: string): void {
+    // Mark the notification as read
+    const notification = this.notifications.find(n => n.data?.orderId === orderId);
+    if (notification) {
+      this.notificationService.markAsRead(notification.id);
+    }
+    
+    // Navigate to the order details page
+    this.router.navigate(['/admin/orders', orderId]);
+    
+    // Close the notification panel
+    this.close.emit();
   }
 }
