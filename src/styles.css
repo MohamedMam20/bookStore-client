@@ -56,7 +56,7 @@ a {
 /* Fix for high-contrast mode deprecation warning */
 @media (forced-colors: active) {
   /* Styles for forced colors mode */
-  button, 
+  button,
   a {
     forced-color-adjust: none;
   }
@@ -65,7 +65,7 @@ a {
 /* Font fallbacks to prevent 404 errors */
 @font-face {
   font-family: 'Roboto';
-  src: local('Roboto'), local('Roboto-Regular'), 
+  src: local('Roboto'), local('Roboto-Regular'),
        url('https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;

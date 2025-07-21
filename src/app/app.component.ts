@@ -8,6 +8,7 @@ import { NavbarComponent } from './components/navbar-components/navbar/navbar.co
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from './services/auth/auth.service';
 import { FooterComponent } from './shared/footer/footer.component';
+
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { SocketService } from './services/Sockets/socket.service';
 
