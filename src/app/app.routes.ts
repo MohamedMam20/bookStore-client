@@ -28,11 +28,14 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { FAQPageComponent } from './pages/faq-page/faq-page.component';
 import { AdminListComponent } from './pages/admin/components/admin-list/admin-list.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
+import { PayComponent } from './components/payForm/pay/pay.component';
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   {path: 'contact-us', component: ContactUsComponent,title:'contactus'},
   {path: 'faq', component: FAQPageComponent,title:'FAQ'},
   { path: 'paypal', component: PaypalComponent ,title: 'paypal'},
+    { path: 'payment', component: PayComponent},
+
 
 // // export const routes: Routes = [
 //   { path: '', component: HomePageComponent },

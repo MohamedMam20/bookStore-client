@@ -1,0 +1,42 @@
+<!-- <div class="payment-method-form">
+  <div class="total-section">
+    <span>Total:</span>
+    <span class="total-price">{{ getTotalPrice() }} L.E</span>
+  </div>
+
+  <button class="purchase-btn" (click)="proceedToPurchase()">
+    Proceed to Purchase
+  </button>
+
+  <br />
+
+  <button
+    class="purchase-btn"
+    (click)="startPaypal()"
+    [disabled]="paypalLoading"
+  >
+    {{ paypalLoading ? 'Processing…' : 'Pay with PayPal' }}
+  </button>
+</div> -->
+
+<div class="payment-container">
+  <h2>Choose Your Payment Method</h2>
+
+  <div class="total-section">
+    <span>Total Price:</span>
+    <strong>{{ getTotalPrice() }} L.E</strong>
+  </div>
+
+  <div class="button-group">
+    <button class="pay-btn" (click)="proceedToPurchase()">
+      Pay with stripe
+    </button>
+
+    <button class="pay-btn" (click)="startPaypal()" [disabled]="paypalLoading">
+      {{ paypalLoading ? 'Processing…' : 'Pay with PayPal' }}
+    </button>
+
+    
+  </div>
+</div>
+
