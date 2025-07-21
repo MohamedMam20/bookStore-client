@@ -3,7 +3,7 @@
 /*Narimaaan bodyStyle color*/
 body {
   background-color: #fbf6f0;
-  font-family: "Cormorant Garamond", serif;
+  font-family: "Cormorant Garamond", serif, system-ui;
 }
 
 :root {
@@ -15,7 +15,7 @@ body {
   --text-color: #000000;
   --overlay-bg: rgba(0, 0, 0, 0.4);
   --overlay-white: rgba(255, 255, 255, 0.85);
-  --font-main: "Cormorant Garamond", serif;
+  --font-main: "Cormorant Garamond", serif, system-ui;
   /* --font-main: Georgia, serif; */
   --border-color: #cccccc;
   --box-shadow-color: rgba(0, 0, 0, 0.1);
@@ -35,7 +35,7 @@ body {
 
 body {
   background-color: #fbf6f0;
-  font-family: "Cormorant Garamond", serif;
+  font-family: "Cormorant Garamond", serif, system-ui;
 }
 
 a {
@@ -51,4 +51,32 @@ a {
 }
 .toast-warning {
   background-color: #ff9800;
+}
+
+/* Fix for high-contrast mode deprecation warning */
+@media (forced-colors: active) {
+  /* Styles for forced colors mode */
+  button, 
+  a {
+    forced-color-adjust: none;
+  }
+}
+
+/* Font fallbacks to prevent 404 errors */
+@font-face {
+  font-family: 'Roboto';
+  src: local('Roboto'), local('Roboto-Regular'), 
+       url('https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  src: local('DM Sans'), local('DMSans-Regular'),
+       url('https://fonts.gstatic.com/s/dmsans/v14/rP2tp2ywxg089UriI5-g4vlH9VoD8Cmcqbu6-K6z9mXgjU0.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }

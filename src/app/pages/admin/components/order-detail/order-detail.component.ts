@@ -54,7 +54,6 @@ export class OrderDetailComponent implements OnInit {
           // Ensure both _id and id are available
           this.order._id = this.order._id || this.order.id;
           this.order.id = this.order.id || this.order._id;
-          console.log('Order data:', this.order);
         } else {
           this.error = 'Unexpected response format from server';
         }
@@ -63,23 +62,21 @@ export class OrderDetailComponent implements OnInit {
       error: (err) => {
         this.error = err.error?.message || 'Failed to load order details';
         this.loading = false;
-        console.error('Error loading order details:', err);
       }
     });
   }
 
   updateOrderStatus(newStatus: string): void {
-    console.log(`Attempting to update order ${this.orderId} status to: ${newStatus}`);
-    console.log(`Current order status: ${this.order.status}`);
+    if (this.order.status === newStatus) {
+      return; // No change needed
+    }
     
     this.adminService.updateOrderStatus(this.orderId, newStatus).subscribe({
-      next: (response) => {
-        console.log('Status update successful:', response);
+      next: () => {
         this.order.status = newStatus;
         this.toastr.success(`Order status updated to ${newStatus}`);
       },
       error: (err) => {
-        console.error('Error updating order status:', err);
         const errorMessage = err.error?.message || 'Failed to update order status';
         this.toastr.error(errorMessage);
         

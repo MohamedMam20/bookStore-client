@@ -7,10 +7,9 @@ import { RouterOutlet, Router } from '@angular/router';
 import { NavbarComponent } from './components/navbar-components/navbar/navbar.component';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from './services/auth/auth.service';
-// Remove this import: import { io } from 'socket.io-client';
 import { FooterComponent } from './shared/footer/footer.component';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
-import { SocketService } from './services/Sockets/socket.service'; // Add this import
+import { SocketService } from './services/Sockets/socket.service';
 
 @Component({
   selector: 'app-root',
@@ -27,25 +26,22 @@ import { SocketService } from './services/Sockets/socket.service'; // Add this i
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  // Remove this: private socket: any;
   constructor(
     public router: Router,
     private toastr: ToastrService,
     private authService: AuthService,
-    private socketService: SocketService // Inject the SocketService
+    private socketService: SocketService
   ) {}
 
   ngOnInit(): void {
-    // Remove the direct socket connection
-    // this.socket = io('http://localhost:3000');
-
-    // Instead, use the SocketService
-    if (this.isAdmin) {
-      this.socketService.listen('newOrderNotification').subscribe((data: any) => {
-        console.log('✅ WebSocket notification received:', data);
-        this.toastr.success(`New order placed by ${data.userName || 'a customer'}`);
-      });
-    }
+    // Remove this listener - we'll use only the one in NotificationService
+    // if (this.isAdmin) {
+    //   this.socketService.listen('newOrderNotification').subscribe((data: any) => {
+    //     console.log('✅ WebSocket notification received:', data);
+    //     const userName = data.userName && data.userName !== 'undefined undefined' ? data.userName : 'a customer';
+    //     this.toastr.success(`New order placed by ${userName}`);
+    //   });
+    // }
   }
 
   get isAdmin(): boolean {

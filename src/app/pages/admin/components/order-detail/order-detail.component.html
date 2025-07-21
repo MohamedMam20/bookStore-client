@@ -36,21 +36,24 @@
             <div class="mb-4">
               <h6 class="fw-bold">Status Management</h6>
               <div class="d-flex gap-2">
-                <button 
-                  *ngFor="let status of statusOptions" 
-                  class="btn" 
-                  [ngClass]="{ 
-                    'btn-primary': order.status === status.value, 
+                <button
+                  *ngFor="let status of statusOptions"
+                  class="btn"
+                  [ngClass]="{
+                    'btn-primary': order.status === status.value,
                     'btn-outline-secondary': order.status !== status.value
                   }"
-                  [disabled]="order.status === status.value"
+                  [disabled]="order.status === status.value ||
+                                (status.value === 'cancelled' && order.status === 'delivered') ||
+                                (status.value === 'shipped' && order.status === 'delivered') ||
+                                order.status === 'cancelled'"
                   (click)="updateOrderStatus(status.value)"
                 >
                   {{status.label}}
                 </button>
               </div>
             </div>
-            
+
             <div class="row">
               <div class="col-md-6">
                 <h6 class="fw-bold">Customer Information</h6>
@@ -153,7 +156,7 @@
             <p class="mb-0"><strong>Payment Status:</strong> {{order.paymentStatus || getPaymentStatus()}}</p>
           </div>
         </div>
-        
+
         <div class="card">
           <div class="card-body">
             <button class="btn btn-danger w-100" (click)="deleteOrder()">

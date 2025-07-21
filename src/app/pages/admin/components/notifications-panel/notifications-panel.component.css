@@ -10,6 +10,78 @@
   display: flex;
   flex-direction: column;
   animation: slideIn 0.3s ease-out forwards;
+  border-radius: 0 0 0 8px; /* Add rounded corners on the left side */
+}
+
+/* Improve the notification item styling */
+.notification-item {
+  display: flex;
+  padding: 15px 20px;
+  border-bottom: 1px solid #f1f1f1;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  align-items: center; /* Better vertical alignment */
+  position: relative; /* For positioning the action buttons */
+}
+
+.notification-item:hover {
+  background-color: #f8f9fa;
+  transform: translateX(3px); /* Slight movement on hover */
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.notification-item.unread {
+  background-color: rgba(255, 112, 67, 0.05);
+  border-left: 3px solid #ff7043; /* Add a colored border for unread items */
+}
+
+/* Improve the notification icon */
+.notification-icon {
+  margin-right: 15px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 112, 67, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff7043;
+  flex-shrink: 0; /* Prevent icon from shrinking */
+}
+
+/* Improve the notification content */
+.notification-message {
+  margin: 0 0 5px 0;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500; /* Make text slightly bolder */
+  line-height: 1.4;
+}
+
+/* Add a clear all button style */
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+  background-color: transparent;
+  transition: all 0.2s;
+}
+
+.btn-outline-danger:hover {
+  color: white;
+  background-color: #dc3545;
+}
+
+/* Add a mark all as read button style */
+.btn-outline-primary {
+  color: #ff7043;
+  border-color: #ff7043;
+  background-color: transparent;
+  transition: all 0.2s;
+}
+
+.btn-outline-primary:hover {
+  color: white;
+  background-color: #ff7043;
 }
 
 @keyframes slideIn {
@@ -90,6 +162,40 @@
 
 .notification-content {
   flex: 1;
+  cursor: pointer;
+}
+
+/* Add styles for the notification actions */
+.notification-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.view-order-btn {
+  background-color: rgba(255, 112, 67, 0.1);
+  color: #ff7043;
+  width: 30px;
+  height: 30px;
+}
+
+.view-order-btn:hover {
+  background-color: #ff7043;
+  color: white;
+  transform: scale(1.1);
 }
 
 .notification-message {

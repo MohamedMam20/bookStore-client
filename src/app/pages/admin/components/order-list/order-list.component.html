@@ -24,7 +24,7 @@
         <select class="form-select me-2" [(ngModel)]="filterStatus" (change)="onStatusFilterChange()">
           <option *ngFor="let option of statusOptions" [value]="option.value">{{option.label}}</option>
         </select>
-        
+
         <!-- Top pagination -->
         <div *ngIf="!loading && filteredOrders.length > 0">
           <nav aria-label="Page navigation">
@@ -120,12 +120,11 @@
                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                   Status
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  <li><button class="dropdown-item" (click)="updateOrderStatus(getOrderId(order), 'shipped')" [disabled]="order.status === 'shipped'">Shipped</button></li>
-                  <li><button class="dropdown-item" (click)="updateOrderStatus(getOrderId(order), 'delivered')" [disabled]="order.status === 'delivered'">Delivered</button></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><button class="dropdown-item text-danger" (click)="updateOrderStatus(getOrderId(order), 'cancelled')" [disabled]="order.status === 'cancelled'">Cancel</button></li>
-                </ul>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><button class="dropdown-item text-primary" (click)="updateOrderStatus(getOrderId(order), 'shipped')" [disabled]="order.status === 'shipped' || order.status === 'delivered' || order.status === 'cancelled'">Shipped</button></li>
+                  <li><button class="dropdown-item text-success" (click)="updateOrderStatus(getOrderId(order), 'delivered')" [disabled]="order.status === 'delivered' || order.status === 'cancelled'">Delivered</button></li>
+                  <li><button class="dropdown-item text-danger" (click)="updateOrderStatus(getOrderId(order), 'cancelled')" [disabled]="order.status === 'cancelled' || order.status === 'delivered'">Cancel</button></li>
+                </div>
               </div>
               <button class="btn btn-sm btn-outline-danger ms-1" (click)="deleteOrder(getOrderId(order))">
                 <i class="fas fa-trash"></i>

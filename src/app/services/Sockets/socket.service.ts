@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, share } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { environment } from '../../../environments/environment';
 
@@ -8,6 +8,7 @@ import { environment } from '../../../environments/environment';
 })
 export class SocketService {
   private socket!: Socket;
+  private listeners: Map<string, Observable<any>> = new Map();
 
   constructor() {
     this.connect();
@@ -18,48 +19,38 @@ export class SocketService {
       withCredentials: true,
     });
 
-    this.socket.on('connect', () => {
-      console.log('✅ Socket connected successfully with ID:', this.socket.id);
-    });
-
     this.socket.on('connect_error', (err) => {
-      console.error('❌ Socket connection error:', err.message);
-    });
-
-    // Add debug logging for all incoming events
-    this.socket.onAny((event, ...args) => {
-      console.log(`🔔 Socket event received: ${event}`, args);
+      console.error('Socket connection error:', err.message);
     });
   }
 
   listen(eventName: string): Observable<any> {
-    return new Observable((Observer) => {
-      const handler = (data: any) => Observer.next(data);
-      this.socket.on(eventName, handler);
-      return () => this.socket.off(eventName, handler);
-    });
+    // Check if we already have a listener for this event
+    if (!this.listeners.has(eventName)) {
+      // Create a new observable and store it
+      const newObservable = new Observable((observer) => {
+        const handler = (data: any) => observer.next(data);
+        this.socket.on(eventName, handler);
+        
+        return () => {
+          this.socket.off(eventName, handler);
+        };
+      }).pipe(share()); // Share the observable so multiple subscribers get the same events
+      
+      this.listeners.set(eventName, newObservable);
+    }
+    
+    return this.listeners.get(eventName)!;
   }
 
   emit(eventName: string, data: any): void {
     this.socket.emit(eventName, data);
   }
 
-  listenToNewOrders(): Observable<any> {
-    return new Observable((observer) => {
-      const handler = (data: any) => {
-        observer.next(data);
-      };
-      this.socket.on('newOrderNotification', handler);
-
-      this.socket.onAny((event, ...args) => {});
-
-      return () => this.socket.off('newOrderNotification', handler);
-    });
-  }
-
   disconnect(): void {
     if (this.socket && this.socket.connected) {
       this.socket.disconnect();
+      this.listeners.clear();
     }
   }
 }

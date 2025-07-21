@@ -22,8 +22,7 @@
 
     <div *ngFor="let notification of notifications"
          class="notification-item"
-         [class.unread]="!notification.read"
-         (click)="markAsRead(notification)">
+         [class.unread]="!notification.read">
       <div class="notification-icon">
         <i class="fas" [ngClass]="{
           'fa-shopping-cart': notification.type === 'order',
@@ -32,9 +31,17 @@
           'fa-info-circle': notification.type === 'system'
         }"></i>
       </div>
-      <div class="notification-content">
+      <div class="notification-content" (click)="markAsRead(notification)">
         <p class="notification-message">{{ notification.message }}</p>
         <p class="notification-time">{{ notification.createdAt | date:'medium' }}</p>
+      </div>
+      <div class="notification-actions">
+        <button *ngIf="notification.type === 'order' && notification.data?.orderId" 
+                class="btn btn-sm btn-icon view-order-btn" 
+                title="View Order Details"
+                (click)="viewOrderDetails(notification)">
+          <i class="fas fa-eye"></i>
+        </button>
       </div>
     </div>
   </div>
