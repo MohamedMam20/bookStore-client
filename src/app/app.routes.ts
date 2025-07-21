@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AdminGuard } from './guards/admin.guard';
+import { PayComponent } from './components/payForm/pay/pay.component';
 
 export const routes: Routes = [
   {
@@ -272,6 +273,8 @@ export const routes: Routes = [
       },
     ],
   },
+     { path: 'payment', component: PayComponent},
+
   {
     path: 'product-details/:slug',
     loadComponent: () =>
@@ -285,5 +288,5 @@ export const routes: Routes = [
       import('./pages/not-found/not-found.component').then(
         (m) => m.NotFoundComponent
       ),
-  },
+  }
 ];
