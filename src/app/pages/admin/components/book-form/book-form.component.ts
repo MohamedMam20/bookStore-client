@@ -96,7 +96,7 @@ export class BookFormComponent implements OnInit {
       next: (response: any) => {
         if (response && response.data) {
           const book = response.data;
-          
+
           // Handle category - if it's an object with _id property, extract the ID
           let categoryId = '';
           if (book.category) {
@@ -106,7 +106,7 @@ export class BookFormComponent implements OnInit {
               categoryId = book.category._id;
             }
           }
-          
+
           this.bookForm.patchValue({
             title: book.title,
             author: book.author,
@@ -129,7 +129,7 @@ export class BookFormComponent implements OnInit {
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error loading book details:', err);
+        // console.error('Error loading book details:', err);
         this.toastr.error('Failed to load book details');
         this.loading = false;
         this.router.navigate(['/admin/books']);
@@ -172,14 +172,14 @@ export class BookFormComponent implements OnInit {
     this.loading = true;
     const formData = new FormData();
     const selectedCategoryId = this.bookForm.value.category || '';
-    
+
     // Find the selected category object to get its name
     const selectedCategory = this.categories.find(cat => cat._id === selectedCategoryId);
-    console.log('Selected category:', selectedCategory); // Debug log
+    // console.log('Selected category:', selectedCategory); // Debug log
 
     formData.append('title', this.bookForm.value.title);
     formData.append('author', this.bookForm.value.author || '');
-    
+
     // Send category as a nested object with both ID and name
     if (selectedCategory) {
       // Try different approaches to ensure the data is properly received by the server
@@ -189,18 +189,18 @@ export class BookFormComponent implements OnInit {
         name: selectedCategory.name || ''
       });
       formData.append('category', categoryData);
-      
+
       // Approach 2: Send as individual fields
       formData.append('category[_id]', selectedCategory._id || '');
       formData.append('category[name]', selectedCategory.name || '');
-      
+
       // Approach 3: Send as flat fields with different names
       formData.append('categoryId', selectedCategory._id || '');
       formData.append('categoryName', selectedCategory.name || '');
-      
-      console.log('Category being sent:', selectedCategory._id, selectedCategory.name); // Debug log
+
+      // console.log('Category being sent:', selectedCategory._id, selectedCategory.name); // Debug log
     }
-    
+
     formData.append('price', this.bookForm.value.price.toString());
     formData.append('description', this.bookForm.value.description || '');
     formData.append('authorDescription', this.bookForm.value.authorDescription || '');

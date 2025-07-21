@@ -146,13 +146,11 @@ export class PasswordResetConfirmComponent implements OnInit, AfterViewInit {
 
       this.authService.resetPassword(email, otp, newPassword).subscribe({
         next: (res) => {
-          console.log('✅ Reset success:', res.message);
           alert('Password reset successful! Please login with your new password.');
           localStorage.removeItem('resetEmail');
           this.router.navigate(['/login']);
         },
         error: (err) => {
-          console.error('❌ Reset failed:', err);
           this.otpInvalid = true;
           alert(err.error?.message || 'Password reset failed. Please try again.');
           this.loading = false;

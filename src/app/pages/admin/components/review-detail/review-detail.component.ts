@@ -70,7 +70,6 @@ export class ReviewDetailComponent implements OnInit {
       },
       error: (error) => {
         this.toastr.error('Failed to update review status');
-        console.error('Error updating review status:', error);
       }
     });
   }
